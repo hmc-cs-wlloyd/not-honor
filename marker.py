@@ -30,7 +30,8 @@ markers = {
     ),
     "atomic-flower": Marker(
         name="Atomic Flowers",
-        description="Flowers with information on the dangers of the site encoded into their DNA. Self-propagating, but only effective against high-tech societies",
+        description="Flowers with information on the dangers of the site encoded into their DNA. \
+        Self-propagating, but only effective against high-tech societies",
         base_cost=500000,
         visibility=.1,
         understandability=.1,
@@ -41,7 +42,8 @@ markers = {
     ),
     "holy-shrine": Marker(
         name="Holy Shrine",
-        description="A shrine marking the site as holy ground. Effective upon cultures that respect yours",
+        description="A shrine marking the site as holy ground. Effective upon cultures that\
+        respect yours",
         base_cost=200000,
         visibility=1,
         understandability=.2,
@@ -52,7 +54,8 @@ markers = {
     ),
     "atomic-cult": Marker(
         name="Atomic Cult",
-        description="A highly organized priesthood dedicated to preserving the message that this site is dangerous. Vulnerable to religious turmoil",
+        description="A highly organized priesthood dedicated to preserving the message that \
+        this site is dangerous. Vulnerable to religious turmoil",
         base_cost=2000000,
         visibility=.7,
         understandability=.8,
@@ -63,7 +66,8 @@ markers = {
     ),
     "ray-cats": Marker(
         name="Ray Cats",
-        description="Cats genetically engineered to glow in the presence of radiation, accompanied by efforts to pass into the legend the message 'avoid places where the cats glow'",
+        description="Cats genetically engineered to glow in the presence of radiation, \
+        accompanied by efforts to pass into the legend the message 'avoid places where the cats glow'",
         base_cost=1000000,
         visibility=.9,
         understandability=.4,
@@ -74,7 +78,8 @@ markers = {
     ),
     "buried-messages": Marker(
         name="Buried Messages",
-        description="Warning messages inscribed in ceramics, buried at various depths across the site. More effective upon cultures with industrial digging technology",
+        description="Warning messages inscribed in ceramics, buried at various depths across the \
+        site. More effective upon cultures with industrial digging technology",
         base_cost=100000,
         visibility=.1,
         understandability=.4,

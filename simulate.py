@@ -23,7 +23,7 @@ def simulate(years, equipment_totals):
         sot = state_of_tech(current_year)
         print("state of tech is " + str(sot))
 
-        miners = miner_prob(knowledge_of_past, value_of_materials, 200)
+        miners = miner_prob(kop, vom, 200)
         print("200 year probability of mining is " + str(miners))
         mine_die = random.random()
         if mine_die < miners:
@@ -35,7 +35,7 @@ def simulate(years, equipment_totals):
             print("I rolled " + str(mine_die) +
                   ", so no mining happened by year " + str(current_year))
 
-        archaeologists = arch_prob(knowledge_of_past, current_year-200)
+        archaeologists = arch_prob(kop, current_year-200)
         print("200 year probability of archaeologists is " +
               str(archaeologists))
         arch_die = random.random()
@@ -47,7 +47,19 @@ def simulate(years, equipment_totals):
         else:
             print("I rolled " + str(arch_die) +
                   ", so no archaeology happened by year " + str(current_year))
-            print()
+            
+        if current_year > 5000:
+            aliens = alien_prob(sot, current_year)
+            print("200 year prob of aliens is " + str(aliens))
+            alien_die = random.random()
+            if alien_die < aliens:
+                print("I rolled " + str(alien_die) +
+                 ", so aliens attacked by year " + str(current_year))
+                dead = True
+                return dead
+            else:
+                print("I rolled " + str(alien_die) +
+                 ", so no aliens happened by year " + str(current_year))
                                 
 
     return dead
@@ -161,7 +173,7 @@ def miner_prob(knowledge_of_past, value_of_materials, years):
     else:
         knowledge_multiplier = 1
     
-    bhr = .5 #magic! was 83 in source, but then you always lose
+    bhr = .05 #magic! was 83 in source, but then you always lose
 
     #drill rate is the avg # of bores per sq m per 1000 yrs
     drill_rate = bhr * value_multiplier * knowledge_multiplier
@@ -188,16 +200,16 @@ def arch_prob(knowledge_of_past, start_year):
         if start_year < 2300:
             prob = 0
         elif start_year < 5000:
-            prob = .2
+            prob = .05
         else:
-            prob = .3
+            prob = .1
     elif knowledge_of_past == 1:
         if start_year < 2300:
-            prob = .1
+            prob = .05
         elif start_year < 5000:
-            prob = .5
+            prob = .1
         else:
-            prob = .4
+            prob = .2
     else:
         if start_year < 2300:
             prob = .01
@@ -206,6 +218,15 @@ def arch_prob(knowledge_of_past, start_year):
         else:
             prob = .01
             
-
     return prob
-    
+
+def alien_prob(state_of_tech, start_year):
+    """gives total probability of destructive alien contact over 200 years,
+    given start year"""
+    if state_of_tech == 2:
+        prob = .05
+    elif state_of_tech == 1:
+        prob = .01
+    else:
+        prob = 0
+    return prob

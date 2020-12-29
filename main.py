@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from random import shuffle
 import pyxel
 import marker
+import button
 
 SCREEN_WIDTH = 256
 SCREEN_HEIGHT = 256
@@ -39,16 +40,16 @@ class Shelf:
                 pyxel.mouse_y < self.y_coord + self.height
     def draw(self):
         """Draws the shelf and its contents to the screen"""
-        pyxel.rectb(self.x_coord, self.y_coord, self.width, self.height, 13)
+        pyxel.rectb(self.x_coord, self.y_coord, self.width, self.height, pyxel.COLOR_GRAY)
         center_text(text=marker.markers[self.marker_on_shelf].name,
                 page_width=self.width,
                 y_coord=self.y_coord+3,
-                text_color=7,
+                text_color=pyxel.COLOR_WHITE,
                 x_coord=self.x_coord)
         center_text(text="Price: $" + str(self.sticker_price),
                 page_width=self.width,
                 y_coord=self.y_coord+self.height-7,
-                text_color=7,
+                text_color=pyxel.COLOR_WHITE,
                 x_coord=self.x_coord)
         if self.is_mouse_on_shelf():
             pyxel.text(0,
@@ -59,13 +60,21 @@ class Shelf:
             center_text(text="Sold",
                 page_width=self.width,
                 y_coord=self.y_coord+self.height/2,
-                text_color=7,
+                text_color=pyxel.COLOR_WHITE,
                 x_coord=self.x_coord)
 
 class Shop:
     """A class representing an instance of the shop. Consists of a list of shelves with markers for sale on them"""
     def __init__(self, marker_options):
         self.shelves = []
+        self.finish_button = button.Button(
+            x_coord=SCREEN_WIDTH - 35,
+            y_coord=SHOP_TOP_OFFSET/10,
+            width=30,
+            height=9*SHOP_TOP_OFFSET/10,
+            text="Finish",
+            button_color=pyxel.COLOR_GRAY
+        )
         shuffle(marker_options)
         for i in range(SHOP_ROWS):
             for j in range(SHOP_COLUMNS):
@@ -78,8 +87,13 @@ class Shop:
                         sticker_price=marker.markers[marker_options[2*i+j]].base_cost
                     ))
 
-    def draw(self):
+    def draw(self, player_funding):
         """Draws the shop to the screen"""
+        center_text("Remaining Budget: $" + str(player_funding),
+                page_width=SCREEN_WIDTH,
+                y_coord=10,
+                text_color=pyxel.COLOR_WHITE)
+        self.finish_button.draw()
         for shelf in self.shelves:
             shelf.draw()
 
@@ -115,6 +129,8 @@ class App:
             self.draw_title()
         elif self.screen == Screen.SHOP:
             self.draw_shop()
+        elif self.screen == Screen.MAP:
+            self.draw_map()
 
     def update_title(self):
         """Handles updates while the player is on the title screen"""
@@ -127,22 +143,25 @@ class App:
             self.shop = Shop(self.marker_options)
         if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON):
             self.player_funding -= self.shop.make_purchase(self.player_funding)
+        if self.shop.finish_button.is_clicked():
+            self.screen = Screen.MAP
 
-    def draw_title(self):
+    def draw_title(self): #pylint: disable=no-self-use
         """Draws frames while the player is on the title screen"""
-        center_text("Not a Place of Honor", page_width=SCREEN_WIDTH, y_coord=66, text_color=7)
-        center_text("- PRESS ENTER TO START -", page_width=SCREEN_WIDTH, y_coord=126, text_color=7)
+        center_text("Not a Place of Honor", page_width=SCREEN_WIDTH, y_coord=66, text_color=pyxel.COLOR_WHITE)
+        center_text("- PRESS ENTER TO START -", page_width=SCREEN_WIDTH, y_coord=126, text_color=pyxel.COLOR_WHITE)
 
     def draw_shop(self):
         """Draws frames while the player is on the shop screen"""
-        pyxel.cls(0)
+        pyxel.cls(pyxel.COLOR_BLACK)
         pyxel.mouse(visible=True)
-        center_text("Remaining Budget: $" + str(self.player_funding),
-                page_width=SCREEN_WIDTH,
-                y_coord=10,
-                text_color=7)
 
-        self.shop.draw()
+        self.shop.draw(self.player_funding)
+
+    def draw_map(self):
+        """Draws frames while the player is on the map screen"""
+        pyxel.cls(pyxel.COLOR_BLACK)
+        pyxel.mouse(visible=False)
 
 def center_text(text, page_width, y_coord, text_color, x_coord=0, char_width=pyxel.FONT_WIDTH): #pylint: disable=too-many-arguments
     """Helper function for calcuating the start x value for centered text."""

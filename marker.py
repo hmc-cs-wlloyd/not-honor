@@ -9,11 +9,16 @@ class Marker: #pylint: disable=too-many-instance-attributes,too-few-public-metho
     name: str
     base_cost: int
     description: str
-    visibility: float
-    understandability: float
-    respectability: float
-    likability: float
-    usability: float
+    visibility_init: tuple
+    visibility_decay: str
+    understandability_init: tuple
+    understandability_decay: str
+    respectability_init: tuple
+    respectability_decay: str
+    likability_init: tuple
+    likability_decay: str
+    usability_init: tuple
+    usability_decay: str
     tags: list
 
 markers = {
@@ -21,11 +26,16 @@ markers = {
         name="Monolith (Granite)",
         description="A 5 meter monolith carved from a single piece of granite.\nHighly durable",
         base_cost=100000,
-        visibility=1,
-        understandability=.4,
-        respectability=1,
-        likability=.8,
-        usability=0,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (6,6,6),
+        visibility_decay = "slow_lin_0",
+        respectability_init = (6,6,6),
+        respectability_decay = "slow_lin_inc_8",
+        likability_init = (0,0,0),
+        likability_decay = "constant",
+        understandability_init = (9,9,9),
+        understandability_decay = "exp_0" ,
         tags=["surface", "structure", "language-dependent", "low-tech"]
     ),
     "atomic-flower": Marker(
@@ -33,34 +43,33 @@ markers = {
         description="Flowers with information on the dangers of the site\nencoded into their DNA. \
                 Self-propagating, but only\neffective against high-tech societies",
         base_cost=500000,
-        visibility=.1,
-        understandability=.1,
-        respectability=0,
-        likability=1,
-        usability=1,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (1,1,1),
+        visibility_decay = "constant",
+        respectability_init = (0,0,0),
+        respectability_decay = "constant",
+        likability_init = (3,3,3),
+        likability_decay = "constant",
+        understandability_init = (0,2,8),
+        understandability_decay = "constant", 
         tags=["surface", "biological", "high-tech"]
     ),
-    "holy-shrine": Marker(
-        name="Holy Shrine",
-        description="A shrine marking the site as holy ground.\nEffective upon cultures that respect yours",
-        base_cost=200000,
-        visibility=1,
-        understandability=.2,
-        respectability=.8,
-        likability=1,
-        usability=0,
-        tags=["surface", "structure", "culture-linked", "low-tech"]
-    ),
-    "atomic-cult": Marker(
-        name="Atomic Cult",
+    "good-cult": Marker(
+        name="High Quality Cult",
         description="A highly organized priesthood dedicated to preserving\nthe message that \
                 this site is dangerous.\nVulnerable to religious turmoil",
         base_cost=2000000,
-        visibility=.7,
-        understandability=.8,
-        respectability=.9,
-        likability=.1,
-        usability=.8,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (7,7,7),
+        visibility_decay = "constant",
+        respectability_init = (7,7,7),
+        respectability_decay = "constant",
+        likability_init = (5,5,5),
+        likability_decay = "constant",
+        understandability_init = (10,10,10),
+        understandability_decay = "lin_0",
         tags=["active", "biological", "culture-linked", "low-tech", "religious"]
     ),
     "ray-cats": Marker(
@@ -68,11 +77,16 @@ markers = {
         description="Cats genetically engineered to glow in the presence\nof radiation, \
                 accompanied by efforts to pass into\nthe legend the message 'avoid places where the cats glow'",
         base_cost=1000000,
-        visibility=.9,
-        understandability=.4,
-        respectability=1,
-        likability=1,
-        usability=None,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (5,5,5),
+        visibility_decay = "constant",
+        respectability_init = (3,3,3),
+        respectability_decay = "constant",
+        likability_init = (-2,-2,-2),
+        likability_decay = "constant",
+        understandability_init = (5,5,5),
+        understandability_decay = "constant",
         tags=["biological", "low-tech", "folklore-linked"]
     ),
     "buried-messages": Marker(
@@ -80,12 +94,260 @@ markers = {
         description="Warning messages inscribed in ceramics,\nburied at various depths across the \
                 site.\nMore effective upon cultures with industrial\ndigging technology",
         base_cost=100000,
-        visibility=.1,
-        understandability=.4,
-        respectability=.3,
-        likability=0,
-        usability=1,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (0,0,0),
+        visibility_decay = "constant",
+        respectability_init = (3,3,3),
+        respectability_decay = "tech_curve",
+        likability_init = (-2,-2,-2),
+        likability_decay = "lin_0",
+        understandability_init = (9,9,9),
+        understandability_decay = "exp_0",
         tags=["buried", "low-tech"]
+    ),
+    "danger-sign": Marker(
+        name="Danger Sign",
+        description="A sign reading \"danger\" and bearing a radiation symbol",
+        base_cost=1000,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (1,1,1),
+        visibility_decay = "lin_0",
+        respectability_init = (7,7,7),
+        respectability_decay = "lin_0",
+        likability_init = (-2,-2,-2),
+        likability_decay = "lin_0",
+        understandability_init = (5,5,5),
+        understandability_decay = "lin_0",
+        tags=[]
+        
+    ),
+    "disgust-faces": Marker(
+        name="Disgusted Faces",
+        description="Depictions of faces in sickness in pain, etched into stone",
+        base_cost=10000,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (2,2,2),
+        visibility_decay = "slow_lin_0",
+        respectability_init = (0,0,0),
+        respectability_decay = "constant",
+        likability_init = (-3,-3,-3),
+        likability_decay = "constant",
+        understandability_init = (3,3,3),
+        understandability_decay = "slow_lin_0",
+        tags=[]
+    ),
+    "periodic-table": Marker(
+        name="Periodic Table",
+        description="A depiction of the periodic table, with the elements buried here circled\
+        and arrows pointing down",
+        base_cost=10000,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (1,1,1),
+        visibility_decay = "lin_0",
+        respectability_init = (0,0,0),
+        respectability_decay = "constant",
+        likability_init = (0,0,0),
+        likability_decay = "constant",
+        understandability_init = (0,5,5),
+        understandability_decay = "constant",
+        tags=[]
+    ),
+    "walk-on-map": Marker(
+        name="Walk On Map",
+        description="A map of all known waste sites (why is it called walk-on idk)",
+        base_cost=10000,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (8,8,8),
+        visibility_decay = "lin_0",
+        respectability_init = (1,1,1),
+        respectability_decay = "constant",
+        likability_init = (2,2,2),
+        likability_decay = "constant",
+        understandability_init = (0,7,7),
+        understandability_decay = "constant",
+        tags=[]
+    ),
+    "star-map": Marker(
+        name="Star Map",
+        description="A map of the stars showing their position when the site was created and when \
+        the site will be safe. Could be used to calculate age",
+        base_cost=1000,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (2,2,2),
+        visibility_decay = "constant",
+        respectability_init = (0,5,5),
+        respectability_decay = "constant",
+        likability_init = (1,1,1),
+        likability_decay = "constant",
+        understandability_init = (0,0,0),
+        understandability_decay = "constant",
+        tags=[]
+    ),
+    "rubble-field": Marker(
+        name="Rubble Field",
+        description="Fill the site with random rubble, making access difficult",
+        base_cost=10000,
+        usability_init = (-10,-6,-6),
+        usability_decay = "constant",
+        visibility_init = (9,9,9),
+        visibility_decay = "slow_lin_0",
+        respectability_init = (0,0,0),
+        respectability_decay = "slow_lin_inc_3",
+        likability_init = (-3,-3,-3),
+        likability_decay = "lin_0",
+        understandability_init = (0,0,0),
+        understandability_decay = "constant",
+        tags=[]        
+    ),
+    "spike-field": Marker(
+        name="Spike Field",
+        description="Fill the site with dangerous and scary spikes",
+        base_cost=10000,
+        usability_init = (-10,-5,-5),
+        usability_decay = "constant",
+        visibility_init = (10,10,10),
+        visibility_decay = "lin_0",
+        respectability_init = (9,9,9),
+        respectability_decay = "constant",
+        likability_init = (-7,-7,-7),
+        likability_decay = "constant",
+        understandability_init = (0,0,0),
+        understandability_decay = "constant",
+        tags=[]
+    ),
+    "attractive-monument": Marker(
+        name="Attractive Monument",
+        description="A pretty building for your site. Maybe people will want to maintain it?",
+        base_cost=100000,
+        usability_init = (4,4,4),
+        usability_decay = "constant",
+        visibility_init = (8,8,8),
+        visibility_decay = "lin_0",
+        respectability_init = (7,7,7),
+        respectability_decay = "constant",
+        likability_init = (9,9,9),
+        likability_decay = "constant",
+        understandability_init = (0,0,0),
+        understandability_decay = "constant",
+        tags=[]
+    ),
+    "bad-cult": Marker(
+        name="Cult",
+        description="A cult of dubious quality",
+        base_cost=1000,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (7,7,7),
+        visibility_decay = "constant",
+        respectability_init = (-3,-3,-3),
+        respectability_decay = "constant",
+        likability_init = (-5,-5,-5),
+        likability_decay = "constant",
+        understandability_init = (9,9,9),
+        understandability_decay = "exp_neg_10",
+        tags=[]
+    ),
+    "visitor-center": Marker(
+        name="Visitor Center",
+        description="Build a visitor center for the site",
+        base_cost=30000,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (4,4,4),
+        visibility_decay = "lin_0",
+        respectability_init = (1,1,1),
+        respectability_decay = "constant",
+        likability_init = (3,3,3),
+        likability_decay = "constant",
+        understandability_init = (10,10,10),
+        understandability_decay = "exp_0",
+        tags=[]
+    ),
+    "cemetery": Marker(
+        name="Cemetery",
+        description="Build a cemetery on the site - maybe people will leave it alone",
+        base_cost=10000,
+        usability_init = (-3,-3,-3),
+        usability_decay = "constant",
+        visibility_init = (7,7,7),
+        visibility_decay = "lin_0",
+        respectability_init = (10,10,10),
+        respectability_decay = "constant",
+        likability_init = (-4,-4,-4),
+        likability_decay = "constant",
+        understandability_init = (-1,-1,-1),
+        understandability_decay = "constant",
+        tags=[]
+    ),
+    "wooden-monolith": Marker(
+        name="Wooden Monolith",
+        description="A monolith made of wood",
+        base_cost=1000,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (6,6,6),
+        visibility_decay = "fast_lin_0",
+        respectability_init = (4,4,4),
+        respectability_decay = "constant",
+        likability_init = (0,0,0),
+        likability_decay = "constant",
+        understandability_init = (9,9,9),
+        understandability_decay = "exp_0",
+        tags=[]
+    ),
+    "metal-monolith": Marker(
+        name="Metal Monolith",
+        description="A monolith made of metal",
+        base_cost=10000,
+        usability_init = (2,2,2),
+        usability_decay = "constant",
+        visibility_init = (6,6,6),
+        visibility_decay = "lin_0",
+        respectability_init = (5,5,5),
+        respectability_decay = "constant",
+        likability_init = (0,0,0),
+        likability_decay = "constant",
+        understandability_init = (9,9,9),
+        understandability_decay = "exp_0",
+        tags=[]
+    ),
+    "death-sculpture": Marker(
+        name="Death Sculpture",
+        description="scary!",
+        base_cost=10000,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (8,8,8),
+        visibility_decay = "lin_0",
+        respectability_init = (7,7,7),
+        respectability_decay = "constant",
+        likability_init = (-2,-2,-2),
+        likability_decay = "constant",
+        understandability_init = (1,1,1),
+        understandability_decay = "constant",
+        tags=[]
+    ),
+    "black-hole": Marker(
+        name="Black Hole",
+        description="A giant void in the ground. Don't fall in!",
+        base_cost=10000,
+        usability_init = (-10,-7,-7),
+        usability_decay = "constant",
+        visibility_init = (10,10,10),
+        visibility_decay = "slow_lin_0",
+        respectability_init = (6,6,6),
+        respectability_decay = "constant",
+        likability_init = (-6,-6,-6),
+        likability_decay = "constant",
+        understandability_init = (0,0,0),
+        understandability_decay = "constant",
+        tags=[]
     )
 }
 

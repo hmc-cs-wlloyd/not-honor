@@ -52,7 +52,7 @@ Self-propagating, but only\neffective against high-tech societies",
         likability_init = (3,3,3),
         likability_decay = "constant",
         understandability_init = (0,2,8),
-        understandability_decay = "constant", 
+        understandability_decay = "constant",
         tags=["surface", "biological", "high-tech"]
     ),
     "good-cult": Marker(
@@ -75,7 +75,7 @@ this site is dangerous.\nVulnerable to religious turmoil",
     "ray-cats": Marker(
         name="Ray Cats",
         description="Cats genetically engineered to glow in the presence\nof radiation, \
-accompanied by efforts to pass into\n legend the message 'avoid places where the cats glow'",
+accompanied by efforts to pass into\nlegend the message 'avoid places where the cats glow'",
         base_cost=1000000,
         usability_init = (0,0,0),
         usability_decay = "constant",
@@ -108,7 +108,7 @@ site.\nMore effective upon cultures with industrial\ndigging technology",
     ),
     "danger-sign": Marker(
         name="Danger Sign",
-        description="A sign reading \"danger\" and bearing a radiation symbol",
+        description="A sign reading \"danger\" and bearing a radiation\nsymbol",
         base_cost=1000,
         usability_init = (0,0,0),
         usability_decay = "constant",
@@ -121,11 +121,10 @@ site.\nMore effective upon cultures with industrial\ndigging technology",
         understandability_init = (5,5,5),
         understandability_decay = "lin_0",
         tags=[]
-        
     ),
     "disgust-faces": Marker(
         name="Disgusted Faces",
-        description="Depictions of faces in sickness in pain, etched into stone",
+        description="Depictions of faces in sickness in pain, etched into\nstone",
         base_cost=10000,
         usability_init = (0,0,0),
         usability_decay = "constant",
@@ -141,8 +140,8 @@ site.\nMore effective upon cultures with industrial\ndigging technology",
     ),
     "periodic-table": Marker(
         name="Periodic Table",
-        description="A depiction of the periodic table, with the elements buried here circled\
-        and arrows pointing down",
+        description="A depiction of the periodic table, with the elements\nburied here circled \
+and arrows pointing down",
         base_cost=10000,
         usability_init = (0,0,0),
         usability_decay = "constant",
@@ -158,7 +157,7 @@ site.\nMore effective upon cultures with industrial\ndigging technology",
     ),
     "walk-on-map": Marker(
         name="Walk On Map",
-        description="A map of all known waste sites (why is it called walk-on idk)",
+        description="A map of all known waste sites inscribed in the ground",
         base_cost=10000,
         usability_init = (0,0,0),
         usability_decay = "constant",
@@ -174,8 +173,8 @@ site.\nMore effective upon cultures with industrial\ndigging technology",
     ),
     "star-map": Marker(
         name="Star Map",
-        description="A map of the stars showing their position when the site was created and when \
-        the site will be safe. Could be used to calculate age",
+        description="A map of the stars showing their position when the\nsite was created and when \
+the site will be safe.\nCould be used to calculate age",
         base_cost=1000,
         usability_init = (0,0,0),
         usability_decay = "constant",
@@ -191,7 +190,7 @@ site.\nMore effective upon cultures with industrial\ndigging technology",
     ),
     "rubble-field": Marker(
         name="Rubble Field",
-        description="Fill the site with random rubble, making access difficult",
+        description="Fill the site with random rubble, making access\ndifficult",
         base_cost=10000,
         usability_init = (-10,-6,-6),
         usability_decay = "constant",
@@ -203,7 +202,7 @@ site.\nMore effective upon cultures with industrial\ndigging technology",
         likability_decay = "lin_0",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
-        tags=[]        
+        tags=[]
     ),
     "spike-field": Marker(
         name="Spike Field",
@@ -223,7 +222,7 @@ site.\nMore effective upon cultures with industrial\ndigging technology",
     ),
     "attractive-monument": Marker(
         name="Attractive Monument",
-        description="A pretty building for your site. Maybe people will want to maintain it?",
+        description="A pretty building for your site. Maybe people will\nwant to maintain it?",
         base_cost=100000,
         usability_init = (4,4,4),
         usability_decay = "constant",
@@ -271,7 +270,7 @@ site.\nMore effective upon cultures with industrial\ndigging technology",
     ),
     "cemetery": Marker(
         name="Cemetery",
-        description="Build a cemetery on the site - maybe people will leave it alone",
+        description="Build a cemetery on the site - maybe people will\nleave it alone",
         base_cost=10000,
         usability_init = (-3,-3,-3),
         usability_decay = "constant",

@@ -75,6 +75,14 @@ class Shop:
             text="Finish",
             button_color=pyxel.COLOR_GRAY
         )
+        self.inventory_button = button.Button(
+            x_coord=5,
+            y_coord=SHOP_TOP_OFFSET/10,
+            width=45,
+            height=9*SHOP_TOP_OFFSET/10,
+            text="Inventory",
+            button_color=pyxel.COLOR_GRAY
+        )
         shuffle(marker_options)
         for i in range(SHOP_ROWS):
             for j in range(SHOP_COLUMNS):
@@ -93,6 +101,7 @@ class Shop:
                 page_width=SCREEN_WIDTH,
                 y_coord=10,
                 text_color=pyxel.COLOR_WHITE)
+        self.inventory_button.draw()
         self.finish_button.draw()
         for shelf in self.shelves:
             shelf.draw()
@@ -113,6 +122,7 @@ class App:
         self.screen = Screen.TITLE
         self.shop = None
         self.marker_options = marker.get_marker_keys()
+        self.player_inventory = []
 
         pyxel.run(self.update, self.draw)
 
@@ -144,6 +154,8 @@ class App:
         if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON):
             self.player_funding -= self.shop.make_purchase(self.player_funding)
         if self.shop.finish_button.is_clicked():
+            self.player_inventory += [shelf.marker_on_shelf for shelf in self.shop.shelves if shelf.is_sold]
+            self.shop = None
             self.screen = Screen.MAP
 
     def draw_title(self): #pylint: disable=no-self-use
@@ -160,6 +172,7 @@ class App:
 
     def draw_map(self):
         """Draws frames while the player is on the map screen"""
+        print(self.player_inventory)
         pyxel.cls(pyxel.COLOR_BLACK)
         pyxel.mouse(visible=False)
 

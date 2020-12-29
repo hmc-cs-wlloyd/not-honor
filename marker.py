@@ -19,7 +19,7 @@ class Marker: #pylint: disable=too-many-instance-attributes,too-few-public-metho
 markers = {
     "granite-monolith": Marker(
         name="Monolith (Granite)",
-        description="A 5 meter monolith carved from a single piece of granite. Highly durable",
+        description="A 5 meter monolith carved from a single piece of granite.\nHighly durable",
         base_cost=100000,
         visibility=1,
         understandability=.4,
@@ -30,8 +30,8 @@ markers = {
     ),
     "atomic-flower": Marker(
         name="Atomic Flowers",
-        description="Flowers with information on the dangers of the site encoded into their DNA. \
-        Self-propagating, but only effective against high-tech societies",
+        description="Flowers with information on the dangers of the site\nencoded into their DNA. \
+                Self-propagating, but only\neffective against high-tech societies",
         base_cost=500000,
         visibility=.1,
         understandability=.1,
@@ -42,8 +42,7 @@ markers = {
     ),
     "holy-shrine": Marker(
         name="Holy Shrine",
-        description="A shrine marking the site as holy ground. Effective upon cultures that\
-        respect yours",
+        description="A shrine marking the site as holy ground.\nEffective upon cultures that respect yours",
         base_cost=200000,
         visibility=1,
         understandability=.2,
@@ -54,8 +53,8 @@ markers = {
     ),
     "atomic-cult": Marker(
         name="Atomic Cult",
-        description="A highly organized priesthood dedicated to preserving the message that \
-        this site is dangerous. Vulnerable to religious turmoil",
+        description="A highly organized priesthood dedicated to preserving\nthe message that \
+                this site is dangerous.\nVulnerable to religious turmoil",
         base_cost=2000000,
         visibility=.7,
         understandability=.8,
@@ -66,8 +65,8 @@ markers = {
     ),
     "ray-cats": Marker(
         name="Ray Cats",
-        description="Cats genetically engineered to glow in the presence of radiation, \
-        accompanied by efforts to pass into the legend the message 'avoid places where the cats glow'",
+        description="Cats genetically engineered to glow in the presence\nof radiation, \
+                accompanied by efforts to pass into\nthe legend the message 'avoid places where the cats glow'",
         base_cost=1000000,
         visibility=.9,
         understandability=.4,
@@ -78,8 +77,8 @@ markers = {
     ),
     "buried-messages": Marker(
         name="Buried Messages",
-        description="Warning messages inscribed in ceramics, buried at various depths across the \
-        site. More effective upon cultures with industrial digging technology",
+        description="Warning messages inscribed in ceramics,\nburied at various depths across the \
+                site.\nMore effective upon cultures with industrial\ndigging technology",
         base_cost=100000,
         visibility=.1,
         understandability=.4,

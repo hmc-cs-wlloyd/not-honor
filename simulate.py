@@ -1,4 +1,5 @@
 import random
+import math
 from marker import markers
 
 def simulate(years, equipment_list):
@@ -7,11 +8,16 @@ def simulate(years, equipment_list):
 
     for i in range(int(years/200)):
         current_year = 2000+(200*(i+1))
-        usability, visibility, likability, respectability, \
-        understandability = get_stats(equipment_list, current_year)
+        print("Simulating to " + str(current_year))
         
-        print("Simulating to " + str(current_year) + " and stats are")
-        print(usability, visibility, likability, respectability,
+        sot = state_of_tech(current_year)
+        print("state of tech is " + str(sot))
+        
+        usability, visibility, respectability, likability, \
+        understandability = get_stats(equipment_list, current_year, sot)
+        
+        print("usability, visibility, respectability, likability, understandability:")
+        print(usability, visibility,respectability,  likability, 
               understandability)
         
         kop = knowledge_of_past(visibility, respectability, likability,
@@ -20,9 +26,6 @@ def simulate(years, equipment_list):
 
         vom = value_of_materials(current_year)
         print ("value of materials is " + str(vom))
-
-        sot = state_of_tech(current_year)
-        print("state of tech is " + str(sot))
 
         miners = miner_prob(kop, vom, 200)
         print("200 year probability of mining is " + str(miners))
@@ -149,33 +152,66 @@ def state_of_tech(current_year):
     return tech
 
 
-def get_stats(equipment_list, current_year):
-    """gives the 5 stats given your equipment and the year"""
+def get_stats(equipment_list, current_year,sot):
+    """gives the 5 stats given your equipment, year, and state of tech"""
     
     usability = 1
     visibility = 0
     likability = 0
     respectability = 0
     understandability = 0
-    
+
     for i in equipment_list:
-        usability += markers[i].usability
-        visibility += markers[i].visibility
-        understandability += markers[i].understandability
-        respectability += markers[i].respectability
-        likability += markers[i].likability
+        inits_list = [markers[i].usability_init, markers[i].visibility_init,
+                      markers[i].respectability_init, markers[i].likability_init,
+                      markers[i].understandability_init]
+        decays_list =[markers[i].usability_decay, markers[i].visibility_decay,
+                      markers[i].respectability_decay, markers[i].likability_decay,
+                      markers[i].understandability_decay]
+        values_list = []
+
+        for j in range(len(inits_list)):
+            init_val = inits_list[j][sot]
+
+            if decays_list[j] == "constant":
+                values_list.append(init_val)
+            elif decays_list[j] == "slow_lin_0":
+                values_list.append(-.0008*(current_year-2000) + init_val)
+            elif decays_list[j] == "lin_0":
+                values_list.append(-.002*(current_year-2000) + init_val)
+            elif decays_list[j] == "fast_lin_0":
+                values_list.append(-.005*(current_year-2000) + init_val)
+            elif decays_list[j] == "slow_lin_inc_8":
+                values_list.append(.0002*(current_year-2000) + init_val)
+            elif decays_list[j] == "slow_lin_inc_3":
+                values_list.append(.0003*(current_year-2000) + init_val)
+            elif decays_list[j] == "exp_0":
+                values_list.append(init_val*math.exp(-.001*(current_year-2000)))
+            elif decays_list[j] == "exp_neg_10":
+                values_list.append((init_val+10)*math.exp(-.001*(current_year-2000))-10)
+            elif decays_list[j] == "tech_curve":
+                if sot == 0:
+                    values_list.append((init_val+5)*math.exp(-.005*(current_year-2000))-5)
+                else:
+                    values_list.append(.0005*(current_year-2000) + init_val)
+        
+        usability += values_list[0]
+        visibility += values_list[1]
+        respectability += values_list[2]
+        likability += values_list[3]
+        understandability += values_list[4]
 
     #some stats are dependent on visibility
-    if visibility < 1:
+    if visibility < .1:
         respectability *= .1
         likability *= .1
         understandability *= .1
-    elif visibility <10:
+    elif visibility <1:
         respectability *= .8
         likability *= .8
         understandability *= .8
 
-    return usability, visibility, likability, respectability, understandability
+    return usability, visibility, respectability, likability,  understandability
 
 
 def miner_prob(knowledge_of_past, value_of_materials, years):

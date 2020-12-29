@@ -41,7 +41,7 @@ markers = {
     "atomic-flower": Marker(
         name="Atomic Flowers",
         description="Flowers with information on the dangers of the site\nencoded into their DNA. \
-                Self-propagating, but only\neffective against high-tech societies",
+Self-propagating, but only\neffective against high-tech societies",
         base_cost=500000,
         usability_init = (0,0,0),
         usability_decay = "constant",
@@ -58,7 +58,7 @@ markers = {
     "good-cult": Marker(
         name="High Quality Cult",
         description="A highly organized priesthood dedicated to preserving\nthe message that \
-                this site is dangerous.\nVulnerable to religious turmoil",
+this site is dangerous.\nVulnerable to religious turmoil",
         base_cost=2000000,
         usability_init = (0,0,0),
         usability_decay = "constant",
@@ -75,7 +75,7 @@ markers = {
     "ray-cats": Marker(
         name="Ray Cats",
         description="Cats genetically engineered to glow in the presence\nof radiation, \
-                accompanied by efforts to pass into\nthe legend the message 'avoid places where the cats glow'",
+accompanied by efforts to pass into\n legend the message 'avoid places where the cats glow'",
         base_cost=1000000,
         usability_init = (0,0,0),
         usability_decay = "constant",
@@ -92,7 +92,7 @@ markers = {
     "buried-messages": Marker(
         name="Buried Messages",
         description="Warning messages inscribed in ceramics,\nburied at various depths across the \
-                site.\nMore effective upon cultures with industrial\ndigging technology",
+site.\nMore effective upon cultures with industrial\ndigging technology",
         base_cost=100000,
         usability_init = (0,0,0),
         usability_decay = "constant",

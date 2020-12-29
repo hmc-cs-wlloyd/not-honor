@@ -11,6 +11,8 @@ SCREEN_HEIGHT = 256
 
 SHOP_COLUMNS = 2
 SHOP_ROWS = 3
+SHOP_TOP_OFFSET=20
+SHOP_BOTTOM_OFFSET=80
 
 class Screen(Enum):
     """An enum containing all possible screens in the game"""
@@ -48,6 +50,11 @@ class Shelf:
                 y_coord=self.y_coord+self.height-7,
                 text_color=7,
                 x_coord=self.x_coord)
+        if self.is_mouse_on_shelf():
+            pyxel.text(0,
+                    SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET,
+                    marker.markers[self.marker_on_shelf].description,
+                    pyxel.COLOR_WHITE)
         if self.is_sold:
             center_text(text="Sold",
                 page_width=self.width,
@@ -64,12 +71,12 @@ class Shop:
             for j in range(SHOP_COLUMNS):
                 if 2*i+j < len(marker_options):
                     self.shelves.append(Shelf(x_coord=SCREEN_WIDTH/SHOP_COLUMNS * j,
-                                            y_coord=20 + ((SCREEN_HEIGHT-100)/SHOP_ROWS)*i,
-                                            width=SCREEN_WIDTH/SHOP_COLUMNS,
-                                            height=(SCREEN_HEIGHT-100)/SHOP_ROWS,
-                                            marker_on_shelf=marker_options[2*i+j],
-                                            sticker_price=marker.markers[marker_options[2*i+j]].base_cost
-                                            ))
+                        y_coord=SHOP_TOP_OFFSET + ((SCREEN_HEIGHT-SHOP_TOP_OFFSET-SHOP_BOTTOM_OFFSET)/SHOP_ROWS)*i,
+                        width=SCREEN_WIDTH/SHOP_COLUMNS,
+                        height=(SCREEN_HEIGHT-SHOP_TOP_OFFSET-SHOP_BOTTOM_OFFSET)/SHOP_ROWS,
+                        marker_on_shelf=marker_options[2*i+j],
+                        sticker_price=marker.markers[marker_options[2*i+j]].base_cost
+                    ))
 
     def draw(self):
         """Draws the shop to the screen"""

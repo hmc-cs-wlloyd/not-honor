@@ -10,7 +10,7 @@ def simulate(years, equipment_list):
         usability, visibility, likability, respectability, \
         understandability = get_stats(equipment_list, current_year)
         
-        print("year is " + str(current_year) + " and stats are")
+        print("Simulating to " + str(current_year) + " and stats are")
         print(usability, visibility, likability, respectability,
               understandability)
         
@@ -29,7 +29,8 @@ def simulate(years, equipment_list):
         mine_die = random.random()
         if mine_die < miners:
             print("I rolled " + str(mine_die) +
-                  ", so mining did happen by year " + str(current_year))
+                  ", so mining did happen in year " +
+                  str(current_year - random.randint(1,199)))
             dead = True
             return dead
         else:
@@ -42,7 +43,8 @@ def simulate(years, equipment_list):
         arch_die = random.random()
         if arch_die < archaeologists:
             print("I rolled " + str(arch_die) +
-                  ", so archaeology did happen by year " + str(current_year))
+                  ", so archaeology did happen in year " +
+                  str(current_year - random.randint(1,199)))
             dead = True
             return dead
         else:
@@ -146,6 +148,7 @@ def state_of_tech(current_year):
             tech = 0
     return tech
 
+
 def get_stats(equipment_list, current_year):
     """gives the 5 stats given your equipment and the year"""
     
@@ -161,6 +164,16 @@ def get_stats(equipment_list, current_year):
         understandability += markers[i].understandability
         respectability += markers[i].respectability
         likability += markers[i].likability
+
+    #some stats are dependent on visibility
+    if visibility < 1:
+        respectability *= .1
+        likability *= .1
+        understandability *= .1
+    elif visibility <10:
+        respectability *= .8
+        likability *= .8
+        understandability *= .8
 
     return usability, visibility, likability, respectability, understandability
 

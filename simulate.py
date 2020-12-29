@@ -1,13 +1,14 @@
 import random
+from marker import markers
 
-def simulate(years, equipment_totals):
+def simulate(years, equipment_list):
             
     dead = False
 
     for i in range(int(years/200)):
         current_year = 2000+(200*(i+1))
         usability, visibility, likability, respectability, \
-        understandability = get_stats(current_year, equipment_totals)
+        understandability = get_stats(equipment_list, current_year)
         
         print("year is " + str(current_year) + " and stats are")
         print(usability, visibility, likability, respectability,
@@ -47,24 +48,43 @@ def simulate(years, equipment_totals):
         else:
             print("I rolled " + str(arch_die) +
                   ", so no archaeology happened by year " + str(current_year))
-            
-        if current_year > 5000:
-            aliens = alien_prob(sot, current_year)
-            print("200 year prob of aliens is " + str(aliens))
-            alien_die = random.random()
-            if alien_die < aliens:
-                print("I rolled " + str(alien_die) +
-                 ", so aliens attacked by year " + str(current_year))
-                dead = True
-                return dead
-            else:
-                print("I rolled " + str(alien_die) +
-                 ", so no aliens happened by year " + str(current_year))
-                                
+
+        event, event_year = get_random_event(current_year, sot)
+        if event != "":
+             print ("In the year " + str(event_year) + ", " + str(event) +
+                    " happened!")
+             print()
+        else:
+            print("Nothing interesting happened")
+            print()
 
     return dead
         
-        
+def get_random_event(current_year, sot):
+
+    event = ""
+    #generate a year for the thing to have happened i 
+    event_year = current_year - random.randint(0,199)
+    
+    
+    die = random.random()
+
+    if current_year > 5000 and sot == 2:
+        if die < .05:
+            event = "aliens"
+
+    elif current_year > 2400:
+        if die < .1:
+            event = "culture_shift"
+
+    elif current_year > 2600 and sot == 0:
+        if die < .1:
+            event = "vikings"
+
+    elif die < .2:
+        event = "earthquake"
+    
+    return event, event_year
         
 def knowledge_of_past(visibility, respectability, likability,
                       understandability):
@@ -126,13 +146,22 @@ def state_of_tech(current_year):
             tech = 0
     return tech
 
-def get_stats(equipment_totals, current_year):
-    #PLACEHOLDER
-    usability = random.random()
-    visibility = random.random()
-    likability = random.random()
-    respectability = random.random()
-    understandability = random.random()
+def get_stats(equipment_list, current_year):
+    """gives the 5 stats given your equipment and the year"""
+    
+    usability = 1
+    visibility = 0
+    likability = 0
+    respectability = 0
+    understandability = 0
+    
+    for i in equipment_list:
+        usability += markers[i].usability
+        visibility += markers[i].visibility
+        understandability += markers[i].understandability
+        respectability += markers[i].respectability
+        likability += markers[i].likability
+
     return usability, visibility, likability, respectability, understandability
 
 
@@ -173,7 +202,7 @@ def miner_prob(knowledge_of_past, value_of_materials, years):
     else:
         knowledge_multiplier = 1
     
-    bhr = .05 #magic! was 83 in source, but then you always lose
+    bhr = .1 #magic! was 83 in source, but then you always lose
 
     #drill rate is the avg # of bores per sq m per 1000 yrs
     drill_rate = bhr * value_multiplier * knowledge_multiplier
@@ -220,13 +249,4 @@ def arch_prob(knowledge_of_past, start_year):
             
     return prob
 
-def alien_prob(state_of_tech, start_year):
-    """gives total probability of destructive alien contact over 200 years,
-    given start year"""
-    if state_of_tech == 2:
-        prob = .05
-    elif state_of_tech == 1:
-        prob = .01
-    else:
-        prob = 0
-    return prob
+

@@ -30,7 +30,8 @@ markers = {
     ),
     "atomic-flower": Marker(
         name="Atomic Flowers",
-        description="Flowers with information on the dangers of the site\nencoded into their DNA. Self-propagating, but only\neffective against high-tech societies",
+        description="Flowers with information on the dangers of the site\nencoded into their DNA. \
+                Self-propagating, but only\neffective against high-tech societies",
         base_cost=500000,
         visibility=.1,
         understandability=.1,
@@ -52,7 +53,8 @@ markers = {
     ),
     "atomic-cult": Marker(
         name="Atomic Cult",
-        description="A highly organized priesthood dedicated to preserving\nthe message that this site is dangerous.\nVulnerable to religious turmoil",
+        description="A highly organized priesthood dedicated to preserving\nthe message that \
+                this site is dangerous.\nVulnerable to religious turmoil",
         base_cost=2000000,
         visibility=.7,
         understandability=.8,
@@ -63,7 +65,8 @@ markers = {
     ),
     "ray-cats": Marker(
         name="Ray Cats",
-        description="Cats genetically engineered to glow in the presence\nof radiation, accompanied by efforts to pass into\nthe legend the message 'avoid places where the cats glow'",
+        description="Cats genetically engineered to glow in the presence\nof radiation, \
+                accompanied by efforts to pass into\nthe legend the message 'avoid places where the cats glow'",
         base_cost=1000000,
         visibility=.9,
         understandability=.4,
@@ -74,7 +77,8 @@ markers = {
     ),
     "buried-messages": Marker(
         name="Buried Messages",
-        description="Warning messages inscribed in ceramics,\nburied at various depths across the site.\nMore effective upon cultures with industrial\ndigging technology",
+        description="Warning messages inscribed in ceramics,\nburied at various depths across the \
+                site.\nMore effective upon cultures with industrial\ndigging technology",
         base_cost=100000,
         visibility=.1,
         understandability=.4,

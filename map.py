@@ -7,7 +7,7 @@ from const import SCREEN_WIDTH, SCREEN_HEIGHT, ICON_WIDTH, ICON_HEIGHT
 from util import center_text
 
 MAP_BOTTOM_OFFSET=20
-MAP_INVENTORY_BOTTOM_MARGIN = 16*3
+MAP_INVENTORY_BOTTOM_MARGIN = 8 + ICON_HEIGHT*3
 
 class Map:
     """A class representing the map of the waste site, including the placement of markers"""
@@ -65,6 +65,15 @@ class Map:
             button_color=pyxel.COLOR_GRAY
         )
 
+        self.back_button = button.Button(
+            x_coord=5,
+            y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET,
+            width=30,
+            height=9*MAP_BOTTOM_OFFSET/10,
+            text="Back",
+            button_color=pyxel.COLOR_GRAY
+        )
+
     def update(self, player):
         """Updates the map state"""
         if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON): #get the selected square
@@ -100,6 +109,7 @@ class Map:
     def draw(self, player):
         """Draws map to the screen"""
         self.results_button.draw()
+        self.back_button.draw()
 
         for row in range(12): #draw the terrain
             for col in range(16):

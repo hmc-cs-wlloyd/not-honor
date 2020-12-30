@@ -63,17 +63,18 @@ class App: #pylint: disable=too-many-instance-attributes
         if self.shop is None:
             self.shop = Shop(self.marker_options, self.player.inventory)
         if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON):
-            self.player.add_funding(-1*self.shop.make_purchase(self.player.funding))
+            self.shop.make_purchase(self.player)
         if self.shop.finish_button.is_clicked():
-            self.player.add_inventory([shelf.marker_on_shelf for shelf in self.shop.shelves if shelf.is_sold])
-            self.shop = None
             self.screen = Screen.MAP
 
     def update_map(self):
         """Handles updates while the player is on the map screen"""
         self.map.update(self.player)
         if self.map.results_button.is_clicked():
+            self.shop = None # Reset the shop
             self.screen = Screen.RESULTS
+        if self.map.back_button.is_clicked():
+            self.screen = Screen.SHOP
 
 
     def update_results(self):

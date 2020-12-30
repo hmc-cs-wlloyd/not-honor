@@ -112,13 +112,15 @@ class Shop:
             shelf.draw()
 
 
-    def make_purchase(self, available_funds):
+    def make_purchase(self, player):
         """Purchases for the player whatever is currently under their mouse"""
         for shelf in self.shelves:
-            if (not shelf.is_sold) and available_funds >= shelf.sticker_price and shelf.is_mouse_on_shelf():
+            if (not shelf.is_sold) and player.funding >= shelf.sticker_price and shelf.is_mouse_on_shelf():
                 shelf.is_sold = True
                 pyxel.play(0,5,loop=False)
+                player.add_funding(-1*shelf.sticker_price)
+                player.add_inventory([shelf.marker_on_shelf])
                 return shelf.sticker_price
-            if (shelf.is_sold or available_funds<shelf.sticker_price) and shelf.is_mouse_on_shelf():
+            if (shelf.is_sold or player.funding<shelf.sticker_price) and shelf.is_mouse_on_shelf():
                 pyxel.play(0,4,loop=False)
         return 0

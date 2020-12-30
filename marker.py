@@ -368,6 +368,23 @@ the site will be safe.\nCould be used to calculate age",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
         tags=[]
+    ), 
+    "temp-terrain": Marker(
+        name="Temp Terrain", 
+        description="A giant void in the ground. Don't fall in!",
+        icon_coords=(8,232),
+        base_cost=10000,
+        usability_init = (-10,-7,-7),
+        usability_decay = "constant",
+        visibility_init = (10,10,10),
+        visibility_decay = "slow_lin_0",
+        respectability_init = (6,6,6),
+        respectability_decay = "constant",
+        likability_init = (-6,-6,-6),
+        likability_decay = "constant",
+        understandability_init = (0,0,0),
+        understandability_decay = "constant",
+        tags=[]
     )
 }
 

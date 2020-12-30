@@ -179,18 +179,18 @@ class App: #pylint: disable=too-many-instance-attributes
         self.clickedInven = None
 
         self.map = [
-        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
-        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
-        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
-        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
-        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
-        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
-        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
-        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
-        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
-        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
-        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
-        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"]
+        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain"], 
+        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain"],
+        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain"],
+        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain"],
+        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain"],
+        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain"],
+        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain"],
+        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain"],
+        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain"],
+        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain"],
+        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain"],
+        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain"]
         ]
 
         self.results_button = button.Button(

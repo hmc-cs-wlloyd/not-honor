@@ -33,4 +33,3 @@ class Button: #pylint: disable=too-many-instance-attributes
         text_width = len(self.text) * pyxel.FONT_WIDTH
         pyxel.text(self.x_coord + (self.width - text_width)/2, self.y_coord + (self.height - pyxel.FONT_HEIGHT)/2,
             self.text, self.text_color)
-        

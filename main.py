@@ -6,6 +6,7 @@ from random import shuffle
 import pyxel
 import marker
 import button
+import simulate
 
 SCREEN_WIDTH = 256
 SCREEN_HEIGHT = 256
@@ -15,11 +16,14 @@ SHOP_ROWS = 3
 SHOP_TOP_OFFSET=20
 SHOP_BOTTOM_OFFSET=80
 
+YEARS_IN_PHASE=400
+YEARS_TO_WIN=10000
+
 class Screen(Enum):
     """An enum containing all possible screens in the game"""
     TITLE = "title"
     SHOP = "shop"
-    MAP = "map"
+    SIMULATION = "simulation"
 
 @dataclass
 class Shelf:
@@ -65,7 +69,7 @@ class Shelf:
 
 class Shop:
     """A class representing an instance of the shop. Consists of a list of shelves with markers for sale on them"""
-    def __init__(self, marker_options):
+    def __init__(self, marker_options, player_inventory):
         self.shelves = []
         self.finish_button = button.Button(
             x_coord=SCREEN_WIDTH - 35,
@@ -83,16 +87,17 @@ class Shop:
             text="Inventory",
             button_color=pyxel.COLOR_GRAY
         )
-        shuffle(marker_options)
+        available_marker_options = [marker for marker in marker_options if marker not in player_inventory]
+        shuffle(available_marker_options)
         for i in range(SHOP_ROWS):
             for j in range(SHOP_COLUMNS):
-                if 2*i+j < len(marker_options):
-                    self.shelves.append(Shelf(x_coord=SCREEN_WIDTH/SHOP_COLUMNS * j,
-                        y_coord=SHOP_TOP_OFFSET + ((SCREEN_HEIGHT-SHOP_TOP_OFFSET-SHOP_BOTTOM_OFFSET)/SHOP_ROWS)*i,
-                        width=SCREEN_WIDTH/SHOP_COLUMNS,
-                        height=(SCREEN_HEIGHT-SHOP_TOP_OFFSET-SHOP_BOTTOM_OFFSET)/SHOP_ROWS,
-                        marker_on_shelf=marker_options[2*i+j],
-                        sticker_price=marker.markers[marker_options[2*i+j]].base_cost
+                if 2*i+j < len(available_marker_options):
+                    self.shelves.append(Shelf(x_coord=SCREEN_WIDTH//SHOP_COLUMNS * j,
+                        y_coord=SHOP_TOP_OFFSET + ((SCREEN_HEIGHT-SHOP_TOP_OFFSET-SHOP_BOTTOM_OFFSET)//SHOP_ROWS)*i,
+                        width=SCREEN_WIDTH//SHOP_COLUMNS,
+                        height=(SCREEN_HEIGHT-SHOP_TOP_OFFSET-SHOP_BOTTOM_OFFSET)//SHOP_ROWS,
+                        marker_on_shelf=available_marker_options[2*i+j],
+                        sticker_price=marker.markers[available_marker_options[2*i+j]].base_cost
                     ))
 
     def draw(self, player_funding):
@@ -114,17 +119,27 @@ class Shop:
                 return shelf.sticker_price
         return 0
 
-class App:
+class App: #pylint: disable=too-many-instance-attributes
     """Class to run the game itself"""
     def __init__(self):
         pyxel.init(SCREEN_WIDTH, SCREEN_HEIGHT, caption="Not a Place of Honor")
-        self.player_funding = 1000000
+        self.player_funding = 100000
         self.screen = Screen.TITLE
         self.shop = None
         self.marker_options = marker.get_marker_keys()
         self.player_inventory = []
+        self.phase = 1
+        self.simulations_run = 0
+        self.latest_simulation_failed = False
 
         pyxel.run(self.update, self.draw)
+
+    def reset_game(self):
+        self.player_funding = 100000
+        self.player_inventory = []
+        self.phase = 1
+        self.simulations_run = 0
+        self.latest_simulation_failed = False
 
     def update(self):
         """Updates game data each frame"""
@@ -132,6 +147,8 @@ class App:
             self.update_title()
         if self.screen == Screen.SHOP:
             self.update_shop()
+        if self.screen == Screen.SIMULATION:
+            self.update_simulation()
 
     def draw(self):
         """Draws frame each frame"""
@@ -139,7 +156,7 @@ class App:
             self.draw_title()
         elif self.screen == Screen.SHOP:
             self.draw_shop()
-        elif self.screen == Screen.MAP:
+        elif self.screen == Screen.SIMULATION:
             self.draw_map()
 
     def update_title(self):
@@ -150,16 +167,32 @@ class App:
     def update_shop(self):
         """Handles updates while the player is on the shop screen"""
         if self.shop is None:
-            self.shop = Shop(self.marker_options)
+            self.shop = Shop(self.marker_options, self.player_inventory)
         if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON):
             self.player_funding -= self.shop.make_purchase(self.player_funding)
         if self.shop.finish_button.is_clicked():
             self.player_inventory += [shelf.marker_on_shelf for shelf in self.shop.shelves if shelf.is_sold]
             self.shop = None
-            self.screen = Screen.MAP
+            self.screen = Screen.SIMULATION
+
+    def update_simulation(self):
+        """Handles updates while the players is on the simulation screen"""
+        if self.simulations_run < self.phase:
+            self.latest_simulation_failed = simulate.simulate(self.phase*YEARS_IN_PHASE, self.player_inventory)
+            self.simulations_run += 1
+        if pyxel.btnp(pyxel.KEY_ENTER):
+            if self.latest_simulation_failed or self.phase == YEARS_TO_WIN//YEARS_IN_PHASE:
+                self.reset_game()
+                self.screen = Screen.TITLE
+            else:
+                self.phase += 1
+                self.player_funding += 100000
+                self.screen = Screen.SHOP
+
 
     def draw_title(self): #pylint: disable=no-self-use
         """Draws frames while the player is on the title screen"""
+        pyxel.cls(pyxel.COLOR_BLACK)
         center_text("Not a Place of Honor", page_width=SCREEN_WIDTH, y_coord=66, text_color=pyxel.COLOR_WHITE)
         center_text("- PRESS ENTER TO START -", page_width=SCREEN_WIDTH, y_coord=126, text_color=pyxel.COLOR_WHITE)
 
@@ -168,13 +201,34 @@ class App:
         pyxel.cls(pyxel.COLOR_BLACK)
         pyxel.mouse(visible=True)
 
-        self.shop.draw(self.player_funding)
+        if self.shop is not None:
+            self.shop.draw(self.player_funding)
 
     def draw_map(self):
         """Draws frames while the player is on the map screen"""
-        print(self.player_inventory)
         pyxel.cls(pyxel.COLOR_BLACK)
         pyxel.mouse(visible=False)
+        if self.simulations_run < self.phase:
+            center_text("Simulating...", SCREEN_WIDTH, SCREEN_HEIGHT//2, pyxel.COLOR_WHITE)
+        elif self.latest_simulation_failed:
+            center_text("Waste Repository Breached. Game Over.", SCREEN_WIDTH, SCREEN_HEIGHT//2, pyxel.COLOR_WHITE)
+            center_text("- PRESS ENTER TO CONTINUE -", page_width=SCREEN_WIDTH, y_coord=3*SCREEN_HEIGHT//4,
+                        text_color=pyxel.COLOR_WHITE)
+        else:
+            if self.phase == YEARS_TO_WIN//YEARS_IN_PHASE:
+                center_text("YOU WIN!", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+                center_text("Your facility went 10,000 years undisturbed", SCREEN_WIDTH,
+                            SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+                center_text("- PRESS ENTER TO CONTINUE -", page_width=SCREEN_WIDTH, y_coord=3*SCREEN_HEIGHT//4,
+                            text_color=pyxel.COLOR_WHITE)
+            else:
+                center_text("Your facility went " + str(self.phase*YEARS_IN_PHASE) + " years undisturbed",
+                            SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+                center_text("You are awarded a larger budget to try and last " + \
+                            str((self.phase+1)*YEARS_IN_PHASE) + " years",
+                            SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+                center_text("- PRESS ENTER TO CONTINUE -", page_width=SCREEN_WIDTH, y_coord=3*SCREEN_HEIGHT//4,
+                            text_color=pyxel.COLOR_WHITE)
 
 def center_text(text, page_width, y_coord, text_color, x_coord=0, char_width=pyxel.FONT_WIDTH): #pylint: disable=too-many-arguments
     """Helper function for calcuating the start x value for centered text."""

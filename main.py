@@ -18,6 +18,7 @@ SHOP_COLUMNS = 2
 SHOP_ROWS = 3
 SHOP_TOP_OFFSET=20
 SHOP_BOTTOM_OFFSET=80
+MAP_INVENTORY_BOTTOM_MARGIN = 16*3
 
 YEARS_IN_PHASE=400
 YEARS_TO_WIN=10000
@@ -27,6 +28,7 @@ class Screen(Enum):
     TITLE = "title"
     SHOP = "shop"
     SIMULATION = "simulation"
+    RESULTS = "results"
 
 @dataclass
 class Shelf:
@@ -171,6 +173,34 @@ class App: #pylint: disable=too-many-instance-attributes
         self.simulations_run = 0
         self.latest_simulation_failed = False
         self.player = Player()
+        self.selectedCol = None
+        self.selectedRow = None
+        self.selected_inventory_item = None
+        self.clickedInven = None
+
+        self.map = [
+        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
+        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
+        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
+        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
+        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
+        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
+        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
+        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
+        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
+        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
+        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"], 
+        ["star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map", "star-map"]
+        ]
+
+        self.results_button = button.Button(
+            x_coord=SCREEN_WIDTH - 35,
+            y_coord=SCREEN_HEIGHT - SHOP_TOP_OFFSET,
+            width=30,
+            height=9*SHOP_TOP_OFFSET/10,
+            text="Results",
+            button_color=pyxel.COLOR_GRAY
+        )
 
         pyxel.load("justmessingaround.pyxres")
         pyxel.run(self.update, self.draw)
@@ -188,7 +218,7 @@ class App: #pylint: disable=too-many-instance-attributes
             self.update_title()
         if self.screen == Screen.SHOP:
             self.update_shop()
-        if self.screen == Screen.SIMULATION:
+        if self.screen == Screen.SIMULATION or Screen.RESULTS:
             self.update_simulation()
 
     def draw(self):
@@ -199,6 +229,8 @@ class App: #pylint: disable=too-many-instance-attributes
             self.draw_shop()
         elif self.screen == Screen.SIMULATION:
             self.draw_map()
+        elif self.screen == Screen.RESULTS:
+            self.draw_results()
 
     def update_title(self):
         """Handles updates while the player is on the title screen"""
@@ -231,7 +263,8 @@ class App: #pylint: disable=too-many-instance-attributes
                 self.phase += 1
                 self.player.add_funding(100000)
                 self.screen = Screen.SHOP
-
+        if self.results_button.is_clicked():
+            self.screen = Screen.RESULTS
 
     def draw_title(self): #pylint: disable=no-self-use
         """Draws frames while the player is on the title screen"""
@@ -250,6 +283,52 @@ class App: #pylint: disable=too-many-instance-attributes
     def draw_map(self):
         """Draws frames while the player is on the map screen"""
         pyxel.cls(pyxel.COLOR_BLACK)
+
+        self.results_button.draw()
+
+        for row in range(12): #draw the terrain
+            for col in range(16):
+                pyxel.blt(col*16, row*16, 0, marker.markers[self.map[row][col]].icon_coords[0], marker.markers[self.map[row][col]].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
+
+        inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN
+        center_text("Inventory", #draw the inventory
+                page_width=SCREEN_WIDTH,
+                y_coord=inventory_y_coord,
+                text_color=pyxel.COLOR_WHITE)
+        self.player.draw_inventory(0, inventory_y_coord, SCREEN_WIDTH, ICON_HEIGHT) #BAD ASSUMPTION THAT INVENTORY IS ONLY 1 ROW 
+
+        if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON): #get the selected square
+            self.selectedCol = int(pyxel.mouse_x/16)
+            self.selectedRow = int(pyxel.mouse_y/16)
+            if self.selected_inventory_item is None:
+                if pyxel.mouse_y > inventory_y_coord + 16: #player in inventory
+                    for i in range(len(self.player.inventory)): #BAD ASSUMPTION THAT INVENTORY IS ONLY 1 ROW 
+                        if pyxel.mouse_x >= i*16 and pyxel.mouse_x < (i*16)+16:
+                            self.selected_inventory_item = self.player.inventory[i]
+                            self.player.inventory.remove(self.selected_inventory_item)
+                            print("SELECTED " + str(self.selected_inventory_item))
+                            self.clickedInven = True
+            else: #holding a defense
+                if pyxel.mouse_y < inventory_y_coord: #player in map
+                    self.clickedInven = False
+
+        if self.selected_inventory_item is not None: #selected defense follows mouse
+            selected_item_icon_x = marker.markers[self.selected_inventory_item].icon_coords[0]
+            selected_item_icon_y = marker.markers[self.selected_inventory_item].icon_coords[1]
+            pyxel.blt(pyxel.mouse_x, pyxel.mouse_y, 0, selected_item_icon_x, selected_item_icon_y, ICON_WIDTH, ICON_HEIGHT)
+
+        if self.selectedCol is not None and self.selectedRow is not None: #on square selection...
+            if self.clickedInven is False: #place defense if possible on map
+                if self.selected_inventory_item not in self.player.inventory and self.selected_inventory_item is not None: 
+                    pyxel.blt(self.selectedCol*16, self.selectedRow*16, 0, selected_item_icon_x, selected_item_icon_y, ICON_WIDTH, ICON_HEIGHT)
+                    self.map[self.selectedRow][self.selectedCol] = self.selected_inventory_item #update self.map
+
+                    self.clickedInven = None
+                    self.selected_inventory_item = None
+    
+    def draw_results(self):
+        pyxel.cls(pyxel.COLOR_BLACK)
+
         pyxel.mouse(visible=False)
         if self.simulations_run < self.phase:
             center_text("Simulating...", SCREEN_WIDTH, SCREEN_HEIGHT//2, pyxel.COLOR_WHITE)
@@ -272,6 +351,7 @@ class App: #pylint: disable=too-many-instance-attributes
                             SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
                 center_text("- PRESS ENTER TO CONTINUE -", page_width=SCREEN_WIDTH, y_coord=3*SCREEN_HEIGHT//4,
                             text_color=pyxel.COLOR_WHITE)
+
 
 def center_text(text, page_width, y_coord, text_color, x_coord=0, char_width=pyxel.FONT_WIDTH): #pylint: disable=too-many-arguments
     """Helper function for calcuating the start x value for centered text."""

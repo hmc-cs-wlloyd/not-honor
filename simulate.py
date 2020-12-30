@@ -355,7 +355,7 @@ def dam_prob(knowledge_of_past, usability, start_year):
         else:
             prob = .01
     else:
-        if usabiltiy > 1:
+        if usability > 1:
             prob = .05
         elif usability > 0:
             prob = .04

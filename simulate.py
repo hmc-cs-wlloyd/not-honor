@@ -59,7 +59,7 @@ def simulate(years, equipment_list):
             print("I rolled " + str(arch_die) +
                   ", so no archaeology happened by year " + str(current_year))
 
-        dams = dam_prob(kop, sot, current_year-200)
+        dams = dam_prob(kop, usability, current_year-200)
         print("200 year probability of dam builders is " +
               str(dams))
         dam_die = random.random()
@@ -74,6 +74,22 @@ def simulate(years, equipment_list):
         else:
             print("I rolled " + str(dam_die) +
                   ", so no dam building happened by year " + str(current_year))
+
+        teens = teen_prob(visibility, respectability)
+        print("200 year probability of teens is " +
+              str(teens))
+        teen_die = random.random()
+        if teen_die < teens:
+            teen_year = current_year - random.randint(1,199)
+            print("I rolled " + str(teen_die) +
+                  ", so teens did happen in year " +
+                  str(teen_year))
+            dead = True
+            out_strings.append("Year " + str(dam_year) + ": teens breached the site!")
+            return dead, out_strings
+        else:
+            print("I rolled " + str(teen_die) +
+                  ", so no teens happened by year " + str(current_year))
 
         event, event_year = get_random_event(current_year, sot)
         if event != "":
@@ -320,31 +336,42 @@ def arch_prob(knowledge_of_past, start_year):
             
     return prob
 
-def dam_prob(knowledge_of_past, state_of_tech, start_year):
+def dam_prob(knowledge_of_past, usability, start_year):
     """gives total prob of at least one dam construction over 200 years"""
     if knowledge_of_past == 3:
         prob = 0
     elif start_year < 2300:
-        if state_of_tech == 2:
+        if usability > 1:
             prob = .02
-        elif state_of_tech == 1:
+        elif usability > 0:
             prob = .01
         else:
             prob= .005
     elif start_year < 5000:
-        if state_of_tech == 2:
+        if usability > 1:
             prob = .03
-        elif state_of_tech == 1:
+        elif usability > 0:
             prob = .02
         else:
             prob = .01
     else:
-        if state_of_tech == 2:
+        if usabiltiy > 1:
             prob = .05
-        elif state_of_tech == 1:
+        elif usability > 0:
             prob = .04
         else:
             prob = .03
     return prob
 
 
+def teen_prob(visibility, respectability):
+    """gives total prob of random teen violence breaching the site"""
+    if visibility < 3 or respectability > 8:
+        prob = 0
+    elif respectability > 6:
+        prob = .001
+    elif respectability > 3:
+        prob = .01
+    else:
+        prob = .03
+    return prob

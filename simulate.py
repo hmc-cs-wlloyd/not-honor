@@ -59,6 +59,22 @@ def simulate(years, equipment_list):
             print("I rolled " + str(arch_die) +
                   ", so no archaeology happened by year " + str(current_year))
 
+        dams = dam_prob(kop, sot, current_year-200)
+        print("200 year probability of dam builders is " +
+              str(dams))
+        dam_die = random.random()
+        if dam_die < dams:
+            dam_year = current_year - random.randint(1,199)
+            print("I rolled " + str(dam_die) +
+                  ", so dam bulidng did happen in year " +
+                  str(dam_year))
+            dead = True
+            out_strings.append("Year " + str(dam_year) + ": dam builders breached the site!")
+            return dead, out_strings
+        else:
+            print("I rolled " + str(dam_die) +
+                  ", so no dam building happened by year " + str(current_year))
+
         event, event_year = get_random_event(current_year, sot)
         if event != "":
              print ("In the year " + str(event_year) + ", " + str(event) +
@@ -105,11 +121,11 @@ def knowledge_of_past(visibility, respectability, likability,
     #this is a deterministic calculation - no dice!
     
     kop = 0
-    if understandability > .9:
+    if understandability > 5:
         kop = 3
-    elif visibility > .8:
+    elif visibility > 4:
         kop = 2
-    elif likability > .7 or respectability > .7:
+    elif likability > 3 or respectability > 3:
         kop = 1
     #else 0
     return kop
@@ -257,7 +273,7 @@ def miner_prob(knowledge_of_past, value_of_materials, years):
     else:
         knowledge_multiplier = 1
     
-    bhr = .1 #magic! was 83 in source, but then you always lose
+    bhr = .05 #magic! was 83 in source, but then you always lose
 
     #drill rate is the avg # of bores per sq m per 1000 yrs
     drill_rate = bhr * value_multiplier * knowledge_multiplier
@@ -291,9 +307,9 @@ def arch_prob(knowledge_of_past, start_year):
         if start_year < 2300:
             prob = .05
         elif start_year < 5000:
-            prob = .1
-        else:
             prob = .2
+        else:
+            prob = .3
     else:
         if start_year < 2300:
             prob = .01
@@ -302,6 +318,33 @@ def arch_prob(knowledge_of_past, start_year):
         else:
             prob = .01
             
+    return prob
+
+def dam_prob(knowledge_of_past, state_of_tech, start_year):
+    """gives total prob of at least one dam construction over 200 years"""
+    if knowledge_of_past == 3:
+        prob = 0
+    elif start_year < 2300:
+        if state_of_tech == 2:
+            prob = .02
+        elif state_of_tech == 1:
+            prob = .01
+        else:
+            prob= .005
+    elif start_year < 5000:
+        if state_of_tech == 2:
+            prob = .03
+        elif state_of_tech == 1:
+            prob = .02
+        else:
+            prob = .01
+    else:
+        if state_of_tech == 2:
+            prob = .05
+        elif state_of_tech == 1:
+            prob = .04
+        else:
+            prob = .03
     return prob
 
 

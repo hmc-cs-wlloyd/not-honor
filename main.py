@@ -100,7 +100,8 @@ class Shop:
             text="Inventory",
             button_color=pyxel.COLOR_GRAY
         )
-        available_marker_options = [marker for marker in marker_options if marker not in player_inventory]
+        purchasable_marker_options = [marker_option for marker_option in marker_options if marker.NOT_PURCHASABLE not in marker.markers[marker_option].tags]
+        available_marker_options = [marker_option for marker_option in purchasable_marker_options if marker_option not in player_inventory]
         shuffle(available_marker_options)
         for i in range(SHOP_ROWS):
             for j in range(SHOP_COLUMNS):

@@ -3,6 +3,8 @@ isolation site, and defines the various markers available in the game"""
 
 from dataclasses import dataclass
 
+NOT_PURCHASABLE = "non-purchasable"
+
 @dataclass
 class Marker: #pylint: disable=too-many-instance-attributes,too-few-public-methods
     """A data-only class representing a marker effecting the waste isolation site"""
@@ -368,23 +370,23 @@ the site will be safe.\nCould be used to calculate age",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
         tags=[]
-    ), 
+    ),
     "temp-terrain": Marker(
-        name="Temp Terrain", 
-        description="A giant void in the ground. Don't fall in!",
+        name="Temp Terrain",
+        description="The naturally occurring ground",
         icon_coords=(8,232),
-        base_cost=10000,
-        usability_init = (-10,-7,-7),
+        base_cost=0,
+        usability_init = (0,0,0),
         usability_decay = "constant",
-        visibility_init = (10,10,10),
+        visibility_init = (0,0,0),
         visibility_decay = "slow_lin_0",
-        respectability_init = (6,6,6),
+        respectability_init = (0,0,0),
         respectability_decay = "constant",
-        likability_init = (-6,-6,-6),
+        likability_init = (0,0,0),
         likability_decay = "constant",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
-        tags=[]
+        tags=["non-purchasable"]
     )
 }
 

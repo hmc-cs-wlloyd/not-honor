@@ -8,7 +8,7 @@ LOW_TECH = 0
 MEDIUM_TECH = 1
 HIGH_TECH = 2
 
-def simulate(years, equipment_list): #pylint: disable=too-many-locals,too-many-statements
+def simulate(years, site_map): #pylint: disable=too-many-locals,too-many-statements
     """Runs the simulation"""
 
     dead = False
@@ -22,7 +22,7 @@ def simulate(years, equipment_list): #pylint: disable=too-many-locals,too-many-s
         print("state of tech is " + str(sot))
 
         usability, visibility, respectability, likability, \
-        understandability = get_stats(equipment_list, current_year, sot)
+        understandability = get_stats(site_map, current_year, sot)
 
         print("usability, visibility, respectability, likability, understandability:")
         print(usability, visibility,respectability,  likability,
@@ -207,7 +207,7 @@ def state_of_tech(current_year):
     return tech
 
 
-def get_stats(equipment_list, current_year,sot): #pylint: disable=too-many-branches
+def get_stats(site_map, current_year,sot): #pylint: disable=too-many-branches
     """gives the 5 stats given your equipment, year, and state of tech"""
 
     usability = 1
@@ -216,45 +216,46 @@ def get_stats(equipment_list, current_year,sot): #pylint: disable=too-many-branc
     respectability = 0
     understandability = 0
 
-    for i in equipment_list:
-        inits_list = [markers[i].usability_init, markers[i].visibility_init,
-                      markers[i].respectability_init, markers[i].likability_init,
-                      markers[i].understandability_init]
-        decays_list =[markers[i].usability_decay, markers[i].visibility_decay,
-                      markers[i].respectability_decay, markers[i].likability_decay,
-                      markers[i].understandability_decay]
-        values_list = []
+    for row in site_map:
+        for entry in row:
+            inits_list = [markers[entry].usability_init, markers[entry].visibility_init,
+                          markers[entry].respectability_init, markers[entry].likability_init,
+                          markers[entry].understandability_init]
+            decays_list =[markers[entry].usability_decay, markers[entry].visibility_decay,
+                          markers[entry].respectability_decay, markers[entry].likability_decay,
+                          markers[entry].understandability_decay]
+            values_list = []
 
-        for j in range(len(inits_list)): #pylint: disable=consider-using-enumerate
-            init_val = inits_list[j][sot]
+            for j in range(len(inits_list)): #pylint: disable=consider-using-enumerate
+                init_val = inits_list[j][sot]
 
-            if decays_list[j] == "constant":
-                values_list.append(init_val)
-            elif decays_list[j] == "slow_lin_0":
-                values_list.append(-.0008*(current_year-2000) + init_val)
-            elif decays_list[j] == "lin_0":
-                values_list.append(-.002*(current_year-2000) + init_val)
-            elif decays_list[j] == "fast_lin_0":
-                values_list.append(-.005*(current_year-2000) + init_val)
-            elif decays_list[j] == "slow_lin_inc_8":
-                values_list.append(.0002*(current_year-2000) + init_val)
-            elif decays_list[j] == "slow_lin_inc_3":
-                values_list.append(.0003*(current_year-2000) + init_val)
-            elif decays_list[j] == "exp_0":
-                values_list.append(init_val*math.exp(-.001*(current_year-2000)))
-            elif decays_list[j] == "exp_neg_10":
-                values_list.append((init_val+10)*math.exp(-.001*(current_year-2000))-10)
-            elif decays_list[j] == "tech_curve":
-                if sot == 0:
-                    values_list.append((init_val+5)*math.exp(-.005*(current_year-2000))-5)
-                else:
-                    values_list.append(.0005*(current_year-2000) + init_val)
+                if decays_list[j] == "constant":
+                    values_list.append(init_val)
+                elif decays_list[j] == "slow_lin_0":
+                    values_list.append(-.0008*(current_year-2000) + init_val)
+                elif decays_list[j] == "lin_0":
+                    values_list.append(-.002*(current_year-2000) + init_val)
+                elif decays_list[j] == "fast_lin_0":
+                    values_list.append(-.005*(current_year-2000) + init_val)
+                elif decays_list[j] == "slow_lin_inc_8":
+                    values_list.append(.0002*(current_year-2000) + init_val)
+                elif decays_list[j] == "slow_lin_inc_3":
+                    values_list.append(.0003*(current_year-2000) + init_val)
+                elif decays_list[j] == "exp_0":
+                    values_list.append(init_val*math.exp(-.001*(current_year-2000)))
+                elif decays_list[j] == "exp_neg_10":
+                    values_list.append((init_val+10)*math.exp(-.001*(current_year-2000))-10)
+                elif decays_list[j] == "tech_curve":
+                    if sot == 0:
+                        values_list.append((init_val+5)*math.exp(-.005*(current_year-2000))-5)
+                    else:
+                        values_list.append(.0005*(current_year-2000) + init_val)
 
-        usability += values_list[0]
-        visibility += values_list[1]
-        respectability += values_list[2]
-        likability += values_list[3]
-        understandability += values_list[4]
+            usability += values_list[0]
+            visibility += values_list[1]
+            respectability += values_list[2]
+            likability += values_list[3]
+            understandability += values_list[4]
 
     #some stats are dependent on visibility
     if visibility < .1:

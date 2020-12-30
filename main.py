@@ -218,7 +218,7 @@ class App: #pylint: disable=too-many-instance-attributes
             self.update_title()
         if self.screen == Screen.SHOP:
             self.update_shop()
-        if self.screen == Screen.SIMULATION or Screen.RESULTS:
+        if self.screen == Screen.SIMULATION or self.screen == Screen.RESULTS:
             self.update_simulation()
 
     def draw(self):
@@ -252,7 +252,7 @@ class App: #pylint: disable=too-many-instance-attributes
         """Handles updates while the players is on the simulation screen"""
         if self.simulations_run < self.phase:
             self.latest_simulation_failed, simulation_log = simulate.simulate(self.phase*YEARS_IN_PHASE,
-                                                                              self.player.inventory)
+                                                                              self.map)
             print(simulation_log)
             self.simulations_run += 1
         if pyxel.btnp(pyxel.KEY_ENTER):
@@ -295,14 +295,14 @@ class App: #pylint: disable=too-many-instance-attributes
                 page_width=SCREEN_WIDTH,
                 y_coord=inventory_y_coord,
                 text_color=pyxel.COLOR_WHITE)
-        self.player.draw_inventory(0, inventory_y_coord, SCREEN_WIDTH, ICON_HEIGHT) #BAD ASSUMPTION THAT INVENTORY IS ONLY 1 ROW 
+        self.player.draw_inventory(0, inventory_y_coord, SCREEN_WIDTH, ICON_HEIGHT) #BAD ASSUMPTION THAT INVENTORY IS ONLY 1 ROW
 
         if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON): #get the selected square
             self.selectedCol = int(pyxel.mouse_x/16)
             self.selectedRow = int(pyxel.mouse_y/16)
             if self.selected_inventory_item is None:
                 if pyxel.mouse_y > inventory_y_coord + 16: #player in inventory
-                    for i in range(len(self.player.inventory)): #BAD ASSUMPTION THAT INVENTORY IS ONLY 1 ROW 
+                    for i in range(len(self.player.inventory)): #BAD ASSUMPTION THAT INVENTORY IS ONLY 1 ROW
                         if pyxel.mouse_x >= i*16 and pyxel.mouse_x < (i*16)+16:
                             self.selected_inventory_item = self.player.inventory[i]
                             self.player.inventory.remove(self.selected_inventory_item)
@@ -319,13 +319,13 @@ class App: #pylint: disable=too-many-instance-attributes
 
         if self.selectedCol is not None and self.selectedRow is not None: #on square selection...
             if self.clickedInven is False: #place defense if possible on map
-                if self.selected_inventory_item not in self.player.inventory and self.selected_inventory_item is not None: 
+                if self.selected_inventory_item not in self.player.inventory and self.selected_inventory_item is not None:
                     pyxel.blt(self.selectedCol*16, self.selectedRow*16, 0, selected_item_icon_x, selected_item_icon_y, ICON_WIDTH, ICON_HEIGHT)
                     self.map[self.selectedRow][self.selectedCol] = self.selected_inventory_item #update self.map
 
                     self.clickedInven = None
                     self.selected_inventory_item = None
-    
+
     def draw_results(self):
         pyxel.cls(pyxel.COLOR_BLACK)
 

@@ -5,6 +5,7 @@ from marker import markers
 def simulate(years, equipment_list):
             
     dead = False
+    out_strings = []
 
     for i in range(int(years/200)):
         current_year = 2000+(200*(i+1))
@@ -31,11 +32,13 @@ def simulate(years, equipment_list):
         print("200 year probability of mining is " + str(miners))
         mine_die = random.random()
         if mine_die < miners:
+            mine_year = current_year - random.randint(1,199)
             print("I rolled " + str(mine_die) +
                   ", so mining did happen in year " +
-                  str(current_year - random.randint(1,199)))
+                  str(mine_year))
             dead = True
-            return dead
+            out_strings.append("Year " + str(mine_year) + ": miners breached the site!")
+            return dead, out_strings
         else:
             print("I rolled " + str(mine_die) +
                   ", so no mining happened by year " + str(current_year))
@@ -45,11 +48,13 @@ def simulate(years, equipment_list):
               str(archaeologists))
         arch_die = random.random()
         if arch_die < archaeologists:
+            arch_year = current_year - random.randint(1,199)
             print("I rolled " + str(arch_die) +
                   ", so archaeology did happen in year " +
-                  str(current_year - random.randint(1,199)))
+                  str(arch_year))
             dead = True
-            return dead
+            out_strings.append("Year " + str(arch_year) + ": archaelogists breached the site!")
+            return dead, out_strings
         else:
             print("I rolled " + str(arch_die) +
                   ", so no archaeology happened by year " + str(current_year))
@@ -59,11 +64,12 @@ def simulate(years, equipment_list):
              print ("In the year " + str(event_year) + ", " + str(event) +
                     " happened!")
              print()
+             out_strings.append("Year "+ str(event_year) + ": " + str(event) + " happened!")
         else:
             print("Nothing interesting happened")
             print()
 
-    return dead
+    return dead, out_strings
         
 def get_random_event(current_year, sot):
 

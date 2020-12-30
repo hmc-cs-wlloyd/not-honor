@@ -11,6 +11,9 @@ import simulate
 SCREEN_WIDTH = 256
 SCREEN_HEIGHT = 256
 
+ICON_WIDTH = 16
+ICON_HEIGHT = 16
+
 SHOP_COLUMNS = 2
 SHOP_ROWS = 3
 SHOP_TOP_OFFSET=20
@@ -55,6 +58,14 @@ class Shelf:
                 y_coord=self.y_coord+self.height-7,
                 text_color=pyxel.COLOR_WHITE,
                 x_coord=self.x_coord)
+        pyxel.blt(self.x_coord + self.width // 2 - ICON_WIDTH // 2,
+                self.y_coord + self.height // 2 - ICON_HEIGHT // 2,
+                0,
+                marker.markers[self.marker_on_shelf].icon_coords[0],
+                marker.markers[self.marker_on_shelf].icon_coords[1],
+                ICON_WIDTH,
+                ICON_HEIGHT
+        )
         if self.is_mouse_on_shelf():
             pyxel.text(0,
                     SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET,
@@ -64,7 +75,7 @@ class Shelf:
             center_text(text="Sold",
                 page_width=self.width,
                 y_coord=self.y_coord+self.height/2,
-                text_color=pyxel.COLOR_WHITE,
+                text_color=pyxel.COLOR_RED,
                 x_coord=self.x_coord)
 
 class Shop:
@@ -100,16 +111,19 @@ class Shop:
                         sticker_price=marker.markers[available_marker_options[2*i+j]].base_cost
                     ))
 
-    def draw(self, player_funding):
+    def draw(self, player):
         """Draws the shop to the screen"""
-        center_text("Remaining Budget: $" + str(player_funding),
+        center_text("Remaining Budget: $" + str(player.funding),
                 page_width=SCREEN_WIDTH,
                 y_coord=10,
                 text_color=pyxel.COLOR_WHITE)
         self.inventory_button.draw()
         self.finish_button.draw()
+        if self.inventory_button.is_moused_over():
+            player.draw_inventory(0, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET, SCREEN_WIDTH, SHOP_BOTTOM_OFFSET)
         for shelf in self.shelves:
             shelf.draw()
+
 
     def make_purchase(self, available_funds):
         """Purchases for the player whatever is currently under their mouse"""
@@ -119,24 +133,51 @@ class Shop:
                 return shelf.sticker_price
         return 0
 
+class Player:
+    """A class representing the player character"""
+    def __init__(self):
+        self.funding = 100000
+        self.inventory = []
+
+    def add_funding(self, funding_to_add):
+        """Adds to the player's available funding"""
+        self.funding += funding_to_add
+
+    def add_inventory(self, new_markers):
+        """Adds a list of markers to the player's inventory"""
+        self.inventory += new_markers
+
+    def draw_inventory(self, x_coord, y_coord, width, height):
+        """Draws the icons of each item in the player's inventory to the screen starting at x, y in a region of
+        width x length"""
+        row_count = 0
+        for i in range(len(self.inventory)):
+            if i*ICON_WIDTH-row_count*(width//ICON_WIDTH) > width:
+                row_count += i
+            if (row_count+1)*ICON_HEIGHT > height:
+                break
+            pyxel.blt(x_coord+(i*ICON_WIDTH), y_coord+(row_count+ICON_HEIGHT), 0,
+                      marker.markers[self.inventory[i]].icon_coords[0],
+                      marker.markers[self.inventory[i]].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
+
 class App: #pylint: disable=too-many-instance-attributes
     """Class to run the game itself"""
     def __init__(self):
         pyxel.init(SCREEN_WIDTH, SCREEN_HEIGHT, caption="Not a Place of Honor")
-        self.player_funding = 100000
         self.screen = Screen.TITLE
         self.shop = None
         self.marker_options = marker.get_marker_keys()
-        self.player_inventory = []
         self.phase = 1
         self.simulations_run = 0
         self.latest_simulation_failed = False
+        self.player = Player()
 
+        pyxel.load("justmessingaround.pyxres")
         pyxel.run(self.update, self.draw)
 
     def reset_game(self):
-        self.player_funding = 100000
-        self.player_inventory = []
+        """Resets state to the beginning of a new game"""
+        self.player = Player()
         self.phase = 1
         self.simulations_run = 0
         self.latest_simulation_failed = False
@@ -167,18 +208,20 @@ class App: #pylint: disable=too-many-instance-attributes
     def update_shop(self):
         """Handles updates while the player is on the shop screen"""
         if self.shop is None:
-            self.shop = Shop(self.marker_options, self.player_inventory)
+            self.shop = Shop(self.marker_options, self.player.inventory)
         if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON):
-            self.player_funding -= self.shop.make_purchase(self.player_funding)
+            self.player.add_funding(-1*self.shop.make_purchase(self.player.funding))
         if self.shop.finish_button.is_clicked():
-            self.player_inventory += [shelf.marker_on_shelf for shelf in self.shop.shelves if shelf.is_sold]
+            self.player.add_inventory([shelf.marker_on_shelf for shelf in self.shop.shelves if shelf.is_sold])
             self.shop = None
             self.screen = Screen.SIMULATION
 
     def update_simulation(self):
         """Handles updates while the players is on the simulation screen"""
         if self.simulations_run < self.phase:
-            self.latest_simulation_failed = simulate.simulate(self.phase*YEARS_IN_PHASE, self.player_inventory)
+            self.latest_simulation_failed, simulation_log = simulate.simulate(self.phase*YEARS_IN_PHASE,
+                                                                              self.player.inventory)
+            print(simulation_log)
             self.simulations_run += 1
         if pyxel.btnp(pyxel.KEY_ENTER):
             if self.latest_simulation_failed or self.phase == YEARS_TO_WIN//YEARS_IN_PHASE:
@@ -186,7 +229,7 @@ class App: #pylint: disable=too-many-instance-attributes
                 self.screen = Screen.TITLE
             else:
                 self.phase += 1
-                self.player_funding += 100000
+                self.player.add_funding(100000)
                 self.screen = Screen.SHOP
 
 
@@ -202,7 +245,7 @@ class App: #pylint: disable=too-many-instance-attributes
         pyxel.mouse(visible=True)
 
         if self.shop is not None:
-            self.shop.draw(self.player_funding)
+            self.shop.draw(self.player)
 
     def draw_map(self):
         """Draws frames while the player is on the map screen"""

@@ -133,7 +133,10 @@ class Shop:
         for shelf in self.shelves:
             if (not shelf.is_sold) and available_funds >= shelf.sticker_price and shelf.is_mouse_on_shelf():
                 shelf.is_sold = True
+                pyxel.play(0,5,loop=False)
                 return shelf.sticker_price
+            elif (shelf.is_sold or available_funds<shelf.sticker_price) and shelf.is_mouse_on_shelf():
+                pyxel.play(0,4,loop=False)
         return 0
 
 class Player:

@@ -1,7 +1,7 @@
 """Defines the map class representing the terrain around the waste site"""
 
-import pyxel
 import random
+import pyxel
 import button
 import marker
 from const import SCREEN_WIDTH, SCREEN_HEIGHT, ICON_WIDTH, ICON_HEIGHT
@@ -68,10 +68,10 @@ class Map:
         rogue_visitor.direction_spawned_from = "W"
         rogue_visitor.x = random.randrange(0,1)
         rogue_visitor.y = random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16)
-        self.cells.append(rogue_visitor) 
+        self.cells.append(rogue_visitor)
 
         #CREATE SOME THAT SPAWN FROM THE NORTH
-        for i in range(10): 
+        for i in range(10):
             visitor = cell()
             visitor.unsafe_distance = 0
             visitor.direction_spawned_from = "N"
@@ -83,7 +83,7 @@ class Map:
         rogue_visitor.direction_spawned_from = "N"
         rogue_visitor.x = random.randrange(0, SCREEN_WIDTH-4)
         rogue_visitor.y = random.randrange(0,1)
-        self.cells.append(rogue_visitor) 
+        self.cells.append(rogue_visitor)
 
     def update(self, player):
         """Updates the map state"""
@@ -186,8 +186,7 @@ class cell:
             else:
                 a = directionsName.index(self.direction) #get the index of direction in directions list
                 b = random.randrange(a-1,a+2) #set the direction to be the same, or one next to the current direction
-                if b > len(directionsName)-1: #if direction index is outside the list, move back to the start
-                    b = 0
+                b = b % len(directionsName) #if direction index is outside the list, wrap around to the other side
                 self.direction = directionsName[b]
             self.move[0] = random.randrange(directions[self.direction][0][0],directions[self.direction][0][1]) #change relative x to a random number between min x and max x
             self.move[1] = random.randrange(directions[self.direction][1][0],directions[self.direction][1][1]) #change relative y to a random number between min y and max y
@@ -218,15 +217,3 @@ class cell:
         if self.move[0] != None: #add the relative coordinates to the cells coordinates
             self.x += self.move[0]
             self.y += self.move[1]
-
-
-
-
-
-
-
-
-
-
-
-

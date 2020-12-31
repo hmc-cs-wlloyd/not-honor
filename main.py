@@ -109,6 +109,7 @@ class App: #pylint: disable=too-many-instance-attributes
     def draw_title(self): #pylint: disable=no-self-use
         """Draws frames while the player is on the title screen"""
         pyxel.cls(pyxel.COLOR_BLACK)
+        pyxel.blt(0, 0, 2, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
         center_text("Not a Place of Honor", page_width=SCREEN_WIDTH, y_coord=66, text_color=pyxel.COLOR_WHITE)
         center_text("- PRESS ENTER TO START -", page_width=SCREEN_WIDTH, y_coord=126, text_color=pyxel.COLOR_WHITE)
 

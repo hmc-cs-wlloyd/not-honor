@@ -4,6 +4,7 @@ isolation site, and defines the various markers available in the game"""
 from dataclasses import dataclass
 
 NOT_PURCHASABLE = "non-purchasable"
+GLOBAL = "global"
 
 @dataclass
 class Marker: #pylint: disable=too-many-instance-attributes,too-few-public-methods
@@ -23,6 +24,12 @@ class Marker: #pylint: disable=too-many-instance-attributes,too-few-public-metho
     usability_init: tuple
     usability_decay: str
     tags: list
+
+    def is_global(self):
+        return GLOBAL in self.tags
+
+    def is_purchasable(self):
+        return NOT_PURCHASABLE not in self.tags
 
 markers = {
     "granite-monolith": Marker(
@@ -76,7 +83,7 @@ this site is dangerous.\nVulnerable to religious turmoil",
         likability_decay = "constant",
         understandability_init = (10,10,10),
         understandability_decay = "lin_0",
-        tags=["active", "biological", "culture-linked", "low-tech", "religious"]
+        tags=["active", "biological", "culture-linked", "low-tech", "religious", "global"]
     ),
     "ray-cats": Marker(
         name="Ray Cats",
@@ -94,7 +101,7 @@ accompanied by efforts to pass into\nlegend the message 'avoid places where the 
         likability_decay = "constant",
         understandability_init = (5,5,5),
         understandability_decay = "constant",
-        tags=["biological", "low-tech", "folklore-linked"]
+        tags=["biological", "low-tech", "folklore-linked", "global"]
     ),
     "buried-messages": Marker(
         name="Buried Messages",
@@ -267,7 +274,7 @@ the site will be safe.\nCould be used to calculate age",
         likability_decay = "constant",
         understandability_init = (9,9,9),
         understandability_decay = "exp_neg_10",
-        tags=[]
+        tags=["global"]
     ),
     "visitor-center": Marker(
         name="Visitor Center",

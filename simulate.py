@@ -8,7 +8,7 @@ LOW_TECH = 0
 MEDIUM_TECH = 1
 HIGH_TECH = 2
 
-def simulate(years, site_map): #pylint: disable=too-many-locals,too-many-statements
+def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,too-many-statements
     """Runs the simulation"""
 
     dead = False
@@ -22,7 +22,7 @@ def simulate(years, site_map): #pylint: disable=too-many-locals,too-many-stateme
         print("state of tech is " + str(sot))
 
         usability, visibility, respectability, likability, \
-        understandability = get_stats(site_map, current_year, sot)
+        understandability = get_stats(site_map, global_buffs, current_year, sot)
 
         print("usability, visibility, respectability, likability, understandability:")
         print(usability, visibility,respectability,  likability,
@@ -207,7 +207,7 @@ def state_of_tech(current_year):
     return tech
 
 
-def get_stats(site_map, current_year,sot): #pylint: disable=too-many-branches
+def get_stats(site_map, global_buffs, current_year,sot): #pylint: disable=too-many-branches
     """gives the 5 stats given your equipment, year, and state of tech"""
 
     usability = 1
@@ -216,40 +216,18 @@ def get_stats(site_map, current_year,sot): #pylint: disable=too-many-branches
     respectability = 0
     understandability = 0
 
+    for buff in global_buffs:
+        values_list = get_stats_for_marker(buff, current_year, sot)
+
+        usability += values_list[0]
+        visibility += values_list[1]
+        respectability += values_list[2]
+        likability += values_list[3]
+        understandability += values_list[4]
+
     for row in site_map:
         for entry in row:
-            inits_list = [markers[entry].usability_init, markers[entry].visibility_init,
-                          markers[entry].respectability_init, markers[entry].likability_init,
-                          markers[entry].understandability_init]
-            decays_list =[markers[entry].usability_decay, markers[entry].visibility_decay,
-                          markers[entry].respectability_decay, markers[entry].likability_decay,
-                          markers[entry].understandability_decay]
-            values_list = []
-
-            for j in range(len(inits_list)): #pylint: disable=consider-using-enumerate
-                init_val = inits_list[j][sot]
-
-                if decays_list[j] == "constant":
-                    values_list.append(init_val)
-                elif decays_list[j] == "slow_lin_0":
-                    values_list.append(-.0008*(current_year-2000) + init_val)
-                elif decays_list[j] == "lin_0":
-                    values_list.append(-.002*(current_year-2000) + init_val)
-                elif decays_list[j] == "fast_lin_0":
-                    values_list.append(-.005*(current_year-2000) + init_val)
-                elif decays_list[j] == "slow_lin_inc_8":
-                    values_list.append(.0002*(current_year-2000) + init_val)
-                elif decays_list[j] == "slow_lin_inc_3":
-                    values_list.append(.0003*(current_year-2000) + init_val)
-                elif decays_list[j] == "exp_0":
-                    values_list.append(init_val*math.exp(-.001*(current_year-2000)))
-                elif decays_list[j] == "exp_neg_10":
-                    values_list.append((init_val+10)*math.exp(-.001*(current_year-2000))-10)
-                elif decays_list[j] == "tech_curve":
-                    if sot == 0:
-                        values_list.append((init_val+5)*math.exp(-.005*(current_year-2000))-5)
-                    else:
-                        values_list.append(.0005*(current_year-2000) + init_val)
+            values_list = get_stats_for_marker(entry, current_year, sot)
 
             usability += values_list[0]
             visibility += values_list[1]
@@ -269,6 +247,42 @@ def get_stats(site_map, current_year,sot): #pylint: disable=too-many-branches
 
     return usability, visibility, respectability, likability,  understandability
 
+def get_stats_for_marker(marker_id, current_year, sot):
+    """Gets the stats for a particular marker, adjusted for decay and state of technology"""
+    inits_list = [markers[marker_id].usability_init, markers[marker_id].visibility_init,
+                  markers[marker_id].respectability_init, markers[marker_id].likability_init,
+                  markers[marker_id].understandability_init]
+    decays_list =[markers[marker_id].usability_decay, markers[marker_id].visibility_decay,
+                  markers[marker_id].respectability_decay, markers[marker_id].likability_decay,
+                  markers[marker_id].understandability_decay]
+    values_list = []
+
+    for j in range(len(inits_list)): #pylint: disable=consider-using-enumerate
+        init_val = inits_list[j][sot]
+
+        if decays_list[j] == "constant":
+            values_list.append(init_val)
+        elif decays_list[j] == "slow_lin_0":
+            values_list.append(-.0008*(current_year-2000) + init_val)
+        elif decays_list[j] == "lin_0":
+            values_list.append(-.002*(current_year-2000) + init_val)
+        elif decays_list[j] == "fast_lin_0":
+            values_list.append(-.005*(current_year-2000) + init_val)
+        elif decays_list[j] == "slow_lin_inc_8":
+            values_list.append(.0002*(current_year-2000) + init_val)
+        elif decays_list[j] == "slow_lin_inc_3":
+            values_list.append(.0003*(current_year-2000) + init_val)
+        elif decays_list[j] == "exp_0":
+            values_list.append(init_val*math.exp(-.001*(current_year-2000)))
+        elif decays_list[j] == "exp_neg_10":
+            values_list.append((init_val+10)*math.exp(-.001*(current_year-2000))-10)
+        elif decays_list[j] == "tech_curve":
+            if sot == 0:
+                values_list.append((init_val+5)*math.exp(-.005*(current_year-2000))-5)
+            else:
+                values_list.append(.0005*(current_year-2000) + init_val)
+
+    return values_list
 
 def miner_prob(knowledge_of_past, value_of_materials, years): #pylint: disable=too-many-branches
     """gives probability that a miner digs a bad hole in the given time span"""

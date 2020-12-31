@@ -66,7 +66,7 @@ class Shelf:
 
 class Shop:
     """A class representing an instance of the shop. Consists of a list of shelves with markers for sale on them"""
-    def __init__(self, marker_options, player_inventory):
+    def __init__(self, marker_options, player):
         self.shelves = []
         self.finish_button = button.Button(
             x_coord=SCREEN_WIDTH - 35,
@@ -84,8 +84,9 @@ class Shop:
             text="Inventory",
             button_color=pyxel.COLOR_GRAY
         )
-        purchasable_marker_options = [marker_option for marker_option in marker_options if marker.NOT_PURCHASABLE not in marker.markers[marker_option].tags]
-        available_marker_options = [marker_option for marker_option in purchasable_marker_options if marker_option not in player_inventory]
+        purchasable_marker_options = [marker_option for marker_option in marker_options if marker.markers[marker_option].is_purchasable()]
+        available_marker_options = [marker_option for marker_option in purchasable_marker_options if marker_option not in player.global_buffs]
+        print(available_marker_options)
         shuffle(available_marker_options)
         for i in range(SHOP_ROWS):
             for j in range(SHOP_COLUMNS):
@@ -119,7 +120,10 @@ class Shop:
                 shelf.is_sold = True
                 pyxel.play(0,5,loop=False)
                 player.add_funding(-1*shelf.sticker_price)
-                player.add_inventory([shelf.marker_on_shelf])
+                if marker.markers[shelf.marker_on_shelf].is_global():
+                    player.add_global_buffs([shelf.marker_on_shelf])
+                else:
+                    player.add_inventory([shelf.marker_on_shelf])
                 return shelf.sticker_price
             if (shelf.is_sold or player.funding<shelf.sticker_price) and shelf.is_mouse_on_shelf():
                 pyxel.play(0,4,loop=False)

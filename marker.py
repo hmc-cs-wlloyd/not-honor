@@ -94,6 +94,25 @@ markers = {
         understandability_decay = "exp_0" ,
         tags=["surface", "structure", "language-dependent", "low-tech", "monolith"]
     ),
+    "ruined-granite-monolith": Marker(
+        name="Ruined Monolith (Granite)",
+        description="This used to be a granite monolith",
+        icon_coords=(224,48),
+        icon_image = 0,
+        base_cost=0,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (2,2,2),
+        visibility_decay = "constant",
+        respectability_init = (4,4,4),
+        respectability_decay = "slow_lin_inc_8",
+        likability_init = (0,0,0),
+        likability_decay = "constant",
+        understandability_init = (2,2,2),
+        understandability_decay = "exp_0" ,
+        tags=["non-purchasable","surface", "structure", "spooky",
+              "language-dependent", "low-tech", "monolith"]
+    ),
     "atomic-flower": Marker(
         name="Atomic Flowers",
         description="Flowers with information on the dangers of the site\nencoded into their DNA. \
@@ -111,7 +130,25 @@ Self-propagating, but only\neffective against high-tech societies",
         likability_decay = "constant",
         understandability_init = (0,2,8),
         understandability_decay = "constant",
-        tags=["surface", "biological", "high-tech"]
+        tags=["surface", "biological", "high-tech", "beautiful"]
+    ),
+    "ruined-atomic-flower": Marker(
+        name="Ruined Atomic Flowers",
+        description="These were pretty, once",
+        icon_coords=(128,32),
+        icon_image = 0,
+        base_cost=500000,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (1,1,1),
+        visibility_decay = "constant",
+        respectability_init = (0,0,0),
+        respectability_decay = "constant",
+        likability_init = (-3,-3,-3),
+        likability_decay = "constant",
+        understandability_init = (0,2,8),
+        understandability_decay = "constant",
+        tags=["non-purchasable","surface", "biological", "high-tech", "spooky"]
     ),
     "good-cult": Marker(
         name="High Quality Cult",
@@ -168,7 +205,7 @@ site.\nMore effective upon cultures with industrial\ndigging technology",
         likability_decay = "lin_0",
         understandability_init = (9,9,9),
         understandability_decay = "exp_0",
-        tags=["buried", "low-tech"]
+        tags=["buried", "low-tech", "linguistic"]
     ),
     "danger-sign": Marker(
         name="Danger Sign",
@@ -186,7 +223,7 @@ site.\nMore effective upon cultures with industrial\ndigging technology",
         likability_decay = "lin_0",
         understandability_init = (5,5,5),
         understandability_decay = "lin_0",
-        tags=["synergy_partnership_1"]
+        tags=["synergy_partnership_1", "linguistic", "pictoral"]
     ),
     "disgust-faces": Marker(
         name="Disgusted Faces",
@@ -204,7 +241,7 @@ site.\nMore effective upon cultures with industrial\ndigging technology",
         likability_decay = "constant",
         understandability_init = (3,3,3),
         understandability_decay = "slow_lin_0",
-        tags=["synergy_partnership_1", "spooky"]
+        tags=["synergy_partnership_1", "spooky", "pictoral"]
     ),
     "periodic-table": Marker(
         name="Periodic Table",
@@ -223,7 +260,7 @@ and arrows pointing down",
         likability_decay = "constant",
         understandability_init = (0,5,5),
         understandability_decay = "constant",
-        tags=["educational"]
+        tags=["educational", "pictoral"]
     ),
     "walk-on-map": Marker(
         name="Walk On Map",
@@ -241,7 +278,7 @@ and arrows pointing down",
         likability_decay = "constant",
         understandability_init = (0,7,7),
         understandability_decay = "constant",
-        tags=["educational"]
+        tags=["educational", "pictoral"]
     ),
     "star-map": Marker(
         name="Star Map",
@@ -260,7 +297,7 @@ the site will be safe.\nCould be used to calculate age",
         likability_decay = "constant",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
-        tags=["educational"]
+        tags=["educational", "pictoral"]
     ),
     "rubble-field": Marker(
         name="Rubble Field",
@@ -314,7 +351,25 @@ the site will be safe.\nCould be used to calculate age",
         likability_decay = "constant",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
-        tags=[]
+        tags=["beautiful","surface"]
+    ),
+    "ruined-attractive-monument": Marker(
+        name="Ruined Attractive Monument",
+        description="This used to be a pretty building",
+        icon_coords=(112,32),
+        icon_image = 0,
+        base_cost=10,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (2,2,2),
+        visibility_decay = "constant",
+        respectability_init = (3,3,3),
+        respectability_decay = "constant",
+        likability_init = (-2,-2,-2),
+        likability_decay = "constant",
+        understandability_init = (0,0,0),
+        understandability_decay = "constant",
+        tags=["non-purchasable", "spooky", "beautiful","surface"]
     ),
     "bad-cult": Marker(
         name="Cult",
@@ -350,7 +405,25 @@ the site will be safe.\nCould be used to calculate age",
         likability_decay = "constant",
         understandability_init = (10,10,10),
         understandability_decay = "exp_0",
-        tags=["pro-educational"]
+        tags=["pro-educational", "beatutiful","surface"]
+    ),
+    "ruined-visitor-center": Marker(
+        name="Ruined Visitor Center",
+        description="This used to be a visitor center",
+        icon_coords=(208,32),
+        icon_image = 0,
+        base_cost=30000,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (1,1,1),
+        visibility_decay = "constant",
+        respectability_init = (0,0,0),
+        respectability_decay = "constant",
+        likability_init = (-1,-1,-1),
+        likability_decay = "constant",
+        understandability_init = (3,3,3),
+        understandability_decay = "exp_0",
+        tags=["pro-educational", "non-purchasable", "spooky","surface"]
     ),
     "cemetery": Marker(
         name="Cemetery",
@@ -386,7 +459,25 @@ the site will be safe.\nCould be used to calculate age",
         likability_decay = "constant",
         understandability_init = (9,9,9),
         understandability_decay = "exp_0",
-        tags=["monolith"]
+        tags=["surface","monolith"]
+    ),
+    "ruined-wooden-monolith": Marker(
+        name="Ruined Wooden Monolith",
+        description="This used to be a monolith made of wood",
+        icon_coords=(224,32),
+        icon_image = 0,
+        base_cost=1000,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (1,1,1),
+        visibility_decay = "constant",
+        respectability_init = (3,3,3),
+        respectability_decay = "constant",
+        likability_init = (0,0,0),
+        likability_decay = "constant",
+        understandability_init = (2,2,2),
+        understandability_decay = "exp_0",
+        tags=["non-purchasable","spooky","surface","monolith"]
     ),
     "metal-monolith": Marker(
         name="Metal Monolith",
@@ -404,7 +495,25 @@ the site will be safe.\nCould be used to calculate age",
         likability_decay = "constant",
         understandability_init = (9,9,9),
         understandability_decay = "exp_0",
-        tags=["monolith"]
+        tags=["surface","monolith"]
+    ),
+    "ruined-metal-monolith": Marker(
+        name="Ruined Metal Monolith",
+        description="This used to be a monolith made of metal",
+        icon_coords=(240,48),
+        icon_image = 0,
+        base_cost=100,
+        usability_init = (1,1,1),
+        usability_decay = "constant",
+        visibility_init = (2,2,2),
+        visibility_decay = "constant",
+        respectability_init = (2,2,2),
+        respectability_decay = "constant",
+        likability_init = (0,0,0),
+        likability_decay = "constant",
+        understandability_init = (2,2,2),
+        understandability_decay = "exp_0",
+        tags=["non-purchasable","spooky","surface","monolith"]
     ),
     "death-sculpture": Marker(
         name="Death Sculpture",
@@ -422,7 +531,7 @@ the site will be safe.\nCould be used to calculate age",
         likability_decay = "constant",
         understandability_init = (1,1,1),
         understandability_decay = "constant",
-        tags=["spooky"]
+        tags=["spooky", "pictoral","surface"]
     ),
     "black-hole": Marker(
         name="Black Hole",
@@ -676,8 +785,8 @@ the site will be safe.\nCould be used to calculate age",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
         tags=["non-purchasable"]
-    ), 
-    "core-top-left": Marker(
+    ),
+        "core-top-left": Marker(
         name="Nuclear Core",
         description="Some dangerous is here...",
         icon_coords=(0,64),

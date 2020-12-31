@@ -8,7 +8,7 @@ LOW_TECH = 0
 MEDIUM_TECH = 1
 HIGH_TECH = 2
 
-def simulate(years, site_map): #pylint: disable=too-many-locals,too-many-statements
+def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,too-many-statements
     """Runs the simulation"""
 
     dead = False
@@ -22,11 +22,7 @@ def simulate(years, site_map): #pylint: disable=too-many-locals,too-many-stateme
         print("state of tech is " + str(sot))
 
         usability, visibility, respectability, likability, \
-        understandability = get_stats(site_map, current_year, sot)
-
-        usability, visibility, respectability, likability, \
-        understandability = get_adjacency_bonus(site_map,usability, visibility, \
-        respectability, likability, understandability)
+        understandability = get_stats(site_map, global_buffs, current_year, sot)
 
         print("usability, visibility, respectability, likability, understandability:")
         print(usability, visibility,respectability,  likability,
@@ -162,13 +158,12 @@ def get_knowledge_of_past(visibility, respectability, likability,
     #this is a deterministic calculation - no dice!
 
     kop = 0
-    if understandability > 5:
+    if understandability > .5:
         kop = 3
-    elif visibility > 4:
+    elif visibility > .4:
         kop = 2
-    elif likability > 3 or respectability > 3:
+    elif likability > .3 or respectability > .3:
         kop = 1
-    #else 0
     return kop
 
 
@@ -215,7 +210,7 @@ def state_of_tech(current_year):
     return tech
 
 
-def get_stats(site_map, current_year,sot): #pylint: disable=too-many-branches
+def get_stats(site_map, global_buffs, current_year,sot): #pylint: disable=too-many-branches
     """gives the 5 stats given your equipment, year, and state of tech"""
 
     usability = 1
@@ -224,40 +219,18 @@ def get_stats(site_map, current_year,sot): #pylint: disable=too-many-branches
     respectability = 0
     understandability = 0
 
+    for buff in global_buffs:
+        values_list = get_stats_for_marker(buff, current_year, sot)
+
+        usability += values_list[0]
+        visibility += values_list[1]
+        respectability += values_list[2]
+        likability += values_list[3]
+        understandability += values_list[4]
+
     for row in site_map:
         for entry in row:
-            inits_list = [markers[entry].usability_init, markers[entry].visibility_init,
-                          markers[entry].respectability_init, markers[entry].likability_init,
-                          markers[entry].understandability_init]
-            decays_list =[markers[entry].usability_decay, markers[entry].visibility_decay,
-                          markers[entry].respectability_decay, markers[entry].likability_decay,
-                          markers[entry].understandability_decay]
-            values_list = []
-
-            for j in range(len(inits_list)): #pylint: disable=consider-using-enumerate
-                init_val = inits_list[j][sot]
-
-                if decays_list[j] == "constant":
-                    values_list.append(init_val)
-                elif decays_list[j] == "slow_lin_0":
-                    values_list.append(-.0008*(current_year-2000) + init_val)
-                elif decays_list[j] == "lin_0":
-                    values_list.append(-.002*(current_year-2000) + init_val)
-                elif decays_list[j] == "fast_lin_0":
-                    values_list.append(-.005*(current_year-2000) + init_val)
-                elif decays_list[j] == "slow_lin_inc_8":
-                    values_list.append(.0002*(current_year-2000) + init_val)
-                elif decays_list[j] == "slow_lin_inc_3":
-                    values_list.append(.0003*(current_year-2000) + init_val)
-                elif decays_list[j] == "exp_0":
-                    values_list.append(init_val*math.exp(-.001*(current_year-2000)))
-                elif decays_list[j] == "exp_neg_10":
-                    values_list.append((init_val+10)*math.exp(-.001*(current_year-2000))-10)
-                elif decays_list[j] == "tech_curve":
-                    if sot == 0:
-                        values_list.append((init_val+5)*math.exp(-.005*(current_year-2000))-5)
-                    else:
-                        values_list.append(.0005*(current_year-2000) + init_val)
+            values_list = get_stats_for_marker(entry, current_year, sot)
 
             usability += values_list[0]
             visibility += values_list[1]
@@ -275,14 +248,64 @@ def get_stats(site_map, current_year,sot): #pylint: disable=too-many-branches
         likability *= .8
         understandability *= .8
 
-    return usability, visibility, respectability, likability,  understandability
+    usability, visibility, respectability, likability, understandability = get_adjacency_bonus(site_map,
+                                                                                               usability,
+                                                                                               visibility,
+                                                                                               respectability,
+                                                                                               likability,
+                                                                                               understandability)
+    return normalize_stat(usability), normalize_stat(visibility), normalize_stat(respectability),\
+        normalize_stat(likability), normalize_stat(understandability)
 
-def get_adjacency_bonus(site_map,usability, visibility, respectability, likability,
+def normalize_stat(stat_value):
+    """Maps stat to a value on [-1, 1]"""
+    stat_value = min(stat_value, 100)
+    stat_value = max(stat_value, -100)
+    return stat_value / 100
+
+def get_stats_for_marker(marker_id, current_year, sot):
+    """Gets the stats for a particular marker, adjusted for decay and state of technology"""
+    inits_list = [markers[marker_id].usability_init, markers[marker_id].visibility_init,
+                  markers[marker_id].respectability_init, markers[marker_id].likability_init,
+                  markers[marker_id].understandability_init]
+    decays_list =[markers[marker_id].usability_decay, markers[marker_id].visibility_decay,
+                  markers[marker_id].respectability_decay, markers[marker_id].likability_decay,
+                  markers[marker_id].understandability_decay]
+    values_list = []
+
+    for j in range(len(inits_list)): #pylint: disable=consider-using-enumerate
+        init_val = inits_list[j][sot]
+
+        if decays_list[j] == "constant":
+            values_list.append(init_val)
+        elif decays_list[j] == "slow_lin_0":
+            values_list.append(-.0008*(current_year-2000) + init_val)
+        elif decays_list[j] == "lin_0":
+            values_list.append(-.002*(current_year-2000) + init_val)
+        elif decays_list[j] == "fast_lin_0":
+            values_list.append(-.005*(current_year-2000) + init_val)
+        elif decays_list[j] == "slow_lin_inc_8":
+            values_list.append(.0002*(current_year-2000) + init_val)
+        elif decays_list[j] == "slow_lin_inc_3":
+            values_list.append(.0003*(current_year-2000) + init_val)
+        elif decays_list[j] == "exp_0":
+            values_list.append(init_val*math.exp(-.001*(current_year-2000)))
+        elif decays_list[j] == "exp_neg_10":
+            values_list.append((init_val+10)*math.exp(-.001*(current_year-2000))-10)
+        elif decays_list[j] == "tech_curve":
+            if sot == 0:
+                values_list.append((init_val+5)*math.exp(-.005*(current_year-2000))-5)
+            else:
+                values_list.append(.0005*(current_year-2000) + init_val)
+
+    return values_list
+
+def get_adjacency_bonus(site_map,usability, visibility, respectability, likability, #pylint: disable=too-many-arguments, too-many-branches
         understandability):
     """checks if anything on the map gets adjacency bonus and modifies stats directly"""
     #right now, just checking for a vis bonus tag and giving bonus to vis
     vis_neighbors = 0
-    for row_num in range(len(site_map)):
+    for row_num in range(len(site_map)): #pylint: disable=consider-using-enumerate
         for tile_num in range(len(site_map[row_num])):
             tile_tags = markers[site_map[row_num][tile_num]].tags
             if "adj-bonus" in tile_tags:
@@ -317,13 +340,11 @@ def get_adjacency_bonus(site_map,usability, visibility, respectability, likabili
                 #bottom right
                 if len(site_map[row_num]) -1 and row_num < len(site_map) -1:
                     if "vis-adj-bonus" in markers[site_map[row_num+1][tile_num+1]].tags:
-                        neighbors += 1                
-                        
+                        neighbors += 1
+
     vis_neighbors = vis_neighbors/2
     visibility += vis_neighbors
     return usability, visibility, respectability, likability, understandability
-    
-
 
 def miner_prob(knowledge_of_past, value_of_materials, years): #pylint: disable=too-many-branches
     """gives probability that a miner digs a bad hole in the given time span"""
@@ -414,21 +435,21 @@ def dam_prob(knowledge_of_past, usability, start_year):
     if knowledge_of_past == 3:
         prob = 0
     elif start_year < 2300:
-        if usability > 1:
+        if usability > .1:
             prob = .02
         elif usability > 0:
             prob = .01
         else:
             prob= .005
     elif start_year < 5000:
-        if usability > 1:
+        if usability > .1:
             prob = .03
         elif usability > 0:
             prob = .02
         else:
             prob = .01
     else:
-        if usability > 1:
+        if usability > .1:
             prob = .05
         elif usability > 0:
             prob = .04
@@ -438,11 +459,11 @@ def dam_prob(knowledge_of_past, usability, start_year):
 
 def teen_prob(visibility, respectability):
     """gives total prob of random teen violence breaching the site"""
-    if visibility < 3 or respectability > 8:
+    if visibility < .3 or respectability > .8:
         prob = 0
-    elif respectability > 6:
+    elif respectability > .6:
         prob = .001
-    elif respectability > 3:
+    elif respectability > .3:
         prob = .01
     else:
         prob = .03
@@ -458,4 +479,4 @@ def transit_tunnel_prob(state_of_technology, understandability, visibility):
         base_probability = .001
     else:
         base_probability = .1
-    return base_probability*(1-(awareness_of_danger/100))
+    return base_probability*(1-awareness_of_danger)

@@ -173,13 +173,13 @@ class Cell:
     """A class representing a square that random-walks around the map to represent visitors approaching the site in the
     simulation"""
     def __init__(self, x, y, direction_spawned_from, will_travel_n_squares_in=0):
+        self.directions_name = ("S","SW","W","NW","N","NE","E","SE") #possible directions
         self.x_coord = x
         self.y_coord = y
         self.will_travel_n_squares_in = will_travel_n_squares_in
         self.direction_spawned_from = direction_spawned_from
         self.speed = random.randrange(2,3) #cell speed
-        self.move = [None, None] #realtive x and y coordinates to move to
-        self.direction = None #movement direction
+        self.direction = random.choice(self.directions_name) #movement direction
 
     def draw(self):
         """Draw the cell to the screen"""
@@ -190,52 +190,47 @@ class Cell:
 
     def wander(self):
         """Move the cell along its path"""
+        move = [0,0]
         directions = {"S":((-1,2),(1,self.speed)),"SW":((-self.speed,-1),(1,self.speed)),"W":((-self.speed,-1),(-1,2)),
                       "NW":((-self.speed,-1),(-self.speed,-1)),"N":((-1,2),(-self.speed,-1)),
                       "NE":((1,self.speed),(-self.speed,-1)),"E":((1,self.speed),(-1,2)),
                       "SE":((1,self.speed),(1,self.speed))} #((min x, max x)(min y, max y))
-        directions_name = ("S","SW","W","NW","N","NE","E","SE") #possible directions
-        if random.randrange(0,5) == 2: #move about once every 5 frames
-            if self.direction is None: #if no direction is set, set a random one
-                self.direction = random.choice(directions_name)
-            else:
-                direction_idx = directions_name.index(self.direction) #get the index of direction in directions list
-                new_direction_idx = random.randrange(direction_idx-1,direction_idx+2) #set the direction to be the same, or one next to the current direction
-                new_direction_idx = new_direction_idx % len(directions_name) #if direction index is outside the list, wrap around to the other side
-                self.direction = directions_name[new_direction_idx]
-            self.move[0] = random.randrange(directions[self.direction][0][0],directions[self.direction][0][1]) #change relative x to a random number between min x and max x
-            self.move[1] = random.randrange(directions[self.direction][1][0],directions[self.direction][1][1]) #change relative y to a random number between min y and max y
+        if random.randrange(0,5) == 2: #change direction about once every 5 frames
+            direction_idx = self.directions_name.index(self.direction) #get the index of direction in directions list
+            new_direction_idx = random.randrange(direction_idx-1,direction_idx+2) #set the direction to be the same, or one next to the current direction
+            new_direction_idx = new_direction_idx % len(self.directions_name) #if direction index is outside the list, wrap around to the other side
+            self.direction = self.directions_name[new_direction_idx]
+        move[0] = random.randrange(directions[self.direction][0][0],directions[self.direction][0][1]) #change relative x to a random number between min x and max x
+        move[1] = random.randrange(directions[self.direction][1][0],directions[self.direction][1][1]) #change relative y to a random number between min y and max y
 
-            x_square_to_move_to = int((self.x_coord+self.move[0])/16)
-            y_square_to_move_to = int((self.y_coord+self.move[1])/16)
-            print(x_square_to_move_to, y_square_to_move_to)
+        new_x_coord = self.x_coord + move[0]
+        new_y_coord = self.y_coord + move[1]
+        x_square_to_move_to = int((new_x_coord)/16)
+        y_square_to_move_to = int((new_y_coord)/16)
+        print(x_square_to_move_to, y_square_to_move_to)
 
-            our_map = Map()
+        our_map = Map()
 
-            #if cell is near the border of the screen or about to move into unsafe area,change direction
-            # pragma pylint: disable=too-many-boolean-expressions
-            if self.x_coord < 1 or self.x_coord > SCREEN_WIDTH - 1 or self.y_coord < 1 or \
-               self.y_coord > SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-13 or \
-               ((our_map.map[y_square_to_move_to][x_square_to_move_to]!="dark-sand" and \
-                our_map.map[y_square_to_move_to][x_square_to_move_to]!="sand" and \
-                our_map.map[y_square_to_move_to][x_square_to_move_to]!="light-sand" and \
-                 self.will_travel_n_squares_in == 0) or (x_square_to_move_to >= self.will_travel_n_squares_in + 3)):
-                if self.x_coord < 1:
-                    self.direction = "E"
-                elif self.x_coord >= SCREEN_WIDTH - 1:
-                    self.direction = "W"
-                elif self.y_coord < 1:
-                    self.direction = "S"
-                elif self.y_coord > SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-13:
-                    self.direction = "N"
-                elif (our_map.map[y_square_to_move_to][x_square_to_move_to]!="dark-sand" and \
-                    our_map.map[y_square_to_move_to][x_square_to_move_to]!="sand" and \
-                    our_map.map[y_square_to_move_to][x_square_to_move_to]!="light-sand" and \
-                    self.will_travel_n_squares_in == 0) or (x_square_to_move_to >= self.will_travel_n_squares_in + 3):
-                    self.direction = self.direction_spawned_from #turn around in the direction spawned from
-                self.move[0] = random.randrange(directions[self.direction][0][0],directions[self.direction][0][1]) #change relative x to a random number between min x and max x
-                self.move[1] = random.randrange(directions[self.direction][1][0],directions[self.direction][1][1]) #change relative x to a random number between min x and max x
-            # pragma pylint: enable=too-many-boolean-expressions
-            if self.move[0] is not None: #add the relative coordinates to the cells coordinates
-                self.x_coord += self.move[0]
-                self.y_coord += self.move[1]
+        #if cell is near the border of the screen or about to move into unsafe area,change direction
+        if new_x_coord < 0 or new_x_coord >= SCREEN_WIDTH or new_y_coord < 0 or \
+           new_y_coord > SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-13:
+            if new_x_coord < 1:
+                self.direction = "E"
+            elif new_x_coord >= SCREEN_WIDTH - 1:
+                self.direction = "W"
+            elif new_y_coord < 1:
+                self.direction = "S"
+            elif new_y_coord > SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-13:
+                self.direction = "N"
+            move[0] = random.randrange(directions[self.direction][0][0],directions[self.direction][0][1]) #change relative x to a random number between min x and max x
+            move[1] = random.randrange(directions[self.direction][1][0],directions[self.direction][1][1]) #change relative x to a random number between min x and max x
+        elif (our_map.map[y_square_to_move_to][x_square_to_move_to]!="dark-sand" and \
+            our_map.map[y_square_to_move_to][x_square_to_move_to]!="sand" and \
+            our_map.map[y_square_to_move_to][x_square_to_move_to]!="light-sand" and \
+            self.will_travel_n_squares_in == 0): # or (x_square_to_move_to >= self.will_travel_n_squares_in + 3)
+
+            self.direction = self.direction_spawned_from #turn around in the direction spawned from
+            move[0] = random.randrange(directions[self.direction][0][0],directions[self.direction][0][1]) #change relative x to a random number between min x and max x
+            move[1] = random.randrange(directions[self.direction][1][0],directions[self.direction][1][1]) #change relative x to a random number between min x and max x
+        self.x_coord += move[0]
+        self.y_coord += move[1]

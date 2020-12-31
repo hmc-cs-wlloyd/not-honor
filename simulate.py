@@ -24,6 +24,10 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         usability, visibility, respectability, likability, \
         understandability = get_stats(site_map, global_buffs, current_year, sot)
 
+        usability, visibility, respectability, likability, \
+        understandability = get_adjacency_bonus(site_map,usability, visibility, \
+        respectability, likability, understandability)
+
         print("usability, visibility, respectability, likability, understandability:")
         print(usability, visibility,respectability,  likability,
               understandability)
@@ -108,7 +112,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         print("I rolled " + str(transit_tunnel_die) + ", so no transit tunnel disrupted the site by year " + str(
             current_year))
 
-        event, event_year = get_random_event(current_year, sot)
+        event, event_year = get_random_event(current_year, sot, site_map)
         if event != "":
             print ("In the year " + str(event_year) + ", " + str(event) +
                     " happened!")
@@ -119,7 +123,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
 
     return dead, out_strings
 
-def get_random_event(current_year, sot):
+def get_random_event(current_year, sot, site_map):
     """Potentially generates an event given a year"""
 
     event = ""
@@ -143,6 +147,10 @@ def get_random_event(current_year, sot):
 
     elif die < .2:
         event = "earthquake"
+
+    elif any("bad-cult" in row for row in site_map) and \
+         current_year > 3000 and die <.5:
+        event = "cult-dig"
 
     return event, event_year
 
@@ -283,6 +291,52 @@ def get_stats_for_marker(marker_id, current_year, sot):
                 values_list.append(.0005*(current_year-2000) + init_val)
 
     return values_list
+
+def get_adjacency_bonus(site_map,usability, visibility, respectability, likability, #pylint: disable=too-many-arguments, too-many-branches
+        understandability):
+    """checks if anything on the map gets adjacency bonus and modifies stats directly"""
+    #right now, just checking for a vis bonus tag and giving bonus to vis
+    vis_neighbors = 0
+    for row_num in range(len(site_map)): #pylint: disable=consider-using-enumerate
+        for tile_num in range(len(site_map[row_num])):
+            tile_tags = markers[site_map[row_num][tile_num]].tags
+            if "adj-bonus" in tile_tags:
+                #left neighbor
+                if tile_num>0:
+                    if "vis-adj-bonus" in markers[site_map[row_num][tile_num-1]].tags:
+                        neighbors += 1
+                #right neighbor
+                if tile_num < len(site_map[row_num]) -1:
+                    if "vis-adj-bonus" in markers[site_map[row_num][tile_num+1]].tags:
+                        neighbors += 1
+                #top neighbor
+                if row_num > 0:
+                    if "vis-adj-bonus" in markers[site_map[row_num-1][tile_num]].tags:
+                        neighbors += 1
+                #bottom neighbor
+                if row_num < len(site_map) -1:
+                    if "vis-adj-bonus" in markers[site_map[row_num+1][tile_num]].tags:
+                        neighbors += 1
+                #top left
+                if tile_num>0 and row_num>0:
+                    if "vis-adj-bonus" in markers[site_map[row_num-1][tile_num-1]].tags:
+                        neighbors += 1
+                #top right
+                if tile_num < len(site_map[row_num]) -1 and row_num>0:
+                    if "vis-adj-bonus" in markers[site_map[row_num-1][tile_num+1]].tags:
+                        neighbors += 1
+                # bottom left
+                if tile_num>0 and row_num < len(site_map) -1:
+                    if "vis-adj-bonus" in markers[site_map[row_num+1][tile_num-1]].tags:
+                        neighbors += 1
+                #bottom right
+                if len(site_map[row_num]) -1 and row_num < len(site_map) -1:
+                    if "vis-adj-bonus" in markers[site_map[row_num+1][tile_num+1]].tags:
+                        neighbors += 1
+
+    vis_neighbors = vis_neighbors/2
+    visibility += vis_neighbors
+    return usability, visibility, respectability, likability, understandability
 
 def miner_prob(knowledge_of_past, value_of_materials, years): #pylint: disable=too-many-branches
     """gives probability that a miner digs a bad hole in the given time span"""

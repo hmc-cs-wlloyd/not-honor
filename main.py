@@ -38,6 +38,7 @@ class App: #pylint: disable=too-many-instance-attributes
     def reset_game(self):
         """Resets state to the beginning of a new game"""
         self.player = Player()
+        self.map = Map()
         self.phase = 1
         self.simulations_run = 0
         self.latest_simulation_failed = False
@@ -61,26 +62,28 @@ class App: #pylint: disable=too-many-instance-attributes
     def update_shop(self):
         """Handles updates while the player is on the shop screen"""
         if self.shop is None:
-            self.shop = Shop(self.marker_options, self.player.inventory)
+            self.shop = Shop(self.marker_options, self.player)
         if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON):
-            self.player.add_funding(-1*self.shop.make_purchase(self.player.funding))
+            self.shop.make_purchase(self.player)
         if self.shop.finish_button.is_clicked():
-            self.player.add_inventory([shelf.marker_on_shelf for shelf in self.shop.shelves if shelf.is_sold])
-            self.shop = None
             self.screen = Screen.MAP
 
     def update_map(self):
         """Handles updates while the player is on the map screen"""
         self.map.update(self.player)
         if self.map.results_button.is_clicked():
+            self.shop = None # Reset the shop
             self.screen = Screen.RESULTS
+        if self.map.back_button.is_clicked():
+            self.screen = Screen.SHOP
 
 
     def update_results(self):
         """Handles updates while the players is on the simulation screen"""
         if self.simulations_run < self.phase:
             self.latest_simulation_failed, simulation_log = simulate.simulate(self.phase*YEARS_IN_PHASE,
-                                                                              self.map.map)
+                                                                              self.map.map,
+                                                                              self.player.global_buffs)
             print(simulation_log)
             self.simulations_run += 1
         if pyxel.btnp(pyxel.KEY_ENTER):

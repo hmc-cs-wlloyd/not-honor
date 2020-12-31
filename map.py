@@ -7,7 +7,9 @@ from const import SCREEN_WIDTH, SCREEN_HEIGHT, ICON_WIDTH, ICON_HEIGHT
 from util import center_text
 
 MAP_BOTTOM_OFFSET=20
-MAP_INVENTORY_BOTTOM_MARGIN = 16*3
+MAP_INVENTORY_BOTTOM_MARGIN = 8 + ICON_HEIGHT*3
+SOCIETAL_MODIFIER_WIDTH=80
+INVENTORY_WIDTH=SCREEN_WIDTH-SOCIETAL_MODIFIER_WIDTH
 
 class Map:
     """A class representing the map of the waste site, including the placement of markers"""
@@ -40,6 +42,15 @@ class Map:
             width=30,
             height=9*MAP_BOTTOM_OFFSET/10,
             text="Results",
+            button_color=pyxel.COLOR_GRAY
+        )
+
+        self.back_button = button.Button(
+            x_coord=5,
+            y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET,
+            width=30,
+            height=9*MAP_BOTTOM_OFFSET/10,
+            text="Back",
             button_color=pyxel.COLOR_GRAY
         )
 
@@ -78,6 +89,7 @@ class Map:
     def draw(self, player):
         """Draws map to the screen"""
         self.results_button.draw()
+        self.back_button.draw()
 
         for row in range(12): #draw the terrain
             for col in range(16):
@@ -86,10 +98,18 @@ class Map:
 
         inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN
         center_text("Inventory", #draw the inventory
-                page_width=SCREEN_WIDTH,
+                page_width=INVENTORY_WIDTH,
+                x_coord=0,
                 y_coord=inventory_y_coord,
                 text_color=pyxel.COLOR_WHITE)
-        player.draw_inventory(0, inventory_y_coord, SCREEN_WIDTH, ICON_HEIGHT) #BAD ASSUMPTION THAT INVENTORY IS ONLY 1 ROW
+        player.draw_inventory(0, inventory_y_coord, INVENTORY_WIDTH, ICON_HEIGHT) #BAD ASSUMPTION THAT INVENTORY IS ONLY 1 ROW
+
+        center_text("Societal Features", #draw the inventory
+                page_width=SOCIETAL_MODIFIER_WIDTH,
+                x_coord=INVENTORY_WIDTH,
+                y_coord=inventory_y_coord,
+                text_color=pyxel.COLOR_WHITE)
+        player.draw_global_buffs(INVENTORY_WIDTH, inventory_y_coord, SOCIETAL_MODIFIER_WIDTH, ICON_HEIGHT)
 
 
         if self.selected_inventory_item is not None: #selected defense follows mouse

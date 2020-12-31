@@ -24,10 +24,6 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         usability, visibility, respectability, likability, \
         understandability = get_stats(site_map, global_buffs, current_year, sot)
 
-        usability, visibility, respectability, likability, \
-        understandability = get_adjacency_bonus(site_map,usability, visibility, \
-        respectability, likability, understandability)
-
         print("usability, visibility, respectability, likability, understandability:")
         print(usability, visibility,respectability,  likability,
               understandability)
@@ -162,13 +158,12 @@ def get_knowledge_of_past(visibility, respectability, likability,
     #this is a deterministic calculation - no dice!
 
     kop = 0
-    if understandability > 5:
+    if understandability > .5:
         kop = 3
-    elif visibility > 4:
+    elif visibility > .4:
         kop = 2
-    elif likability > 3 or respectability > 3:
+    elif likability > .3 or respectability > .3:
         kop = 1
-    #else 0
     return kop
 
 
@@ -253,7 +248,20 @@ def get_stats(site_map, global_buffs, current_year,sot): #pylint: disable=too-ma
         likability *= .8
         understandability *= .8
 
-    return usability, visibility, respectability, likability,  understandability
+    usability, visibility, respectability, likability, understandability = get_adjacency_bonus(site_map,
+                                                                                               usability,
+                                                                                               visibility,
+                                                                                               respectability,
+                                                                                               likability,
+                                                                                               understandability)
+    return normalize_stat(usability), normalize_stat(visibility), normalize_stat(respectability),\
+        normalize_stat(likability), normalize_stat(understandability)
+
+def normalize_stat(stat_value):
+    """Maps stat to a value on [-1, 1]"""
+    stat_value = min(stat_value, 100)
+    stat_value = max(stat_value, -100)
+    return stat_value / 100
 
 def get_stats_for_marker(marker_id, current_year, sot):
     """Gets the stats for a particular marker, adjusted for decay and state of technology"""
@@ -427,21 +435,21 @@ def dam_prob(knowledge_of_past, usability, start_year):
     if knowledge_of_past == 3:
         prob = 0
     elif start_year < 2300:
-        if usability > 1:
+        if usability > .1:
             prob = .02
         elif usability > 0:
             prob = .01
         else:
             prob= .005
     elif start_year < 5000:
-        if usability > 1:
+        if usability > .1:
             prob = .03
         elif usability > 0:
             prob = .02
         else:
             prob = .01
     else:
-        if usability > 1:
+        if usability > .1:
             prob = .05
         elif usability > 0:
             prob = .04
@@ -451,11 +459,11 @@ def dam_prob(knowledge_of_past, usability, start_year):
 
 def teen_prob(visibility, respectability):
     """gives total prob of random teen violence breaching the site"""
-    if visibility < 3 or respectability > 8:
+    if visibility < .3 or respectability > .8:
         prob = 0
-    elif respectability > 6:
+    elif respectability > .6:
         prob = .001
-    elif respectability > 3:
+    elif respectability > .3:
         prob = .01
     else:
         prob = .03
@@ -471,4 +479,4 @@ def transit_tunnel_prob(state_of_technology, understandability, visibility):
         base_probability = .001
     else:
         base_probability = .1
-    return base_probability*(1-(awareness_of_danger/100))
+    return base_probability*(1-awareness_of_danger)

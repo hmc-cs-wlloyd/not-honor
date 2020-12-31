@@ -213,7 +213,7 @@ def state_of_tech(current_year):
 def get_stats(site_map, global_buffs, current_year,sot): #pylint: disable=too-many-branches
     """gives the 5 stats given your equipment, year, and state of tech"""
 
-    usability = 1
+    usability = 100
     visibility = 0
     likability = 0
     respectability = 0
@@ -253,7 +253,10 @@ def get_stats(site_map, global_buffs, current_year,sot): #pylint: disable=too-ma
                                                                                                visibility,
                                                                                                respectability,
                                                                                                likability,
-                                                                                               understandability)
+                                                                                               understandability,
+                                                                                               current_year,
+                                                                                               sot)
+    print("Pre-normalization understandability: ", understandability, " visibility: ", visibility, " respectability: ", respectability, " likability: ", likability, " usability: ", usability)
     return normalize_stat(usability), normalize_stat(visibility), normalize_stat(respectability),\
         normalize_stat(likability), normalize_stat(understandability)
 
@@ -300,11 +303,194 @@ def get_stats_for_marker(marker_id, current_year, sot):
 
     return values_list
 
-def get_adjacency_bonus(site_map,usability, visibility, respectability, likability, #pylint: disable=too-many-arguments, too-many-branches
-        understandability):
+def get_adjacency_bonus(site_map,usability, visibility, respectability, likability, #pylint: disable=too-many-arguments, too-many-locals
+        understandability, current_year, sot):
     """checks if anything on the map gets adjacency bonus and modifies stats directly"""
     #right now, just checking for a vis bonus tag and giving bonus to vis
-    vis_neighbors = 0
+    visibility += get_visibility_adjacency_bonus(site_map)
+
+    understandability += get_synergy_partnership_bonus(site_map)
+
+    spooky_respectability_modifier, spooky_likability_modifier = get_spooky_adjacency_bonus(site_map)
+    respectability += spooky_respectability_modifier
+    likability += spooky_likability_modifier
+
+    understandability += get_pro_educational_adjacency_bonus(site_map)
+
+    terraforming_usability_modifier, terraforming_visibility_modifier, terraforming_respectability_modifier,\
+            terraforming_likability_modifier, terraforming_understandability_modifier = \
+            get_massive_terraforming_bonus(site_map, current_year, sot)
+    usability += terraforming_usability_modifier
+    visibility += terraforming_visibility_modifier
+    respectability += terraforming_respectability_modifier
+    likability += terraforming_likability_modifier
+    understandability += terraforming_understandability_modifier
+
+    monolith_usability_penalty, monolith_respectability_bonus = get_standing_stones_bonus(site_map)
+    usability += monolith_usability_penalty
+    respectability += monolith_respectability_bonus
+
+    return usability, visibility, respectability, likability, understandability
+
+def get_neighbors(site_map, row_num, col_num):
+    """Given a site map and a pair of coordinates, returns the neighbors of those coordinates"""
+    neighbors = []
+    if row_num-1 >= 0:
+        neighbors.append(site_map[row_num-1][col_num])
+        if col_num-1 >=0:
+            neighbors.append(site_map[row_num-1][col_num-1])
+        if col_num+1 < len(site_map[row_num]):
+            neighbors.append(site_map[row_num-1][col_num+1])
+
+    if row_num+1 < len(site_map):
+        neighbors.append(site_map[row_num+1][col_num])
+        if col_num-1 >=0:
+            neighbors.append(site_map[row_num+1][col_num-1])
+        if col_num+1 < len(site_map[row_num]):
+            neighbors.append(site_map[row_num+1][col_num+1])
+
+    if col_num-1 >= 0:
+        neighbors.append(site_map[row_num][col_num-1])
+    if col_num+1 < len(site_map[row_num]):
+        neighbors.append(site_map[row_num][col_num+1])
+
+    return neighbors
+
+def get_neighbor_coords(site_map, row_num, col_num):
+    """Given a site map and a pair of coordinates, returns the neighboring coordinates of those coordinates"""
+    neighbors = []
+    if row_num-1 >= 0:
+        neighbors.append((row_num-1, col_num))
+        if col_num-1 >=0:
+            neighbors.append((row_num-1, col_num-1))
+        if col_num+1 < len(site_map[row_num]):
+            neighbors.append((row_num-1, col_num+1))
+
+    if row_num+1 < len(site_map):
+        neighbors.append((row_num+1, col_num))
+        if col_num-1 >=0:
+            neighbors.append((row_num+1, col_num-1))
+        if col_num+1 < len(site_map[row_num]):
+            neighbors.append((row_num+1, col_num+1))
+
+    if col_num-1 >= 0:
+        neighbors.append((row_num, col_num-1))
+    if col_num+1 < len(site_map[row_num]):
+        neighbors.append((row_num, col_num+1))
+
+    return neighbors
+
+def get_like_contiguous_markers(site_map, row_num, col_num):
+    """Returns the number of markers in the block of contiguous markers of which (row_num, col_num) is a part,
+    which all share a type with the marker at (row_num, col_num)"""
+    num_contiguous_markers = 0
+    coords_visited = []
+    coords_to_visit = [(row_num, col_num)]
+    marker_type = site_map[row_num][col_num]
+    while coords_to_visit:
+        current_coords = coords_to_visit.pop()
+        coords_visited.append(current_coords)
+        this_marker = site_map[current_coords[0]][current_coords[1]]
+        if this_marker == marker_type:
+            num_contiguous_markers += 1
+            neighbor_coords = get_neighbor_coords(site_map, current_coords[0], current_coords[1])
+            like_neighbor_coords = [coords for coords in neighbor_coords if site_map[coords[0]][coords[1]] == this_marker]
+            unvisited_like_neighbor_coords = [coords for coords in like_neighbor_coords if coords not in coords_visited]
+            unvisited_unscheduled_like_neighbor_coords = [coords for coords in unvisited_like_neighbor_coords if coords not in coords_to_visit]
+            coords_to_visit[:0] = unvisited_unscheduled_like_neighbor_coords
+
+    print(num_contiguous_markers)
+    return num_contiguous_markers
+
+def get_standing_stones_bonus(site_map):
+    """Calculates the usability and respectability modifiers for adjacent monoliths"""
+    usability_penalty = 0
+    respectability_bonus = 0
+    for row_num in range(len(site_map)): #pylint: disable=consider-using-enumerate, too-many-nested-blocks
+        for col_num in range(len(site_map[row_num])):
+            this_marker = site_map[row_num][col_num]
+            if markers[this_marker].is_monolith():
+                neighbors = get_neighbors(site_map, row_num, col_num)
+                for neighbor in neighbors:
+                    if markers[neighbor].is_monolith():
+                        usability_penalty -= .5
+                        respectability_bonus += .5
+
+    return usability_penalty, respectability_bonus
+
+
+def get_massive_terraforming_bonus(site_map, current_year, sot):
+    """Calculates the bonus to all stats for multiple contiguous terraforming markers of the same type"""
+    usability_bonus = 0
+    visibility_bonus = 0
+    respectability_bonus = 0
+    likability_bonus = 0
+    understandability_bonus = 0
+    for row_num in range(len(site_map)): #pylint: disable=consider-using-enumerate, too-many-nested-blocks
+        for col_num in range(len(site_map[row_num])):
+            this_marker = site_map[row_num][col_num]
+            this_marker_stats = get_stats_for_marker(this_marker, current_year, sot)
+            if markers[this_marker].is_terraforming():
+                contiguous_markers_in_block = get_like_contiguous_markers(site_map, row_num, col_num)
+                usability_bonus += ((contiguous_markers_in_block-1)*.05)*this_marker_stats[0]
+                visibility_bonus += ((contiguous_markers_in_block-1)*.05)*this_marker_stats[1]
+                respectability_bonus += ((contiguous_markers_in_block-1)*.05)*this_marker_stats[2]
+                likability_bonus += ((contiguous_markers_in_block-1)*.05)*this_marker_stats[3]
+                understandability_bonus += ((contiguous_markers_in_block-1)*.05)*this_marker_stats[4]
+
+    return usability_bonus, visibility_bonus, respectability_bonus, likability_bonus, understandability_bonus
+
+def get_pro_educational_adjacency_bonus(site_map):
+    """Calculates the site's understandability bonus from markers with pro-educational tag boosting markers with
+    the educational tag"""
+    understandability_bonus = 0
+    for row_num in range(len(site_map)): #pylint: disable=consider-using-enumerate, too-many-nested-blocks
+        for col_num in range(len(site_map[row_num])):
+            this_marker = site_map[row_num][col_num]
+            if markers[this_marker].is_pro_educational():
+                neighbors = get_neighbors(site_map, row_num, col_num)
+                for neighbor in neighbors:
+                    if markers[neighbor].is_educational():
+                        understandability_bonus += 1
+
+    return understandability_bonus
+
+def get_spooky_adjacency_bonus(site_map):
+    """Calculates the site's respectability bonus and likability penalty for adjacent markers with the spooky tag"""
+    respectability_bonus = 0
+    likability_penalty = 0
+    for row_num in range(len(site_map)): #pylint: disable=consider-using-enumerate, too-many-nested-blocks
+        for col_num in range(len(site_map[row_num])):
+            this_marker = site_map[row_num][col_num]
+            if markers[this_marker].is_spooky():
+                neighbors = get_neighbors(site_map, row_num, col_num)
+                for neighbor in neighbors:
+                    if markers[neighbor].is_spooky():
+                        respectability_bonus += .5
+                        likability_penalty -= .5
+
+    return respectability_bonus, likability_penalty
+
+def get_synergy_partnership_bonus(site_map):
+    """Calculates the site's understandability bonus from synergy partnerships"""
+    understandability_bonus = 0
+    for row_num in range(len(site_map)): #pylint: disable=consider-using-enumerate, too-many-nested-blocks
+        for col_num in range(len(site_map[row_num])):
+            this_marker = site_map[row_num][col_num]
+            partnerships = markers[this_marker].get_synergy_partnerships()
+            if partnerships:
+                neighbors = get_neighbors(site_map, row_num, col_num)
+                for neighbor in neighbors:
+                    neighbor_partnerships = markers[neighbor].get_synergy_partnerships()
+                    for partnership in partnerships:
+                        if partnership in neighbor_partnerships:
+                            understandability_bonus += .5
+
+    return understandability_bonus
+
+def get_visibility_adjacency_bonus(site_map): #pylint: disable=too-many-branches
+    """Calculate visibility bonus from visibility adjacency bonuses"""
+    neighbors = 0
     for row_num in range(len(site_map)): #pylint: disable=consider-using-enumerate
         for tile_num in range(len(site_map[row_num])):
             tile_tags = markers[site_map[row_num][tile_num]].tags
@@ -342,9 +528,7 @@ def get_adjacency_bonus(site_map,usability, visibility, respectability, likabili
                     if "vis-adj-bonus" in markers[site_map[row_num+1][tile_num+1]].tags:
                         neighbors += 1
 
-    vis_neighbors = vis_neighbors/2
-    visibility += vis_neighbors
-    return usability, visibility, respectability, likability, understandability
+    return neighbors/2
 
 def miner_prob(knowledge_of_past, value_of_materials, years): #pylint: disable=too-many-branches
     """gives probability that a miner digs a bad hole in the given time span"""

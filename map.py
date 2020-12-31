@@ -87,7 +87,8 @@ class Map:
                 if self.selected_inventory_item not in player.inventory and \
                    self.selected_inventory_item is not None:
 
-                    pyxel.blt(self.selected_col*16, self.selected_row*16, 0,
+                    pyxel.blt(self.selected_col*16, self.selected_row*16,
+                              marker.markers[self.selected_inventory_item].icon_image,
                               marker.markers[self.selected_inventory_item].icon_coords[0],
                               marker.markers[self.selected_inventory_item].icon_coords[1],
                               ICON_WIDTH, ICON_HEIGHT)
@@ -105,7 +106,8 @@ class Map:
 
         for row in range(12): #draw the terrain
             for col in range(16):
-                pyxel.blt(col*16, row*16, 1, marker.markers[self.map[row][col]].icon_coords[0],
+                pyxel.blt(col*16, row*16, marker.markers[self.map[row][col]].icon_image,
+                          marker.markers[self.map[row][col]].icon_coords[0],
                           marker.markers[self.map[row][col]].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
 
         inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN

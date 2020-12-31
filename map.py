@@ -21,20 +21,20 @@ class Map:
         self.clicked_inven = None
 
         self.map = [
-        ["grass", "grass", "grass", "shadow", "sand", "shadow", "sand", "shadow", "sand", "sand", "marbled-smoke", "fire", "fire", "fire", "fire", "fire"],
-        ["grass", "grass", "sand", "sand", "sand", "sand", "shadow", "sand", "sand", "sand", "marbled-smoke", "marbled-smoke", "fire", "fire", "fire", "marbled-smoke"],
-        ["grass", "grass", "grass", "grass", "sand", "shadow", "sand", "shadow", "sand", "sand", "sand", "marbled-smoke", "fire", "fire", "marbled-smoke", "marbled-smoke"],
-        ["grass", "grass", "grass", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "pink-candles", "fire", "fire", "marbled-smoke", "marbled-smoke", "marbled-smoke"],
+        ["dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand"],
+        ["dark-sand", "dark-sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand"],
+        ["dark-sand", "sand", "sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand"],
+        ["dark-sand", "sand", "light-sand", "light-sand", "marbled-tile", "marbled-smoke", "marbled-smoke", "marbled-tile", "marbled-tile", "marbled-tile", "pink-candles", "fire", "fire", "marbled-smoke", "marbled-smoke", "marbled-smoke"],
 
-        ["grass", "grass", "sand", "sand", "sand", "sand", "sand", "shadow", "sand", "pink-candles", "yellow-candles", "shadow", "fire", "marbled-smoke", "marbled-smoke", "sand"],
-        ["grass", "grass", "sand", "sand", "sand", "sand", "shadow", "concrete", "sand", "colorful-stone", "yellow-candles", "pink-candles", "yellow-candles", "colorful-stone", "sand", "concrete"],
-        ["grass", "grass", "sand", "shadow", "shadow", "sand", "sand", "shadow", "grass", "colorful-stone", "colorful-stone", "colorful-stone", "colorful-stone", "colorful-stone", "grass", "sand"],
-        ["grass", "grass", "shadow", "shadow", "sand", "sand", "sand", "sand", "grass", "colorful-stone", "colorful-stone", "shadow", "colorful-stone", "colorful-stone", "grass", "sand"],
+        ["dark-sand", "sand", "light-sand", "marbled-smoke", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "fire"],
+        ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile"],
+        ["dark-sand", "sand", "light-sand", "marbled-smoke", "marbled-tile", "marbled-tile", "yellow-candles", "pink-candles", "concrete", "concrete", "colorful-stone", "colorful-stone", "colorful-stone", "colorful-stone", "concrete", "concrete"],
+        ["dark-sand", "sand", "light-sand", "marbled-smoke", "marbled-tile", "marbled-tile", "pink-candles", "blue-candles", "concrete", "colorful-stone", "colorful-stone", "concrete", "colorful-stone", "colorful-stone", "concrete", "concrete"],
         
-        ["grass", "grass", "sand", "sand", "sand", "sand", "sand", "shadow", "grass", "grass", "colorful-stone", "shadow", "colorful-stone", "grass", "grass", "sand"],
-        ["grass", "grass", "sand", "sand", "shadow", "sand", "sand", "sand", "grass", "grass", "marbled-tile", "marbled-tile", "marbled-tile", "grass", "grass", "sand"],
-        ["grass", "grass", "sand", "sand", "sand", "sand", "sand", "concrete", "sand", "sand", "marbled-tile", "marbled-tile", "marbled-tile", "sand", "sand", "concrete"],
-        ["grass", "grass", "grass", "sand", "sand", "sand", "shadow", "sand", "sand", "sand", "marbled-tile", "marbled-tile", "marbled-tile", "sand", "sand", "sand"]
+        ["dark-sand", "sand", "light-sand", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete", "colorful-stone", "concrete", "colorful-stone", "concrete", "concrete", "concrete"],
+        ["dark-sand", "sand", "light-sand", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete", "colorful-stone", "concrete", "colorful-stone", "concrete", "concrete", "concrete"],
+        ["dark-sand", "sand", "light-sand", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete", "colorful-stone", "concrete", "colorful-stone", "concrete", "concrete", "concrete"],
+        ["dark-sand", "sand", "light-sand", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete", "colorful-stone", "concrete", "colorful-stone", "concrete", "concrete", "concrete"]
         ]
 
         self.results_button = button.Button(
@@ -55,13 +55,35 @@ class Map:
             button_color=pyxel.COLOR_GRAY
         )
         self.cells =[]
+        #CREATE VISITORS AND A ROGUE THAT SPAWNS FROM THE WEST
         for i in range(10): #generate n cells
             visitor = cell()
             visitor.unsafe_distance = 0
+            visitor.direction_spawned_from = "W"
+            visitor.x = random.randrange(0,1) #x position starts on left side
+            visitor.y = random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16) #y position starts on left side
             self.cells.append(visitor)
-        rogue_visitor = cell()
-        rogue_visitor.will_travel_n_squares_in = 10
-        self.cells.append(rogue_visitor) #add one rogue that can travel 10 squares in
+        rogue_visitor = cell()#add one rogue that can travel 5 squares in
+        rogue_visitor.will_travel_n_squares_in = 5
+        rogue_visitor.direction_spawned_from = "W"
+        rogue_visitor.x = random.randrange(0,1)
+        rogue_visitor.y = random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16)
+        self.cells.append(rogue_visitor) 
+
+        #CREATE SOME THAT SPAWN FROM THE NORTH
+        for i in range(10): 
+            visitor = cell()
+            visitor.unsafe_distance = 0
+            visitor.direction_spawned_from = "N"
+            visitor.x = random.randrange(0, SCREEN_WIDTH-4)
+            visitor.y = random.randrange(0,1)
+            self.cells.append(visitor)
+        rogue_visitor = cell()#add one rogue that can travel 5 squares in
+        rogue_visitor.will_travel_n_squares_in = 5
+        rogue_visitor.direction_spawned_from = "N"
+        rogue_visitor.x = random.randrange(0, SCREEN_WIDTH-4)
+        rogue_visitor.y = random.randrange(0,1)
+        self.cells.append(rogue_visitor) 
 
     def update(self, player):
         """Updates the map state"""
@@ -141,8 +163,9 @@ class Map:
 class cell:
     def __init__(self):
         self.will_travel_n_squares_in = 0
-        self.x = random.randrange(0, 1 ) #x position starts on left side
-        self.y = random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16) #y position starts on left side
+        self.direction_spawned_from = None
+        self.x = None
+        self.y = None
         self.speed = random.randrange(2,3) #cell speed
         self.move = [None, None] #realtive x and y coordinates to move to
         self.direction = None #movement direction
@@ -151,7 +174,7 @@ class cell:
         if self.will_travel_n_squares_in == 0:
             pyxel.rect(self.x,self.y,4,4,pyxel.COLOR_RED) #draw the cell
         else:
-            pyxel.rect(self.x,self.y,4,4,pyxel.COLOR_WHITE) #draw the cell
+            pyxel.rect(self.x,self.y,4,4,pyxel.COLOR_GREEN) #draw the cell
 
     def wander(self):
         turn_around = False
@@ -172,8 +195,10 @@ class cell:
             x_square_to_move_to = int((self.x+self.move[0])/16)
             y_square_to_move_to = int((self.y+self.move[1])/16)
 
-            our_map = Map()
-            if (our_map.map[x_square_to_move_to][y_square_to_move_to] != "grass" and self.will_travel_n_squares_in == 0) or (x_square_to_move_to >= self.will_travel_n_squares_in):
+            our_map = Map() 
+            #if deflected visitor is about to move into a non-sand square, turn around
+            #if non-deflected visitor is about to move farther than they should, turn around
+            if (our_map.map[y_square_to_move_to][x_square_to_move_to]!="dark-sand" and our_map.map[y_square_to_move_to][x_square_to_move_to]!="sand" and our_map.map[y_square_to_move_to][x_square_to_move_to]!="light-sand" and self.will_travel_n_squares_in == 0) or (x_square_to_move_to >= self.will_travel_n_squares_in + 3):
                 turn_around = True
 
         #if cell is near the border of the screen or about to move into unsafe area,change direction
@@ -187,7 +212,7 @@ class cell:
             elif self.y > SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-13:
                 self.direction = "N"
             elif turn_around is True: 
-                self.direction = "W" #THIS IS ONLY FOR VISITORS SPAWNING FORM THE LEFT
+                self.direction = self.direction_spawned_from #turn around in the direction spawned from
             self.move[0] = random.randrange(directions[self.direction][0][0],directions[self.direction][0][1]) #change relative x to a random number between min x and max x
             self.move[1] = random.randrange(directions[self.direction][1][0],directions[self.direction][1][1]) #change relative x to a random number between min x and max x
         if self.move[0] != None: #add the relative coordinates to the cells coordinates

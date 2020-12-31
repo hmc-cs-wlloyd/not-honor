@@ -5,6 +5,12 @@ from dataclasses import dataclass
 
 NOT_PURCHASABLE = "non-purchasable"
 GLOBAL = "global"
+SYNERGY_PARTNERSHIP_PREFIX = "synergy_partnership_"
+SPOOKY = "spooky"
+PRO_EDUCATIONAL = "pro-educational"
+EDUCATIONAL = "educational"
+TERRAFORMING = "terraforming"
+MONOLITH = "monolith"
 
 @dataclass
 class Marker: #pylint: disable=too-many-instance-attributes,too-few-public-methods
@@ -26,10 +32,47 @@ class Marker: #pylint: disable=too-many-instance-attributes,too-few-public-metho
     tags: list
 
     def is_global(self):
+        """Returns true if the marker has the global tag"""
         return GLOBAL in self.tags
 
     def is_purchasable(self):
+        """Returns true if the marker lacks the non-purchasable tag"""
         return NOT_PURCHASABLE not in self.tags
+
+    def has_synergy_partnership(self):
+        """Returns true if the marker has a synergy_partnership_* tag"""
+        for tag in self.tags:
+            if tag.startswith(SYNERGY_PARTNERSHIP_PREFIX):
+                return True
+        return False
+
+    def get_synergy_partnerships(self):
+        """Returns the postfixes of all the marker's synergy_partnership_* tags"""
+        partnerships = []
+        for tag in self.tags:
+            if tag.startswith(SYNERGY_PARTNERSHIP_PREFIX):
+                partnerships.append(tag[len(SYNERGY_PARTNERSHIP_PREFIX):])
+        return partnerships
+
+    def is_spooky(self):
+        """Returns true if the marker has the spooky tag"""
+        return SPOOKY in self.tags
+
+    def is_pro_educational(self):
+        """Returns true if the marker has the pro-educational tag"""
+        return PRO_EDUCATIONAL in self.tags
+
+    def is_educational(self):
+        """Returns true if the marker has the educational tag"""
+        return EDUCATIONAL in self.tags
+
+    def is_terraforming(self):
+        """Returns true if the marker has the terraforming tag"""
+        return TERRAFORMING in self.tags
+
+    def is_monolith(self):
+        """Returns true if the marker has the monolith tag"""
+        return MONOLITH in self.tags
 
 markers = {
     "granite-monolith": Marker(
@@ -47,7 +90,7 @@ markers = {
         likability_decay = "constant",
         understandability_init = (9,9,9),
         understandability_decay = "exp_0" ,
-        tags=["surface", "structure", "language-dependent", "low-tech"]
+        tags=["surface", "structure", "language-dependent", "low-tech", "monolith"]
     ),
     "atomic-flower": Marker(
         name="Atomic Flowers",
@@ -136,7 +179,7 @@ site.\nMore effective upon cultures with industrial\ndigging technology",
         likability_decay = "lin_0",
         understandability_init = (5,5,5),
         understandability_decay = "lin_0",
-        tags=[]
+        tags=["synergy_partnership_1"]
     ),
     "disgust-faces": Marker(
         name="Disgusted Faces",
@@ -153,7 +196,7 @@ site.\nMore effective upon cultures with industrial\ndigging technology",
         likability_decay = "constant",
         understandability_init = (3,3,3),
         understandability_decay = "slow_lin_0",
-        tags=[]
+        tags=["synergy_partnership_1", "spooky"]
     ),
     "periodic-table": Marker(
         name="Periodic Table",
@@ -171,7 +214,7 @@ and arrows pointing down",
         likability_decay = "constant",
         understandability_init = (0,5,5),
         understandability_decay = "constant",
-        tags=[]
+        tags=["educational"]
     ),
     "walk-on-map": Marker(
         name="Walk On Map",
@@ -188,7 +231,7 @@ and arrows pointing down",
         likability_decay = "constant",
         understandability_init = (0,7,7),
         understandability_decay = "constant",
-        tags=[]
+        tags=["educational"]
     ),
     "star-map": Marker(
         name="Star Map",
@@ -206,7 +249,7 @@ the site will be safe.\nCould be used to calculate age",
         likability_decay = "constant",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
-        tags=[]
+        tags=["educational"]
     ),
     "rubble-field": Marker(
         name="Rubble Field",
@@ -223,7 +266,7 @@ the site will be safe.\nCould be used to calculate age",
         likability_decay = "lin_0",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
-        tags=[]
+        tags=["terraforming"]
     ),
     "spike-field": Marker(
         name="Spike Field",
@@ -240,7 +283,7 @@ the site will be safe.\nCould be used to calculate age",
         likability_decay = "constant",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
-        tags=[]
+        tags=["terraforming", "spooky"]
     ),
     "attractive-monument": Marker(
         name="Attractive Monument",
@@ -291,7 +334,7 @@ the site will be safe.\nCould be used to calculate age",
         likability_decay = "constant",
         understandability_init = (10,10,10),
         understandability_decay = "exp_0",
-        tags=[]
+        tags=["pro-educational"]
     ),
     "cemetery": Marker(
         name="Cemetery",
@@ -308,7 +351,7 @@ the site will be safe.\nCould be used to calculate age",
         likability_decay = "constant",
         understandability_init = (-1,-1,-1),
         understandability_decay = "constant",
-        tags=[]
+        tags=["spooky"]
     ),
     "wooden-monolith": Marker(
         name="Wooden Monolith",
@@ -325,7 +368,7 @@ the site will be safe.\nCould be used to calculate age",
         likability_decay = "constant",
         understandability_init = (9,9,9),
         understandability_decay = "exp_0",
-        tags=[]
+        tags=["monolith"]
     ),
     "metal-monolith": Marker(
         name="Metal Monolith",
@@ -342,7 +385,7 @@ the site will be safe.\nCould be used to calculate age",
         likability_decay = "constant",
         understandability_init = (9,9,9),
         understandability_decay = "exp_0",
-        tags=[]
+        tags=["monolith"]
     ),
     "death-sculpture": Marker(
         name="Death Sculpture",
@@ -359,7 +402,7 @@ the site will be safe.\nCould be used to calculate age",
         likability_decay = "constant",
         understandability_init = (1,1,1),
         understandability_decay = "constant",
-        tags=[]
+        tags=["spooky"]
     ),
     "black-hole": Marker(
         name="Black Hole",
@@ -376,7 +419,7 @@ the site will be safe.\nCould be used to calculate age",
         likability_decay = "constant",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
-        tags=[]
+        tags=["terraforming"]
     ),
     #NOTE: THE TERRAINS ARE IN IMAGE 1
     "sand": Marker(
@@ -395,7 +438,7 @@ the site will be safe.\nCould be used to calculate age",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
         tags=["non-purchasable"]
-    ), 
+    ),
     "grass": Marker(
         name="Grass",
         description="A patch of lush grass.",
@@ -429,7 +472,7 @@ the site will be safe.\nCould be used to calculate age",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
         tags=["non-purchasable"]
-    ), 
+    ),
     "marbled-smoke": Marker(
         name="Marbled Smoke",
         description="A plume of marbled smoke.",
@@ -446,7 +489,7 @@ the site will be safe.\nCould be used to calculate age",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
         tags=["non-purchasable"]
-    ), 
+    ),
     "fire": Marker(
         name="Fire",
         description="Beware the fire here.",
@@ -463,7 +506,7 @@ the site will be safe.\nCould be used to calculate age",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
         tags=["non-purchasable"]
-    ), 
+    ),
     "pink-candles": Marker(
         name="Pink Candles",
         description="They're pretty.",
@@ -531,7 +574,7 @@ the site will be safe.\nCould be used to calculate age",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
         tags=["non-purchasable"]
-    ), 
+    ),
     "marbled-tile": Marker(
         name="Marbled Tile",
         description="Regular tile with a marbled design.",

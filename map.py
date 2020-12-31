@@ -21,20 +21,20 @@ class Map:
         self.clicked_inven = None
 
         self.map = [
-        ["dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand"],
-        ["dark-sand", "dark-sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand"],
-        ["dark-sand", "sand", "sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand"],
-        ["dark-sand", "sand", "light-sand", "light-sand", "marbled-tile", "marbled-smoke", "marbled-smoke", "marbled-tile", "marbled-tile", "marbled-tile", "pink-candles", "fire", "fire", "marbled-smoke", "marbled-smoke", "marbled-smoke"],
+        ["dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "sand", "light-sand"],
+        ["dark-sand", "dark-sand", "dark-sand", "dark-sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "dark-sand", "sand", "sand", "sand"],
+        ["dark-sand", "dark-sand", "sand", "sand", "sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "sand", "sand", "sand", "sand", "dark-sand"],
+        ["dark-sand", "sand", "sand", "light-sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "light-sand", "sand", "dark-sand", "dark-sand"],
 
-        ["dark-sand", "sand", "light-sand", "marbled-smoke", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "fire"],
-        ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile"],
-        ["dark-sand", "sand", "light-sand", "marbled-smoke", "marbled-tile", "marbled-tile", "yellow-candles", "pink-candles", "concrete", "concrete", "colorful-stone", "colorful-stone", "colorful-stone", "colorful-stone", "concrete", "concrete"],
-        ["dark-sand", "sand", "light-sand", "marbled-smoke", "marbled-tile", "marbled-tile", "pink-candles", "blue-candles", "concrete", "colorful-stone", "colorful-stone", "concrete", "colorful-stone", "colorful-stone", "concrete", "concrete"],
+        ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "sand", "sand", "dark-sand"],
+        ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "core-top-left", "core-top-right", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "sand", "dark-sand"],
+        ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "core-bottom-left", "core-bottom-right", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "sand", "dark-sand"],
+        ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "sand", "sand", "dark-sand"],
         
-        ["dark-sand", "sand", "light-sand", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete", "colorful-stone", "concrete", "colorful-stone", "concrete", "concrete", "concrete"],
-        ["dark-sand", "sand", "light-sand", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete", "colorful-stone", "concrete", "colorful-stone", "concrete", "concrete", "concrete"],
-        ["dark-sand", "sand", "light-sand", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete", "colorful-stone", "concrete", "colorful-stone", "concrete", "concrete", "concrete"],
-        ["dark-sand", "sand", "light-sand", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete", "colorful-stone", "concrete", "colorful-stone", "concrete", "concrete", "concrete"]
+        ["dark-sand", "sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "light-sand", "light-sand", "light-sand", "sand", "dark-sand", "dark-sand"],
+        ["dark-sand", "dark-sand", "sand", "sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "sand", "sand", "sand", "sand", "sand", "dark-sand", "dark-sand"],
+        ["dark-sand", "dark-sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "dark-sand", "dark-sand", "sand", "dark-sand", "dark-sand", "dark-sand"],
+        ["dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand"]
         ]
 
         self.results_button = button.Button(
@@ -194,11 +194,14 @@ class cell:
             x_square_to_move_to = int((self.x+self.move[0])/16)
             y_square_to_move_to = int((self.y+self.move[1])/16)
 
+            #print("%d, %d" % (y_square_to_move_to, x_square_to_move_to))
+
             our_map = Map() 
             #if deflected visitor is about to move into a non-sand square, turn around
             #if non-deflected visitor is about to move farther than they should, turn around
-            if (our_map.map[y_square_to_move_to][x_square_to_move_to]!="dark-sand" and our_map.map[y_square_to_move_to][x_square_to_move_to]!="sand" and our_map.map[y_square_to_move_to][x_square_to_move_to]!="light-sand" and self.will_travel_n_squares_in == 0) or (x_square_to_move_to >= self.will_travel_n_squares_in + 3):
-                turn_around = True
+            if x_square_to_move_to < 16 or y_square_to_move_to < 13:
+                if (our_map.map[y_square_to_move_to][x_square_to_move_to]!="dark-sand" and our_map.map[y_square_to_move_to][x_square_to_move_to]!="sand" and our_map.map[y_square_to_move_to][x_square_to_move_to]!="light-sand" and self.will_travel_n_squares_in == 0) or (x_square_to_move_to >= self.will_travel_n_squares_in + 3):
+                    turn_around = True
 
         #if cell is near the border of the screen or about to move into unsafe area,change direction
         if self.x < 1 or self.x > SCREEN_WIDTH - 1 or self.y < 1 or self.y > SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-13 or turn_around is True: 

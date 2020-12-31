@@ -18,42 +18,20 @@ class Map:
         self.clicked_inven = None
 
         self.map = [
-        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain"],
-        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain"],
-        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain"],
-        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain"],
-        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain"],
-        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain"],
-        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain"],
-        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain"],
-        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain"],
-        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain"],
-        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain"],
-        ["temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain", "temp-terrain",
-         "temp-terrain", "temp-terrain"]
+        ["sand", "sand", "sand", "shadow", "sand", "shadow", "sand", "shadow", "sand", "sand", "marbled-smoke", "fire", "fire", "fire", "fire", "fire"],
+        ["shadow", "grass", "sand", "sand", "sand", "sand", "shadow", "sand", "sand", "sand", "marbled-smoke", "marbled-smoke", "fire", "fire", "fire", "marbled-smoke"],
+        ["grass", "grass", "grass", "grass", "sand", "shadow", "sand", "shadow", "sand", "sand", "sand", "marbled-smoke", "fire", "fire", "marbled-smoke", "marbled-smoke"],
+        ["shadow", "grass", "grass", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "pink-candles", "fire", "fire", "marbled-smoke", "marbled-smoke", "marbled-smoke"],
+
+        ["sand", "sand", "sand", "sand", "sand", "sand", "sand", "shadow", "sand", "pink-candles", "yellow-candles", "shadow", "fire", "marbled-smoke", "marbled-smoke", "sand"],
+        ["grass", "sand", "sand", "sand", "sand", "sand", "shadow", "concrete", "sand", "colorful-stone", "yellow-candles", "pink-candles", "yellow-candles", "colorful-stone", "sand", "concrete"],
+        ["grass", "grass", "sand", "shadow", "shadow", "sand", "sand", "shadow", "grass", "colorful-stone", "colorful-stone", "colorful-stone", "colorful-stone", "colorful-stone", "grass", "sand"],
+        ["shadow", "sand", "shadow", "shadow", "sand", "sand", "sand", "sand", "grass", "colorful-stone", "colorful-stone", "shadow", "colorful-stone", "colorful-stone", "grass", "sand"],
+        
+        ["sand", "sand", "sand", "sand", "sand", "sand", "sand", "shadow", "grass", "grass", "colorful-stone", "shadow", "colorful-stone", "grass", "grass", "sand"],
+        ["sand", "sand", "sand", "sand", "shadow", "sand", "sand", "sand", "grass", "grass", "marbled-tile", "marbled-tile", "marbled-tile", "grass", "grass", "sand"],
+        ["sand", "shadow", "sand", "sand", "sand", "sand", "sand", "concrete", "sand", "sand", "marbled-tile", "marbled-tile", "marbled-tile", "sand", "sand", "concrete"],
+        ["sand", "sand", "shadow", "sand", "sand", "sand", "shadow", "sand", "sand", "sand", "marbled-tile", "marbled-tile", "marbled-tile", "sand", "sand", "sand"]
         ]
 
         self.results_button = button.Button(
@@ -103,7 +81,7 @@ class Map:
 
         for row in range(12): #draw the terrain
             for col in range(16):
-                pyxel.blt(col*16, row*16, 0, marker.markers[self.map[row][col]].icon_coords[0],
+                pyxel.blt(col*16, row*16, 1, marker.markers[self.map[row][col]].icon_coords[0],
                           marker.markers[self.map[row][col]].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
 
         inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN

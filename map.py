@@ -191,7 +191,7 @@ class Cell:
         new_y_coord = self.y_coord + move[1]
         x_square_to_move_to = int((new_x_coord)/16)
         y_square_to_move_to = int((new_y_coord)/16)
-        print(x_square_to_move_to, y_square_to_move_to)
+        #print(x_square_to_move_to, y_square_to_move_to)
 
         our_map = Map()
 

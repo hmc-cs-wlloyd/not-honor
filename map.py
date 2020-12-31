@@ -222,7 +222,7 @@ class Cell:
                  self.will_travel_n_squares_in == 0) or (x_square_to_move_to >= self.will_travel_n_squares_in + 3)):
                 if self.x_coord < 1:
                     self.direction = "E"
-                elif self.x_coord > SCREEN_WIDTH - 1:
+                elif self.x_coord >= SCREEN_WIDTH - 1:
                     self.direction = "W"
                 elif self.y_coord < 1:
                     self.direction = "S"

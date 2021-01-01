@@ -3,6 +3,7 @@
 import random
 import math
 from marker import markers
+import copy
 
 LOW_TECH = 0
 MEDIUM_TECH = 1
@@ -14,7 +15,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
     dead = False
     event_list = []
     map_list = []
-    time_period_map = site_map
+    time_period_map = copy.deepcopy(site_map)
 
     for i in range(int(years/200)):
         
@@ -124,7 +125,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
                 transit_tunnel_year))
             dead = True
             event_list.append((transit_tunnel_year, "tunnel"))
-            return dead, event_list        
+            return dead, event_list, map_list        
         print("I rolled " + str(transit_tunnel_die) + ", so no transit tunnel disrupted the site by year " + str(
             current_year))
         print(str(current_year) + ": " + str(dead))

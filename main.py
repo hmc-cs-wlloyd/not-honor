@@ -2,6 +2,7 @@
 
 from enum import Enum
 import pyxel
+import random
 from util import center_text
 from const import SCREEN_WIDTH, SCREEN_HEIGHT
 from shop import Shop
@@ -20,6 +21,7 @@ class Screen(Enum):
     MAP = "map"
     SIMULATION = "simulation"
     RESULTS = "results"
+    TIP = "tip"
 
 class App: #pylint: disable=too-many-instance-attributes
     """Class to run the game itself"""
@@ -33,6 +35,8 @@ class App: #pylint: disable=too-many-instance-attributes
         self.latest_simulation_failed = False
         self.player = Player()
         self.map = Map()
+        self.which_tip_index = None
+        self.available_tips = [0, 1, 2, 3, 4] #5 possible tips to share with player
         pyxel.load("justmessingaround.pyxres")
         pyxel.run(self.update, self.draw)
 
@@ -40,6 +44,7 @@ class App: #pylint: disable=too-many-instance-attributes
         """Resets state to the beginning of a new game"""
         self.player = Player()
         self.map = Map()
+        self.available_tips = [0, 1, 2, 3, 4] #5 possible tips to share with player
         self.phase = 1
         self.simulations_run = 0
         self.latest_simulation_failed = False
@@ -56,6 +61,8 @@ class App: #pylint: disable=too-many-instance-attributes
             self.update_simulation()
         if self.screen == Screen.RESULTS:
             self.update_results()
+        if self.screen == Screen.TIP:
+            self.update_tip()
 
     def update_title(self):
         """Handles updates while the player is on the title screen"""
@@ -104,7 +111,18 @@ class App: #pylint: disable=too-many-instance-attributes
             else:
                 self.phase += 1
                 self.player.add_funding(100000)
-                self.screen = Screen.SHOP
+                self.screen = Screen.TIP
+
+    def update_tip(self):
+        if self.which_tip_index is None and len(self.available_tips) != 0: #make sure array of available tips isn't empty
+            self.which_tip_index = random.randint(0,len(self.available_tips)-1) #select a random tip index
+
+        if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON): #remove the tip from the array of possible tips after it's been seen
+            self.screen = Screen.SHOP
+            if self.which_tip_index is not None:
+                del self.available_tips[self.which_tip_index]
+            self.which_tip_index = None
+            #print("SIZE OF TIPS %d", len(self.available_tips))
 
     def draw(self):
         """Draws frame each frame"""
@@ -118,6 +136,8 @@ class App: #pylint: disable=too-many-instance-attributes
             self.draw_simulation()
         elif self.screen == Screen.RESULTS:
             self.draw_results()
+        elif self.screen == Screen.TIP:
+            self.draw_tip()
 
     def draw_title(self): #pylint: disable=no-self-use
         """Draws frames while the player is on the title screen"""
@@ -173,5 +193,49 @@ class App: #pylint: disable=too-many-instance-attributes
                             SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
                 center_text("- PRESS ENTER TO CONTINUE -", page_width=SCREEN_WIDTH, y_coord=3*SCREEN_HEIGHT//4,
                             text_color=pyxel.COLOR_WHITE)
+    
+    def draw_tip(self):
+        pyxel.cls(pyxel.COLOR_BLACK)
+
+        if self.which_tip_index is not None:
+            chosen_tip = self.available_tips[self.which_tip_index]
+        
+            if chosen_tip == 0:
+                center_text("Have you heard the good news about RAY CATS?", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+                center_text('We\'ll genetically engineer all cats on earth', SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+                center_text("to glow in the presence of radiation!", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
+                center_text("Then we plant the seeds of warning", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3), pyxel.COLOR_WHITE)
+                center_text("in various folklore that feline ancestry", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4), pyxel.COLOR_WHITE)
+                center_text("would glow amidst unspeakable dangers.", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*5), pyxel.COLOR_WHITE)
+                center_text("As long as humankind continues to worship the cats. . . !", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*6), pyxel.COLOR_WHITE)
+
+            elif chosen_tip == 1:
+                center_text("Oh... hi... sorry,", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+                center_text("people don\'t talk to us mathematicians much.", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+                center_text("Want to talk about math? I wrote the part of the", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
+                center_text("simulation that models MINERS.", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3), pyxel.COLOR_WHITE)
+                center_text('They\'re attracted to high value land,', SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4), pyxel.COLOR_WHITE)
+                center_text("and they\'re scared off by respectable-looking stuff.", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*5), pyxel.COLOR_WHITE)
+
+            elif chosen_tip == 2:
+                center_text("Hey! Check out my SPIKE FIELD!", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+                center_text('Isn\'t it intimidating?', SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+                center_text("I sure wouldn\'t want to hang out here!", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
+
+            elif chosen_tip == 3:
+                center_text("You know, you can\'t go wrong with a MONOLITH.", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+                center_text('We\'re making them out of all sorts of stuff now too!', SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+                center_text("Who knows how long they might last!", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
+
+            elif chosen_tip == 4:
+                center_text('Sounds crazy, but I\'m really into CULTS.', SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+                center_text("I think if we built the right one,", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+                center_text("an Atomic Priesthood could rise that would protect", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
+                center_text("the knowledge of nuclear physics for all eternity!", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3), pyxel.COLOR_WHITE)
+                center_text("Hey, where are you going?", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4), pyxel.COLOR_WHITE)
+
+        center_text("- CLICK TO CONTINUE -", page_width=SCREEN_WIDTH, y_coord=3*SCREEN_HEIGHT//4,
+                        text_color=pyxel.COLOR_WHITE)
+
 
 App()

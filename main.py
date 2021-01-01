@@ -12,6 +12,7 @@ from player import Player
 from map import Map
 import marker
 import simulate
+import button
 
 YEARS_IN_PHASE=400
 YEARS_TO_WIN=10000
@@ -41,9 +42,18 @@ class App: #pylint: disable=too-many-instance-attributes
         self.map = Map()
         self.which_tip_index = None
         self.available_tips = [0, 1, 2, 3, 4] #5 possible tips to share with player
+        self.continue_button = button.Button(
+            x_coord=SCREEN_WIDTH/2-30,
+            y_coord=180,
+            width=60,
+            height=20,
+            text="CONTINUE",
+            button_color=0
+        )
         self.simulation_screen = None
         pyxel.load("justmessingaround.pyxres")
         pyxel.run(self.update, self.draw)
+
 
     def reset_game(self):
         """Resets state to the beginning of a new game"""
@@ -80,11 +90,11 @@ class App: #pylint: disable=too-many-instance-attributes
 
     def update_intro(self):
         """Handles updates while the player is on the title screen"""
-        if pyxel.btnp(pyxel.KEY_SPACE):
+        if self.continue_button.is_clicked():
             self.screen = Screen.DIRECTIONS
 
     def update_directions(self):
-        if pyxel.btnp(pyxel.KEY_ENTER):
+        if self.continue_button.is_clicked():
             self.screen = Screen.SHOP
 
     def update_shop(self):
@@ -138,7 +148,7 @@ class App: #pylint: disable=too-many-instance-attributes
 
     def update_results(self):
         """Handles updates while the players is on the results screen"""
-        if pyxel.btnp(pyxel.KEY_ENTER):
+        if self.continue_button.is_clicked():
             if self.latest_simulation_failed or self.phase == YEARS_TO_WIN//YEARS_IN_PHASE:
                 self.reset_game()
                 self.screen = Screen.TITLE
@@ -151,7 +161,7 @@ class App: #pylint: disable=too-many-instance-attributes
         if self.which_tip_index is None and len(self.available_tips) != 0: #make sure array of available tips isn't empty
             self.which_tip_index = random.randint(0,len(self.available_tips)-1) #select a random tip index
 
-        if pyxel.btnp(pyxel.KEY_SPACE): #remove the tip from the array of possible tips after it's been seen
+        if self.continue_button.is_clicked(): #remove the tip from the array of possible tips after it's been seen
             self.screen = Screen.SHOP
             if self.which_tip_index is not None:
                 del self.available_tips[self.which_tip_index]
@@ -187,15 +197,16 @@ class App: #pylint: disable=too-many-instance-attributes
 
     def draw_intro(self): 
         pyxel.cls(pyxel.COLOR_BLACK)
-        pyxel.mouse(visible=False)
+        pyxel.mouse(visible=True)
         center_text("Doctor!  I\'m glad you\'re here!", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
-        center_text("- PRESS SPACE TO CONTINUE -", page_width=SCREEN_WIDTH, y_coord=3*SCREEN_HEIGHT//4, text_color=pyxel.COLOR_WHITE)
+        self.continue_button.draw()
 
     def draw_directions(self): 
         pyxel.cls(pyxel.COLOR_BLACK)
-        pyxel.mouse(visible=False)
+        pyxel.mouse(visible=True)
         center_text("To start, we\'ll give you a budget of $X.", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
-        center_text("- PRESS ENTER TO CONTINUE -", page_width=SCREEN_WIDTH, y_coord=3*SCREEN_HEIGHT//4, text_color=pyxel.COLOR_WHITE)
+        self.continue_button.draw()
+
 
     def draw_shop(self):
         """Draws frames while the player is on the shop screen"""
@@ -221,28 +232,25 @@ class App: #pylint: disable=too-many-instance-attributes
         """Draws frames while the player is on the results screen"""
         pyxel.cls(pyxel.COLOR_BLACK)
 
-        pyxel.mouse(visible=False)
+        pyxel.mouse(visible=True)
         if self.simulations_run < self.phase:
             center_text("Simulating...", SCREEN_WIDTH, SCREEN_HEIGHT//2, pyxel.COLOR_WHITE)
         elif self.latest_simulation_failed:
             center_text("Waste Repository Breached. Game Over.", SCREEN_WIDTH, SCREEN_HEIGHT//2, pyxel.COLOR_WHITE)
-            center_text("- PRESS ENTER TO CONTINUE -", page_width=SCREEN_WIDTH, y_coord=3*SCREEN_HEIGHT//4,
-                        text_color=pyxel.COLOR_WHITE)
+            self.continue_button.draw()
         else:
             if self.phase == YEARS_TO_WIN//YEARS_IN_PHASE:
                 center_text("YOU WIN!", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
                 center_text("Your facility went 10,000 years undisturbed", SCREEN_WIDTH,
                             SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
-                center_text("- PRESS ENTER TO CONTINUE -", page_width=SCREEN_WIDTH, y_coord=3*SCREEN_HEIGHT//4,
-                            text_color=pyxel.COLOR_WHITE)
+                self.continue_button.draw()
             else:
                 center_text("Your facility went " + str(self.phase*YEARS_IN_PHASE) + " years undisturbed",
                             SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
                 center_text("You are awarded a larger budget to try and last " + \
                             str((self.phase+1)*YEARS_IN_PHASE) + " years",
                             SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
-                center_text("- PRESS ENTER TO CONTINUE -", page_width=SCREEN_WIDTH, y_coord=3*SCREEN_HEIGHT//4,
-                            text_color=pyxel.COLOR_WHITE)
+                self.continue_button.draw()
     
     def draw_tip(self):
         pyxel.cls(pyxel.COLOR_BLACK)
@@ -284,7 +292,7 @@ class App: #pylint: disable=too-many-instance-attributes
                 center_text("the knowledge of nuclear physics for all eternity!", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3), pyxel.COLOR_WHITE)
                 center_text("Hey, where are you going?", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4), pyxel.COLOR_WHITE)
 
-        center_text("- PRESS SPACE TO CONTINUE -", page_width=SCREEN_WIDTH, y_coord=3*SCREEN_HEIGHT//4, text_color=pyxel.COLOR_WHITE)
+        self.continue_button.draw()
 
 
 App()

@@ -91,7 +91,7 @@ class App: #pylint: disable=too-many-instance-attributes
     def update_results(self):
         """Handles updates while the players is on the results screen"""
         if self.simulations_run < self.phase:
-            self.latest_simulation_failed, simulation_log = simulate.simulate(self.phase*YEARS_IN_PHASE,
+            self.latest_simulation_failed, simulation_log, _ = simulate.simulate(self.phase*YEARS_IN_PHASE,
                                                                               self.map.map,
                                                                               self.player.global_buffs)
             print(simulation_log)

@@ -81,6 +81,7 @@ class App: #pylint: disable=too-many-instance-attributes
             self.shop = None # Reset the shop
             print("Headed to simulation")
             self.screen = Screen.SIMULATION
+            Map().cells = []
         if self.map.back_button.is_clicked():
             self.screen = Screen.SHOP
 

@@ -3,11 +3,8 @@
 from enum import Enum
 import copy
 import pyxel
-<<<<<<< HEAD
 import random
-=======
 from simulation_screen import SimulationScreen
->>>>>>> a323a784368c5761085e7fdd269ee2e21e3086bf
 from util import center_text
 from const import SCREEN_WIDTH, SCREEN_HEIGHT
 from shop import Shop

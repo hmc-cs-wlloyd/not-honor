@@ -16,6 +16,10 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
     event_list = []
     map_list = []
     time_period_map = copy.deepcopy(site_map)
+    #set default stats
+    usability, visibility, respectability, likability, \
+        understandability = (10,0,0,0,0)
+    
 
     for i in range(int(years/200)):
         
@@ -25,7 +29,8 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         sot = state_of_tech(current_year)
         print("state of tech is " + str(sot))
 
-        event, event_year = get_random_event(current_year, sot, site_map)
+        event, event_year = get_random_event(current_year, sot, site_map,usability,
+                                             visibility, respectability, likability, understandability)
         if event != "":
             print ("In the year " + str(event_year) + ", " + str(event) +
                     " happened!")            
@@ -134,7 +139,8 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
 
     return dead, event_list, map_list
 
-def get_random_event(current_year, sot, site_map):
+def get_random_event(current_year, sot, site_map,usability, visibility, respectability, likability,
+        understandability):
     """Potentially generates an event given a year"""
 
     event = ""
@@ -184,11 +190,14 @@ def get_random_event(current_year, sot, site_map):
     elif sot == 1 and die < .45:
         event = "smog"
 
-    elif sot == 1 and year < 3000 and die < .47:
+    elif sot == 1 and current_year < 3000 and die < .47:
         event = "klingon"
 
     elif sot == 2 and die < .45:
         event = "turtle"
+
+    elif sot > 0 and current_year >2500 and respectability>3 and die <.4:
+        event == "park"
     
 
     return event, event_year
@@ -272,6 +281,7 @@ def get_stats(site_map, global_buffs, current_year,sot, event_list): #pylint: di
     turtle = any("cat-holics" in tup for tup in event_list)
     goths = any("goths" in tup for tup in event_list)
     faultline = any("faultline" in tup for tup in event_list)
+    park = any("park" in tup for tup in event_list)
 
     for buff in global_buffs:
         values_list = get_stats_for_marker(buff, current_year, sot,klingon, turtle,goths, faultline)
@@ -324,6 +334,9 @@ def get_stats(site_map, global_buffs, current_year,sot, event_list): #pylint: di
         usability += 20
     if smog:
         visibility -= 20
+    if park:
+        usability -= 20
+        likability += 15
     
     
     print("Pre-normalization understandability: ", understandability, " visibility: ", visibility, " respectability: ", respectability, " likability: ", likability, " usability: ", usability)

@@ -33,7 +33,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         #handle instakill events
         if any("aliens" in tup for tup in event_list) or any("cult-dig" in tup for tup in event_list):
             dead = True
-            return dead, event_list
+            return dead, event_list, map_list
 
         #handle events that change the map
         vikings = (event =="vikings")
@@ -60,15 +60,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         print("200 year probability of mining is " + str(miners))
         mine_die = random.random()
         if mine_die < miners:
-            mine_year = current_year - random.randint(1,199)
-            if mine_year <= event_year:
-                mine_year = event_year + 1
+            mine_year = random.randint(event_year+1,current_year-1)
             print("I rolled " + str(mine_die) +
                   ", so mining did happen in year " +
                   str(mine_year))
             event_list.append((mine_year, "miners"))
             dead = True
-            return dead, event_list
+            return dead, event_list, map_list
         print("I rolled " + str(mine_die) +
               ", so no mining happened by year " + str(current_year))
 
@@ -77,15 +75,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
               str(archaeologists))
         arch_die = random.random()
         if arch_die < archaeologists:
-            arch_year = current_year - random.randint(1,199)
-            if arch_year <= event_year:
-                arch_year = event_year + 1
+            arch_year = random.randint(event_year+1,current_year-1)
             print("I rolled " + str(arch_die) +
                   ", so archaeology did happen in year " +
                   str(arch_year))
             event_list.append((arch_year, "archaeologists"))
             dead = True
-            return dead, event_list
+            return dead, event_list, map_list
         print("I rolled " + str(arch_die) +
               ", so no archaeology happened by year " + str(current_year))
 
@@ -94,15 +90,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
               str(dams))
         dam_die = random.random()
         if dam_die < dams:
-            dam_year = current_year - random.randint(1,199)
-            if dam_year <= event_year:
-                dam_year = event_year + 1
+            dam_year = random.randint(event_year+1,current_year-1)
             print("I rolled " + str(dam_die) +
                   ", so dam bulidng did happen in year " +
                   str(dam_year))
             dead = True
             event_list.append((dam_year, "dams"))
-            return dead, event_list
+            return dead, event_list, map_list
         print("I rolled " + str(dam_die) +
               ", so no dam building happened by year " + str(current_year))
 
@@ -111,15 +105,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
               str(teens))
         teen_die = random.random()
         if teen_die < teens:
-            teen_year = current_year - random.randint(1,199)
-            if teen_year <= event_year:
-                teen_year = event_year + 1
+            teen_year = random.randint(event_year+1,current_year-1)
             print("I rolled " + str(teen_die) +
                   ", so teens did happen in year " +
                   str(teen_year))
             dead = True
             event_list.append((teen_year, "teens"))
-            return dead, event_list
+            return dead, event_list, map_list
         print("I rolled " + str(teen_die) +
               ", so no teens happened by year " + str(current_year))
 
@@ -127,9 +119,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         print("200 year probability of transit tunnel is " + str(transit_tunnel))
         transit_tunnel_die = random.random()
         if transit_tunnel_die < transit_tunnel:
-            transit_tunnel_year = current_year - random.randint(1, 199)
-            if transit_tunnel_year <= event_year:
-                transit_tunnel_year = event_year + 1
+            transit_tunnel_year = random.randint(event_year+1,current_year-1)
             print("I rolled " + str(transit_tunnel_die) + ", so a transit tunnel breached the site in year " +str(
                 transit_tunnel_year))
             dead = True

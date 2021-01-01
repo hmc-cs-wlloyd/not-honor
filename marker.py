@@ -857,6 +857,24 @@ the site will be safe.\nCould be used to calculate age",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
         tags=["non-purchasable"]
+    ),
+    "null": Marker(
+        name="Null Marker",
+        description="",
+        icon_coords=(0, 0),
+        icon_image = 1,
+        base_cost=0,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (0,0,0),
+        visibility_decay = "constant",
+        respectability_init = (0,0,0),
+        respectability_decay = "constant",
+        likability_init = (0,0,0),
+        likability_decay = "constant",
+        understandability_init = (0,0,0),
+        understandability_decay = "constant",
+        tags=["non-purchasable"]
     )
 }
 

@@ -25,19 +25,19 @@ class Map: #pylint: disable=too-many-instance-attributes
         self.clicked_inven = None
 
         self.map = [
-        ["dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "sand", "light-sand"],
-        ["dark-sand", "dark-sand", "dark-sand", "dark-sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "dark-sand", "sand", "sand", "sand"],
-        ["dark-sand", "dark-sand", "sand", "sand", "sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "sand", "sand", "sand", "sand", "dark-sand"],
-        ["dark-sand", "sand", "sand", "light-sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "light-sand", "sand", "dark-sand", "dark-sand"],
+        ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
 
-        ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "sand", "sand", "dark-sand"],
-        ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "core-top-left", "core-top-right", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "sand", "dark-sand"],
-        ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "core-bottom-left", "core-bottom-right", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "sand", "dark-sand"],
-        ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "sand", "sand", "dark-sand"],
-        ["dark-sand", "sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "light-sand", "light-sand", "light-sand", "sand", "dark-sand", "dark-sand"],
-        ["dark-sand", "dark-sand", "sand", "sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "sand", "sand", "sand", "sand", "sand", "dark-sand", "dark-sand"],
-        ["dark-sand", "dark-sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "dark-sand", "dark-sand", "sand", "dark-sand", "dark-sand", "dark-sand"],
-        ["dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand"]
+        ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"]
         ]
 
         self.simulate_button = button.Button(
@@ -156,11 +156,13 @@ class Map: #pylint: disable=too-many-instance-attributes
 
     def draw(self, player, is_simulation=False):
         """Draws map to the screen"""
+        pyxel.bltm(0, 0, 7, 0, 232, 32, 24)
         for row in range(12): #draw the terrain
             for col in range(16):
-                pyxel.blt(col*16, row*16, marker.markers[self.map[row][col]].icon_image,
-                          marker.markers[self.map[row][col]].icon_coords[0],
-                          marker.markers[self.map[row][col]].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
+                if self.map[row][col] != "null":
+                    pyxel.blt(col*16, row*16, marker.markers[self.map[row][col]].icon_image,
+                              marker.markers[self.map[row][col]].icon_coords[0],
+                              marker.markers[self.map[row][col]].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
 
         if not is_simulation:
             self.simulate_button.draw()

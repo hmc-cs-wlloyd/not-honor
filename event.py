@@ -15,10 +15,11 @@ class Event: #pylint: disable=too-many-instance-attributes,too-few-public-method
 events = {
     "aliens": Event(
         name="Alien Invasion",
-        description="An alien spaceship has crashed directly into the\n\
-storage site! Containment is instantly breached.",
+        description="An alien spaceship has crashed\n\
+directly into the storage site!\n\
+Containment is instantly breached.",
         icon_coords=(1,97),
-        icon_size = (61,45),
+        icon_size = (62,46),
         icon_image = 0,
         fatal = True
     ),
@@ -35,10 +36,10 @@ find your spooky monuments enjoyable.",
     "vikings": Event(
         name="Viking Raid",
         description="Desert vikings have pillaged the site!\n\
-They devote their attention to your prettiest monuments,\n\
-tearing them all down.",
+They devote their attention to your\n\
+prettiest monuments, tearing them all down.",
         icon_coords=(1,145),
-        icon_size = (61,45),
+        icon_size = (62,46),
         icon_image = 0,
         fatal = False
     ),

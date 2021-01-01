@@ -13,11 +13,12 @@ SOCIETAL_MODIFIER_WIDTH=80
 INVENTORY_WIDTH=SCREEN_WIDTH-SOCIETAL_MODIFIER_WIDTH
 CENTER_POINT_OF_CORE_X=112
 CENTER_POINT_OF_CORE_Y=96
-cells = []
 
 class Map: #pylint: disable=too-many-instance-attributes
     """A class representing the map of the waste site, including the placement of markers"""
     def __init__(self):
+        global cells
+        cells = []
         self.selected_col = None
         self.selected_row = None
         self.selected_inventory_item = None
@@ -151,7 +152,7 @@ class Map: #pylint: disable=too-many-instance-attributes
                         self.selected_inventory_item = None
         else:
             ###VISITOR SIMULATION DATA
-            for i in self.cells:
+            for i in cells:
                 i.wander()
 
     def draw(self, player, is_simulation=False):
@@ -190,7 +191,7 @@ class Map: #pylint: disable=too-many-instance-attributes
         else:
             self.next_button.draw()
             ###DRAW VISITORS###
-            for i in self.cells:
+            for i in cells:
                 i.draw()
 
 class Cell:

@@ -125,7 +125,8 @@ class Map: #pylint: disable=too-many-instance-attributes
                 if self.selected_inventory_item is None:
                     if pyxel.mouse_y > inventory_y_coord + 16: #player in inventory
                         for i in range(len(player.inventory)): #BAD ASSUMPTION THAT INVENTORY IS ONLY 1 ROW
-                            if pyxel.mouse_x >= i*16 and pyxel.mouse_x < (i*16)+16:
+                            if pyxel.mouse_x >= 5 + (i*(ICON_WIDTH + 2*INVENTORY_BOX_BORDER_THICKNESS)) and \
+                                            pyxel.mouse_x < 5 + ((i+1)*(ICON_WIDTH + 2*INVENTORY_BOX_BORDER_THICKNESS)):
                                 self.selected_inventory_item = player.inventory[i]
                                 player.inventory.remove(self.selected_inventory_item)
                                 print("SELECTED " + str(self.selected_inventory_item))
@@ -173,7 +174,11 @@ class Map: #pylint: disable=too-many-instance-attributes
                     y_coord=inventory_y_coord,
                     text_color=pyxel.COLOR_WHITE)
             for i in range(0,NUM_INVENTORY_BOXES): #draw the inventory with a border around each box
-                pyxel.rectb(5+(i*(ICON_WIDTH+(2*INVENTORY_BOX_BORDER_THICKNESS))), inventory_y_coord + ICON_HEIGHT - INVENTORY_BOX_BORDER_THICKNESS, ICON_WIDTH+(INVENTORY_BOX_BORDER_THICKNESS*2), ICON_HEIGHT+(INVENTORY_BOX_BORDER_THICKNESS*2), pyxel.COLOR_LIGHTBLUE)
+                pyxel.rectb(5+(i*(ICON_WIDTH+(2*INVENTORY_BOX_BORDER_THICKNESS))),
+                            inventory_y_coord + ICON_HEIGHT - INVENTORY_BOX_BORDER_THICKNESS,
+                            ICON_WIDTH+(INVENTORY_BOX_BORDER_THICKNESS*2),
+                            ICON_HEIGHT+(INVENTORY_BOX_BORDER_THICKNESS*2),
+                            pyxel.COLOR_LIGHTBLUE)
             player.draw_inventory(5+INVENTORY_BOX_BORDER_THICKNESS, inventory_y_coord, SCREEN_WIDTH, ICON_HEIGHT)
             
             #draw the societal features

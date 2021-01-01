@@ -211,7 +211,7 @@ def get_random_event(current_year, sot, site_map,usability, visibility, respecta
     num_monoliths =0
     for row in site_map:
         for tile in row:
-            if "monlith" in markers[tile].tags:
+            if "monolith" in markers[tile].tags:
                 num_monoliths += 1
 
     if current_year > 5000 and sot == 2:

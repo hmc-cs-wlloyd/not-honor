@@ -19,8 +19,6 @@ YEARS_TO_WIN=10000
 class Screen(Enum):
     """An enum containing all possible screens in the game"""
     TITLE = "title"
-    INTRO = "intro"
-    DIRECTIONS = "directions"
     SHOP = "shop"
     MAP = "map"
     SIMULATION = "simulation"
@@ -58,10 +56,6 @@ class App: #pylint: disable=too-many-instance-attributes
         """Updates game data each frame"""
         if self.screen == Screen.TITLE:
             self.update_title()
-        if self.screen == Screen.INTRO:
-            self.update_intro()
-        if self.screen == Screen.DIRECTIONS:
-            self.update_directions()
         if self.screen == Screen.SHOP:
             self.update_shop()
         if self.screen == Screen.MAP:
@@ -75,15 +69,6 @@ class App: #pylint: disable=too-many-instance-attributes
 
     def update_title(self):
         """Handles updates while the player is on the title screen"""
-        if pyxel.btnp(pyxel.KEY_ENTER):
-            self.screen = Screen.INTRO
-
-    def update_intro(self):
-        """Handles updates while the player is on the title screen"""
-        if pyxel.btnp(pyxel.KEY_SPACE):
-            self.screen = Screen.DIRECTIONS
-
-    def update_directions(self):
         if pyxel.btnp(pyxel.KEY_ENTER):
             self.screen = Screen.SHOP
 
@@ -135,7 +120,7 @@ class App: #pylint: disable=too-many-instance-attributes
         if self.which_tip_index is None and len(self.available_tips) != 0: #make sure array of available tips isn't empty
             self.which_tip_index = random.randint(0,len(self.available_tips)-1) #select a random tip index
 
-        if pyxel.btnp(pyxel.KEY_SPACE): #remove the tip from the array of possible tips after it's been seen
+        if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON): #remove the tip from the array of possible tips after it's been seen
             self.screen = Screen.SHOP
             if self.which_tip_index is not None:
                 del self.available_tips[self.which_tip_index]
@@ -146,10 +131,6 @@ class App: #pylint: disable=too-many-instance-attributes
         """Draws frame each frame"""
         if self.screen == Screen.TITLE:
             self.draw_title()
-        elif self.screen == Screen.INTRO:
-            self.draw_intro()
-        elif self.screen == Screen.DIRECTIONS:
-            self.draw_directions()
         elif self.screen == Screen.SHOP:
             self.draw_shop()
         elif self.screen == Screen.MAP:
@@ -168,18 +149,6 @@ class App: #pylint: disable=too-many-instance-attributes
         pyxel.blt(0, 0, 2, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
         center_text("Not a Place of Honor", page_width=SCREEN_WIDTH, y_coord=66, text_color=pyxel.COLOR_WHITE)
         center_text("- PRESS ENTER TO START -", page_width=SCREEN_WIDTH, y_coord=126, text_color=pyxel.COLOR_WHITE)
-
-    def draw_intro(self): 
-        pyxel.cls(pyxel.COLOR_BLACK)
-        pyxel.mouse(visible=False)
-        center_text("Doctor!  I\'m glad you\'re here!", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
-        center_text("- PRESS SPACE TO CONTINUE -", page_width=SCREEN_WIDTH, y_coord=3*SCREEN_HEIGHT//4, text_color=pyxel.COLOR_WHITE)
-
-    def draw_directions(self): 
-        pyxel.cls(pyxel.COLOR_BLACK)
-        pyxel.mouse(visible=False)
-        center_text("To start, we\'ll give you a budget of $X.", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
-        center_text("- PRESS ENTER TO CONTINUE -", page_width=SCREEN_WIDTH, y_coord=3*SCREEN_HEIGHT//4, text_color=pyxel.COLOR_WHITE)
 
     def draw_shop(self):
         """Draws frames while the player is on the shop screen"""
@@ -268,7 +237,8 @@ class App: #pylint: disable=too-many-instance-attributes
                 center_text("the knowledge of nuclear physics for all eternity!", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3), pyxel.COLOR_WHITE)
                 center_text("Hey, where are you going?", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4), pyxel.COLOR_WHITE)
 
-        center_text("- PRESS SPACE TO CONTINUE -", page_width=SCREEN_WIDTH, y_coord=3*SCREEN_HEIGHT//4, text_color=pyxel.COLOR_WHITE)
+        center_text("- CLICK TO CONTINUE -", page_width=SCREEN_WIDTH, y_coord=3*SCREEN_HEIGHT//4,
+                        text_color=pyxel.COLOR_WHITE)
 
 
 App()

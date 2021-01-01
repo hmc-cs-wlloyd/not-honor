@@ -70,6 +70,8 @@ class Shelf:
             self.hover_on_item = False
 
         if self.is_sold:
+            banner_padding = 2
+            pyxel.rect(self.x_coord, (self.y_coord+self.height/2)-(banner_padding/2), self.width, pyxel.FONT_HEIGHT+banner_padding, pyxel.COLOR_WHITE)
             center_text(text="Sold",
                 page_width=self.width,
                 y_coord=self.y_coord+self.height/2,

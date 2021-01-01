@@ -25,8 +25,8 @@ Containment is instantly breached.",
     ),
     "goths": Event(
         name="Rise of the Neo-Goths",
-        description="A band of 'new Visigoths' has taken over the\n\
-American Southwest. They're relatively harmless, but they\n\
+        description="A band of \'new Visigoths\' has taken over the\n\
+American Southwest. They\'re relatively harmless, but they\n\
 find your spooky monuments enjoyable.",
         icon_coords=(1,49), #not done yet
         icon_size = (61,45),
@@ -77,7 +77,7 @@ are now visible to the naked eye.",
         name="The Cat-Holic Church?",
         description="When Ray Cats move in with the dubious cult,\n\
 everyone wants to see them. People seem to have forgotten\n\
-the cats' intent, so they are seen as signs from god.",
+the cats\' intent, so they are seen as signs from god.",
         icon_coords=(16,16), #not done yet
         icon_size = (16,16),
         icon_image = 0,
@@ -126,9 +126,9 @@ Klingon within the US.",
     "turtle": Event(
         name="Turtle Invasion",
         description="An accident with genetic technology has created\n\
-a race of super-turtles. They’re really not that\n\
-different from us, but they don’t speak English well\n\
-and they don’t understand our drawings.",
+a race of super-turtles. They\’re really not that\n\
+different from us, but they don\’t speak English well\n\
+and they don\’t understand our drawings.",
         icon_coords=(1,49), #not done yet
         icon_size = (61,45),
         icon_image = 0,

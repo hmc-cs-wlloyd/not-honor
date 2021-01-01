@@ -12,17 +12,38 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
     """Runs the simulation"""
 
     dead = False
-    out_strings = []
+    event_list = []
+    map_list = []
+    time_period_map = site_map
 
     for i in range(int(years/200)):
+        
         current_year = 2000+(200*(i+1))
         print("Simulating to " + str(current_year))
 
         sot = state_of_tech(current_year)
         print("state of tech is " + str(sot))
 
+        event, event_year = get_random_event(current_year, sot, site_map)
+        if event != "":
+            print ("In the year " + str(event_year) + ", " + str(event) +
+                    " happened!")            
+        event_list.append((event_year, event))
+        
+        #handle instakill events
+        if any("aliens" in tup for tup in event_list) or any("cult-dig" in tup for tup in event_list):
+            dead = True
+            return dead, event_list, map_list
+
+        #handle events that change the map
+        vikings = (event =="vikings")
+        earthquake = (event == "earthquake")
+        faultline = (event == "faultline")
+        if vikings or earthquake or faultline:
+            time_period_map = get_modified_map(time_period_map, vikings, earthquake, faultline)
+
         usability, visibility, respectability, likability, \
-        understandability = get_stats(site_map, global_buffs, current_year, sot)
+        understandability = get_stats(time_period_map, global_buffs, current_year, sot, event_list)
 
         print("usability, visibility, respectability, likability, understandability:")
         print(usability, visibility,respectability,  likability,
@@ -39,13 +60,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         print("200 year probability of mining is " + str(miners))
         mine_die = random.random()
         if mine_die < miners:
-            mine_year = current_year - random.randint(1,199)
+            mine_year = random.randint(event_year+1,current_year-1)
             print("I rolled " + str(mine_die) +
                   ", so mining did happen in year " +
                   str(mine_year))
+            event_list.append((mine_year, "miners"))
             dead = True
-            out_strings.append("Year " + str(mine_year) + ": miners breached the site!")
-            return dead, out_strings
+            return dead, event_list, map_list
         print("I rolled " + str(mine_die) +
               ", so no mining happened by year " + str(current_year))
 
@@ -54,13 +75,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
               str(archaeologists))
         arch_die = random.random()
         if arch_die < archaeologists:
-            arch_year = current_year - random.randint(1,199)
+            arch_year = random.randint(event_year+1,current_year-1)
             print("I rolled " + str(arch_die) +
                   ", so archaeology did happen in year " +
                   str(arch_year))
+            event_list.append((arch_year, "archaeologists"))
             dead = True
-            out_strings.append("Year " + str(arch_year) + ": archaelogists breached the site!")
-            return dead, out_strings
+            return dead, event_list, map_list
         print("I rolled " + str(arch_die) +
               ", so no archaeology happened by year " + str(current_year))
 
@@ -69,13 +90,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
               str(dams))
         dam_die = random.random()
         if dam_die < dams:
-            dam_year = current_year - random.randint(1,199)
+            dam_year = random.randint(event_year+1,current_year-1)
             print("I rolled " + str(dam_die) +
                   ", so dam bulidng did happen in year " +
                   str(dam_year))
             dead = True
-            out_strings.append("Year " + str(dam_year) + ": dam builders breached the site!")
-            return dead, out_strings
+            event_list.append((dam_year, "dams"))
+            return dead, event_list, map_list
         print("I rolled " + str(dam_die) +
               ", so no dam building happened by year " + str(current_year))
 
@@ -84,13 +105,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
               str(teens))
         teen_die = random.random()
         if teen_die < teens:
-            teen_year = current_year - random.randint(1,199)
+            teen_year = random.randint(event_year+1,current_year-1)
             print("I rolled " + str(teen_die) +
                   ", so teens did happen in year " +
                   str(teen_year))
             dead = True
-            out_strings.append("Year " + str(teen_year) + ": teens breached the site!")
-            return dead, out_strings
+            event_list.append((teen_year, "teens"))
+            return dead, event_list, map_list
         print("I rolled " + str(teen_die) +
               ", so no teens happened by year " + str(current_year))
 
@@ -98,26 +119,19 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         print("200 year probability of transit tunnel is " + str(transit_tunnel))
         transit_tunnel_die = random.random()
         if transit_tunnel_die < transit_tunnel:
-            transit_tunnel_year = current_year - random.randint(1, 199)
+            transit_tunnel_year = random.randint(event_year+1,current_year-1)
             print("I rolled " + str(transit_tunnel_die) + ", so a transit tunnel breached the site in year " +str(
                 transit_tunnel_year))
             dead = True
-            out_strings.append(
-                "Year " + str(transit_tunnel_year) + ": site breached during the construction of a transit tunnel!")
-            return dead, out_strings
+            event_list.append((transit_tunnel_year, "tunnel"))
+            return dead, event_list        
         print("I rolled " + str(transit_tunnel_die) + ", so no transit tunnel disrupted the site by year " + str(
             current_year))
+        print(str(current_year) + ": " + str(dead))
 
-        event, event_year = get_random_event(current_year, sot, site_map)
-        if event != "":
-            print ("In the year " + str(event_year) + ", " + str(event) +
-                    " happened!")
-            print()
-            out_strings.append("Year "+ str(event_year) + ": " + str(event) + " happened!")
-        print("Nothing interesting happened")
-        print()
+        map_list.append(time_period_map)
 
-    return dead, out_strings
+    return dead, event_list, map_list
 
 def get_random_event(current_year, sot, site_map):
     """Potentially generates an event given a year"""
@@ -128,14 +142,19 @@ def get_random_event(current_year, sot, site_map):
 
 
     die = random.random()
+    num_monoliths =0
+    for row in site_map:
+        for tile in row:
+            if "monlith" in markers[tile].tags:
+                num_monoliths += 1
 
     if current_year > 5000 and sot == 2:
-        if die < .05:
+        if die < .1:
             event = "aliens"
 
     elif current_year > 2400:
         if die < .1:
-            event = "culture_shift"
+            event = "goths"
 
     elif current_year > 2600 and sot == 0:
         if die < .1:
@@ -147,6 +166,29 @@ def get_random_event(current_year, sot, site_map):
     elif any("bad-cult" in row for row in site_map) and \
          current_year > 3000 and die <.5:
         event = "cult-dig"
+
+    elif die < .3:
+        event = "faultline"
+
+    elif any("bad-cult" in row for row in site_map) and any("ray-cats" in row for row in site_map)and \
+         current_year > 3000 and die <.5:
+        event = "cat-holics"
+
+    elif num_monoliths > 5 and die <.4:
+        event = "stonehenge"
+
+    elif die < .4:
+        event = "flood"
+
+    elif sot == 1 and die < .45:
+        event = "smog"
+
+    elif sot == 1 and year < 3000 and die < .47:
+        event = "klingon"
+
+    elif sot == 2 and die < .45:
+        event = "turtle"
+    
 
     return event, event_year
 
@@ -210,7 +252,7 @@ def state_of_tech(current_year):
     return tech
 
 
-def get_stats(site_map, global_buffs, current_year,sot): #pylint: disable=too-many-branches
+def get_stats(site_map, global_buffs, current_year,sot, event_list): #pylint: disable=too-many-branches
     """gives the 5 stats given your equipment, year, and state of tech"""
 
     usability = 100
@@ -219,8 +261,19 @@ def get_stats(site_map, global_buffs, current_year,sot): #pylint: disable=too-ma
     respectability = 0
     understandability = 0
 
+    
+    #stat changes for events
+    catholics = any("cat-holics" in tup for tup in event_list)
+    stonehenge = any("stonehenge" in tup for tup in event_list)
+    flood = any("flood" in tup for tup in event_list)
+    smog = any("somg" in tup for tup in event_list)
+    klingon = any("cat-holics" in tup for tup in event_list)
+    turtle = any("cat-holics" in tup for tup in event_list)
+    goths = any("goths" in tup for tup in event_list)
+    faultline = any("faultline" in tup for tup in event_list)
+
     for buff in global_buffs:
-        values_list = get_stats_for_marker(buff, current_year, sot)
+        values_list = get_stats_for_marker(buff, current_year, sot,klingon, turtle,goths, faultline)
 
         usability += values_list[0]
         visibility += values_list[1]
@@ -230,7 +283,7 @@ def get_stats(site_map, global_buffs, current_year,sot): #pylint: disable=too-ma
 
     for row in site_map:
         for entry in row:
-            values_list = get_stats_for_marker(entry, current_year, sot)
+            values_list = get_stats_for_marker(entry, current_year, sot,klingon, turtle,goths, faultline)
 
             usability += values_list[0]
             visibility += values_list[1]
@@ -248,6 +301,7 @@ def get_stats(site_map, global_buffs, current_year,sot): #pylint: disable=too-ma
         likability *= .8
         understandability *= .8
 
+
     usability, visibility, respectability, likability, understandability = get_adjacency_bonus(site_map,
                                                                                                usability,
                                                                                                visibility,
@@ -255,7 +309,22 @@ def get_stats(site_map, global_buffs, current_year,sot): #pylint: disable=too-ma
                                                                                                likability,
                                                                                                understandability,
                                                                                                current_year,
-                                                                                               sot)
+                                                                                               sot,
+                                                                                               klingon,
+                                                                                               turtle,
+                                                                                               goths,
+                                                                                               faultline)
+
+    if catholics:
+        likability += 10
+    if stonehenge:
+        likability += 7
+    if flood:
+        usability += 20
+    if smog:
+        visibility -= 20
+    
+    
     print("Pre-normalization understandability: ", understandability, " visibility: ", visibility, " respectability: ", respectability, " likability: ", likability, " usability: ", usability)
     return normalize_stat(usability), normalize_stat(visibility), normalize_stat(respectability),\
         normalize_stat(likability), normalize_stat(understandability)
@@ -266,11 +335,41 @@ def normalize_stat(stat_value):
     stat_value = max(stat_value, -100)
     return stat_value / 100
 
-def get_stats_for_marker(marker_id, current_year, sot):
+def get_stats_for_marker(marker_id, current_year, sot, klingon, turtle, goths, faultline):
     """Gets the stats for a particular marker, adjusted for decay and state of technology"""
-    inits_list = [markers[marker_id].usability_init, markers[marker_id].visibility_init,
-                  markers[marker_id].respectability_init, markers[marker_id].likability_init,
-                  markers[marker_id].understandability_init]
+    inits_list = [list(markers[marker_id].usability_init),
+                  list(markers[marker_id].visibility_init),
+                  list(markers[marker_id].respectability_init),
+                  list(markers[marker_id].likability_init),
+                  list(markers[marker_id].understandability_init)]
+    
+    #very special case for goth event - flip likability for spoopy stuff
+    if goths:
+        if "spooky" in markers[marker_id].tags:
+            inits_list[3][0] = -1* inits_list[3][0]
+            inits_list[3][1] = -1* inits_list[3][1]
+            inits_list[3][2] = -1* inits_list[3][2]
+    #special case for klingon event: understandability down
+    if klingon:
+        if "linguistic" in markers[marker_id].tags:
+            inits_list[4][0] = .5* inits_list[4][0]
+            inits_list[4][1] = .5* inits_list[4][1]
+            inits_list[4][2] = .5* inits_list[4][2]
+    #special case for turtles! understandability down for more stuff
+    if turtle:
+        if "linguistic" in markers[marker_id].tags or "pictoral" in markers[marker_id].tags:
+            inits_list[4][0] = .7* inits_list[4][0]
+            inits_list[4][1] = .7* inits_list[4][1]
+            inits_list[4][2] = .7* inits_list[4][2]
+    #faultline: vis up for buried markers
+    if faultline:
+        if "buried" in markers[marker_id].tags:
+            inits_list[1][0] = 2* inits_list[1][0]
+            inits_list[1][1] = 2* inits_list[1][1]
+            inits_list[1][2] = 2* inits_list[1][2]
+        
+            
+    
     decays_list =[markers[marker_id].usability_decay, markers[marker_id].visibility_decay,
                   markers[marker_id].respectability_decay, markers[marker_id].likability_decay,
                   markers[marker_id].understandability_decay]
@@ -304,14 +403,14 @@ def get_stats_for_marker(marker_id, current_year, sot):
     return values_list
 
 def get_adjacency_bonus(site_map,usability, visibility, respectability, likability, #pylint: disable=too-many-arguments, too-many-locals
-        understandability, current_year, sot):
+        understandability, current_year, sot, klingon, turtle, goths, faultline):
     """checks if anything on the map gets adjacency bonus and modifies stats directly"""
     #right now, just checking for a vis bonus tag and giving bonus to vis
     visibility += get_visibility_adjacency_bonus(site_map)
 
     understandability += get_synergy_partnership_bonus(site_map)
 
-    spooky_respectability_modifier, spooky_likability_modifier = get_spooky_adjacency_bonus(site_map)
+    spooky_respectability_modifier, spooky_likability_modifier = get_spooky_adjacency_bonus(site_map, goths)
     respectability += spooky_respectability_modifier
     likability += spooky_likability_modifier
 
@@ -319,7 +418,7 @@ def get_adjacency_bonus(site_map,usability, visibility, respectability, likabili
 
     terraforming_usability_modifier, terraforming_visibility_modifier, terraforming_respectability_modifier,\
             terraforming_likability_modifier, terraforming_understandability_modifier = \
-            get_massive_terraforming_bonus(site_map, current_year, sot)
+            get_massive_terraforming_bonus(site_map, current_year, sot,klingon, turtle,goths, faultline)
     usability += terraforming_usability_modifier
     visibility += terraforming_visibility_modifier
     respectability += terraforming_respectability_modifier
@@ -419,7 +518,7 @@ def get_standing_stones_bonus(site_map):
     return usability_penalty, respectability_bonus
 
 
-def get_massive_terraforming_bonus(site_map, current_year, sot):
+def get_massive_terraforming_bonus(site_map, current_year, sot,klingon, turtle,goths, faultline):
     """Calculates the bonus to all stats for multiple contiguous terraforming markers of the same type"""
     usability_bonus = 0
     visibility_bonus = 0
@@ -429,7 +528,7 @@ def get_massive_terraforming_bonus(site_map, current_year, sot):
     for row_num in range(len(site_map)): #pylint: disable=consider-using-enumerate, too-many-nested-blocks
         for col_num in range(len(site_map[row_num])):
             this_marker = site_map[row_num][col_num]
-            this_marker_stats = get_stats_for_marker(this_marker, current_year, sot)
+            this_marker_stats = get_stats_for_marker(this_marker, current_year, sot, klingon, turtle,goths, faultline)
             if markers[this_marker].is_terraforming():
                 contiguous_markers_in_block = get_like_contiguous_markers(site_map, row_num, col_num)
                 usability_bonus += ((contiguous_markers_in_block-1)*.05)*this_marker_stats[0]
@@ -455,7 +554,7 @@ def get_pro_educational_adjacency_bonus(site_map):
 
     return understandability_bonus
 
-def get_spooky_adjacency_bonus(site_map):
+def get_spooky_adjacency_bonus(site_map, goths):
     """Calculates the site's respectability bonus and likability penalty for adjacent markers with the spooky tag"""
     respectability_bonus = 0
     likability_penalty = 0
@@ -467,7 +566,10 @@ def get_spooky_adjacency_bonus(site_map):
                 for neighbor in neighbors:
                     if markers[neighbor].is_spooky():
                         respectability_bonus += .5
-                        likability_penalty -= .5
+                        if goths:
+                            likability_penalty += .5
+                        else:
+                            likability_penalty -= .5
 
     return respectability_bonus, likability_penalty
 
@@ -664,3 +766,25 @@ def transit_tunnel_prob(state_of_technology, understandability, visibility):
     else:
         base_probability = .1
     return base_probability*(1-awareness_of_danger)
+
+def get_modified_map(time_period_map, vikings, earthquake, faultline):
+    """changes map based on 3 events"""
+    new_map = time_period_map
+    for row_num in range(len(time_period_map)):
+        for col_num in range(len(time_period_map[row_num])):
+            if vikings:
+                if time_period_map[row_num][col_num] == "attractive-monument":
+                    new_map[row_num][col_num] = "ruined-attractive-monument"
+                elif time_period_map[row_num][col_num] == "visitor-center":
+                    new_map[row_num][col_num] = "ruined-visitor-center"
+                elif time_period_map[row_num][col_num] == "atomic-flowers":
+                    new_map[row_num][col_num]= "ruined-atomic-flowers"
+            if earthquake or faultline:
+                if time_period_map[row_num][col_num] == "granite-monolith":
+                    new_map[row_num][col_num] = "ruined-granite-monolith"
+                elif time_period_map[row_num][col_num] == "metal-monolith":
+                    new_map[row_num][col_num] = "ruined-metal-monolith"
+                elif time_period_map[row_num][col_num] == "wooden-monolith":
+                    new_map[row_num][col_num] = "ruined-wooden-monolith"
+    return new_map
+                    

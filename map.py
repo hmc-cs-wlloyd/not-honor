@@ -40,12 +40,21 @@ class Map: #pylint: disable=too-many-instance-attributes
         ["dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand"]
         ]
 
-        self.results_button = button.Button(
-            x_coord=SCREEN_WIDTH - 35,
+        self.simulate_button = button.Button(
+            x_coord=SCREEN_WIDTH - 45,
+            y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET,
+            width=40,
+            height=9*MAP_BOTTOM_OFFSET/10,
+            text="Simulate",
+            button_color=pyxel.COLOR_GRAY
+        )
+
+        self.next_button = button.Button(
+            x_coord=(SCREEN_WIDTH-30) // 2,
             y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET,
             width=30,
             height=9*MAP_BOTTOM_OFFSET/10,
-            text="Results",
+            text="Next",
             button_color=pyxel.COLOR_GRAY
         )
 
@@ -106,81 +115,83 @@ class Map: #pylint: disable=too-many-instance-attributes
                              allowable_core_distance=0)#add one rogue that can travel all the way to center
         cells.append(rogue_visitor)
 
-    def update(self, player):
+    def update(self, player, is_simulation=False):
         """Updates the map state"""
-        if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON): #get the selected square
-            self.selected_col = int(pyxel.mouse_x/16)
-            self.selected_row = int(pyxel.mouse_y/16)
+        if not is_simulation: #pylint: disable=too-many-nested-blocks
+            if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON): #get the selected square
+                self.selected_col = int(pyxel.mouse_x/16)
+                self.selected_row = int(pyxel.mouse_y/16)
 
-            inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN
-            if self.selected_inventory_item is None:
-                if pyxel.mouse_y > inventory_y_coord + 16: #player in inventory
-                    for i in range(len(player.inventory)): #BAD ASSUMPTION THAT INVENTORY IS ONLY 1 ROW
-                        if pyxel.mouse_x >= i*16 and pyxel.mouse_x < (i*16)+16:
-                            self.selected_inventory_item = player.inventory[i]
-                            player.inventory.remove(self.selected_inventory_item)
-                            print("SELECTED " + str(self.selected_inventory_item))
-                            self.clicked_inven = True
-            else: #holding a defense
-                if pyxel.mouse_y < inventory_y_coord: #player in map
-                    self.clicked_inven = False
+                inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN
+                if self.selected_inventory_item is None:
+                    if pyxel.mouse_y > inventory_y_coord + 16: #player in inventory
+                        for i in range(len(player.inventory)): #BAD ASSUMPTION THAT INVENTORY IS ONLY 1 ROW
+                            if pyxel.mouse_x >= i*16 and pyxel.mouse_x < (i*16)+16:
+                                self.selected_inventory_item = player.inventory[i]
+                                player.inventory.remove(self.selected_inventory_item)
+                                print("SELECTED " + str(self.selected_inventory_item))
+                                self.clicked_inven = True
+                else: #holding a defense
+                    if pyxel.mouse_y < inventory_y_coord: #player in map
+                        self.clicked_inven = False
 
-        if self.selected_col is not None and self.selected_row is not None: #on square selection...
-            if self.clicked_inven is False: #place defense if possible on map
-                if self.selected_inventory_item not in player.inventory and \
-                   self.selected_inventory_item is not None:
+            if self.selected_col is not None and self.selected_row is not None: #on square selection...
+                if self.clicked_inven is False: #place defense if possible on map
+                    if self.selected_inventory_item not in player.inventory and \
+                       self.selected_inventory_item is not None:
 
-                    pyxel.blt(self.selected_col*16, self.selected_row*16,
-                              marker.markers[self.selected_inventory_item].icon_image,
-                              marker.markers[self.selected_inventory_item].icon_coords[0],
-                              marker.markers[self.selected_inventory_item].icon_coords[1],
-                              ICON_WIDTH, ICON_HEIGHT)
-                    self.map[self.selected_row][self.selected_col] = self.selected_inventory_item #update self.map
+                        pyxel.blt(self.selected_col*16, self.selected_row*16,
+                                  marker.markers[self.selected_inventory_item].icon_image,
+                                  marker.markers[self.selected_inventory_item].icon_coords[0],
+                                  marker.markers[self.selected_inventory_item].icon_coords[1],
+                                  ICON_WIDTH, ICON_HEIGHT)
+                        self.map[self.selected_row][self.selected_col] = self.selected_inventory_item #update self.map
 
-                    self.clicked_inven = None
-                    self.selected_inventory_item = None
+                        self.clicked_inven = None
+                        self.selected_inventory_item = None
+        else:
+            ###VISITOR SIMULATION DATA
+            for i in self.cells:
+                i.wander()
 
-        ###VISITOR SIMULATION DATA
-        for i in cells:
-            i.wander()
-
-    def draw(self, player):
+    def draw(self, player, is_simulation=False):
         """Draws map to the screen"""
-        self.results_button.draw()
-        self.back_button.draw()
-
         for row in range(12): #draw the terrain
             for col in range(16):
                 pyxel.blt(col*16, row*16, marker.markers[self.map[row][col]].icon_image,
                           marker.markers[self.map[row][col]].icon_coords[0],
                           marker.markers[self.map[row][col]].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
 
-        inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN
-        center_text("Inventory", #draw the inventory
-                page_width=INVENTORY_WIDTH,
-                x_coord=0,
-                y_coord=inventory_y_coord,
-                text_color=pyxel.COLOR_WHITE)
-        player.draw_inventory(0, inventory_y_coord, INVENTORY_WIDTH, ICON_HEIGHT) #BAD ASSUMPTION THAT INVENTORY IS ONLY 1 ROW
+        if not is_simulation:
+            self.simulate_button.draw()
+            self.back_button.draw()
 
-        center_text("Societal Features", #draw the inventory
-                page_width=SOCIETAL_MODIFIER_WIDTH,
-                x_coord=INVENTORY_WIDTH,
-                y_coord=inventory_y_coord,
-                text_color=pyxel.COLOR_WHITE)
-        player.draw_global_buffs(INVENTORY_WIDTH, inventory_y_coord, SOCIETAL_MODIFIER_WIDTH, ICON_HEIGHT)
+            inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN
+            center_text("Inventory", #draw the inventory
+                    page_width=INVENTORY_WIDTH,
+                    x_coord=0,
+                    y_coord=inventory_y_coord,
+                    text_color=pyxel.COLOR_WHITE)
+            player.draw_inventory(0, inventory_y_coord, INVENTORY_WIDTH, ICON_HEIGHT) #BAD ASSUMPTION THAT INVENTORY IS ONLY 1 ROW
 
+            center_text("Societal Features", #draw the inventory
+                    page_width=SOCIETAL_MODIFIER_WIDTH,
+                    x_coord=INVENTORY_WIDTH,
+                    y_coord=inventory_y_coord,
+                    text_color=pyxel.COLOR_WHITE)
+            player.draw_global_buffs(INVENTORY_WIDTH, inventory_y_coord, SOCIETAL_MODIFIER_WIDTH, ICON_HEIGHT)
 
-        if self.selected_inventory_item is not None: #selected defense follows mouse
-            selected_item_icon_x = marker.markers[self.selected_inventory_item].icon_coords[0]
-            selected_item_icon_y = marker.markers[self.selected_inventory_item].icon_coords[1]
-            pyxel.blt(pyxel.mouse_x, pyxel.mouse_y, 0, selected_item_icon_x, selected_item_icon_y, ICON_WIDTH,
-                      ICON_HEIGHT)
+            if self.selected_inventory_item is not None: #selected defense follows mouse
+                selected_item_icon_x = marker.markers[self.selected_inventory_item].icon_coords[0]
+                selected_item_icon_y = marker.markers[self.selected_inventory_item].icon_coords[1]
+                pyxel.blt(pyxel.mouse_x, pyxel.mouse_y, 0, selected_item_icon_x, selected_item_icon_y, ICON_WIDTH,
+                          ICON_HEIGHT)
 
-        ###DRAW VISITORS###
-        for i in cells:
-            i.draw()
-
+        else:
+            self.next_button.draw()
+            ###DRAW VISITORS###
+            for i in self.cells:
+                i.draw()
 
 class Cell:
     """A class representing a square that random-walks around the map to represent visitors approaching the site in the

@@ -15,6 +15,7 @@ class SimulationScreen:
         self.events_from_simulation = events_from_simulation
         self.maps_from_simulation = maps_from_simulation
         self.done = False
+        pyxel.playm(2,loop=True)
 
     def update(self, player):
         """Updates the simulation-in-progress screen"""

@@ -99,6 +99,8 @@ class Shop:
                         sticker_price=marker.markers[available_marker_options[2*i+j]].base_cost
                     ))
 
+        pyxel.playm(1,loop=True)
+
     def draw(self, player):
         """Draws the shop to the screen"""
         center_text("Remaining Budget: $" + str(player.funding),

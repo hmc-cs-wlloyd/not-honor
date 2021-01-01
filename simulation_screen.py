@@ -3,6 +3,7 @@
 import pyxel
 from const import ICON_HEIGHT, SCREEN_HEIGHT, SCREEN_WIDTH
 from util import center_text
+from event import events
 
 MAP_BOTTOM_MARGIN = 8 + ICON_HEIGHT*3
 
@@ -35,8 +36,16 @@ class SimulationScreen:
                     text_color=pyxel.COLOR_WHITE)
 
         event_message = str(self.events_from_simulation[self.current_event_index][0]) + ": " \
-                                               + self.events_from_simulation[self.current_event_index][1]
+                                    + events[self.events_from_simulation[self.current_event_index][1]].description
+        pyxel.blt(x=0,
+                  y=SCREEN_HEIGHT-(MAP_BOTTOM_MARGIN-ICON_HEIGHT),
+                  img=events[self.events_from_simulation[self.current_event_index][1]].icon_image,
+                  u=events[self.events_from_simulation[self.current_event_index][1]].icon_coords[0],
+                  v=events[self.events_from_simulation[self.current_event_index][1]].icon_coords[1],
+                  w=events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
+                  h=events[self.events_from_simulation[self.current_event_index][1]].icon_size[1])
         center_text(event_message,
-                    page_width=SCREEN_WIDTH,
+                    page_width=SCREEN_WIDTH-events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
+                    x_coord=events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
                     y_coord = SCREEN_HEIGHT-(MAP_BOTTOM_MARGIN-ICON_HEIGHT),
                     text_color=pyxel.COLOR_WHITE)

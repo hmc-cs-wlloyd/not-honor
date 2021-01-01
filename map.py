@@ -34,7 +34,6 @@ class Map: #pylint: disable=too-many-instance-attributes
         ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "core-top-left", "core-top-right", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "sand", "dark-sand"],
         ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "core-bottom-left", "core-bottom-right", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "sand", "dark-sand"],
         ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "sand", "sand", "dark-sand"],
-        
         ["dark-sand", "sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "light-sand", "light-sand", "light-sand", "sand", "dark-sand", "dark-sand"],
         ["dark-sand", "dark-sand", "sand", "sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "sand", "sand", "sand", "sand", "sand", "dark-sand", "dark-sand"],
         ["dark-sand", "dark-sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "dark-sand", "dark-sand", "sand", "dark-sand", "dark-sand", "dark-sand"],
@@ -71,7 +70,7 @@ class Map: #pylint: disable=too-many-instance-attributes
         for _ in range(10): #generate n cells
             visitor = Cell(x=random.randrange(0,1),
                            y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16),
-                           direction_spawned_from="W", 
+                           direction_spawned_from="W",
                            allowable_core_distance=128)
             cells.append(visitor)
         rogue_visitor = Cell(x=random.randrange(0,1),
@@ -92,26 +91,26 @@ class Map: #pylint: disable=too-many-instance-attributes
 
         #CREATE SOME THAT SPAWN FROM THE EAST
         for _ in range(10):
-            visitor = Cell(x=random.randrange(SCREEN_WIDTH-5, SCREEN_WIDTH-4), 
-                           y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16), 
-                           direction_spawned_from="E", 
+            visitor = Cell(x=random.randrange(SCREEN_WIDTH-5, SCREEN_WIDTH-4),
+                           y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16),
+                           direction_spawned_from="E",
                            allowable_core_distance=128)
             cells.append(visitor)
         rogue_visitor = Cell(x=random.randrange(SCREEN_WIDTH-5, SCREEN_WIDTH-4),
-                             y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16), 
+                             y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16),
                              direction_spawned_from="E",
                              allowable_core_distance=0)#add one rogue that can travel all the way to center
         cells.append(rogue_visitor)
 
         #CREATE SOME THAT SPAWN FROM THE SOUTH
         for _ in range(10):
-            visitor = Cell(x=random.randrange(0, SCREEN_WIDTH-4), 
-                           y=random.randrange(SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-17,SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16), 
-                           direction_spawned_from="S", 
+            visitor = Cell(x=random.randrange(0, SCREEN_WIDTH-4),
+                           y=random.randrange(SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-17,SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16),
+                           direction_spawned_from="S",
                            allowable_core_distance=128)
             cells.append(visitor)
         rogue_visitor = Cell(x=random.randrange(0, SCREEN_WIDTH-4),
-                             y=random.randrange(SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-17,SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16), 
+                             y=random.randrange(SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-17,SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16),
                              direction_spawned_from="S",
                              allowable_core_distance=0)#add one rogue that can travel all the way to center
         cells.append(rogue_visitor)
@@ -237,7 +236,7 @@ class Cell:
         #remove visitor if it moves off screen and respawn the same visitor somewhere else
         if new_x_coord < 0 or new_x_coord >= SCREEN_WIDTH or new_y_coord < 0 or \
            new_y_coord > SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-13:
-           
+      
             new_visitor_allowable_distance = self.allowable_core_distance #respawn a visitor with the same allowable core distance
             cells.remove(self)
             rand_direction = random.choice(("N","E","S","W")) 
@@ -266,4 +265,3 @@ class Cell:
             move[1] = random.randrange(directions[self.direction][1][0],directions[self.direction][1][1]) + smallOffset #change relative x to a random number between min x and max x
         self.x_coord += move[0]
         self.y_coord += move[1]
-

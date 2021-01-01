@@ -731,7 +731,7 @@ the site will be safe.\nCould be used to calculate age",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
         tags=["non-purchasable"]
-    ), 
+    ),
     "dark-sand": Marker(
         name="Dark Sand",
         description="This is some dense sand.",
@@ -749,7 +749,7 @@ the site will be safe.\nCould be used to calculate age",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
         tags=["non-purchasable"]
-    ), 
+    ),
     "light-sand": Marker(
         name="Light Sand",
         description="Loosely packed white sand",
@@ -767,7 +767,7 @@ the site will be safe.\nCould be used to calculate age",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
         tags=["non-purchasable"]
-    ), 
+    ),
     "blue-candles": Marker(
         name="Blue Candles",
         description="Very ominous looking candles.",
@@ -821,7 +821,7 @@ the site will be safe.\nCould be used to calculate age",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
         tags=["non-purchasable"]
-    ), 
+    ),
     "core-bottom-left": Marker(
         name="Nuclear Core",
         description="Some dangerous is here...",
@@ -839,7 +839,7 @@ the site will be safe.\nCould be used to calculate age",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
         tags=["non-purchasable"]
-    ), 
+    ),
     "core-bottom-right": Marker(
         name="Nuclear Core",
         description="Some dangerous is here...",

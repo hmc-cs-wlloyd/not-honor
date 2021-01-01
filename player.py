@@ -2,6 +2,7 @@
 
 import pyxel
 from const import ICON_WIDTH, ICON_HEIGHT
+from shop import INVENTORY_BOX_BORDER_THICKNESS
 import marker
 
 class Player:
@@ -32,7 +33,7 @@ class Player:
                 row_count += i
             if (row_count+1)*ICON_HEIGHT > height:
                 break
-            pyxel.blt(x_coord+(i*ICON_WIDTH), y_coord+(row_count+ICON_HEIGHT), 0,
+            pyxel.blt(x_coord+(i*ICON_WIDTH)+(i*2*INVENTORY_BOX_BORDER_THICKNESS), y_coord+(row_count+ICON_HEIGHT), 0,
                       marker.markers[self.inventory[i]].icon_coords[0],
                       marker.markers[self.inventory[i]].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
 
@@ -45,6 +46,6 @@ class Player:
                 row_count += i
             if (row_count+1)*ICON_HEIGHT > height:
                 break
-            pyxel.blt(x_coord+(i*ICON_WIDTH), y_coord+(row_count+ICON_HEIGHT), 0,
+            pyxel.blt(x_coord+(i*ICON_WIDTH)+(i*2*INVENTORY_BOX_BORDER_THICKNESS), y_coord+(row_count+ICON_HEIGHT), 0,
                       marker.markers[self.global_buffs[i]].icon_coords[0],
                       marker.markers[self.global_buffs[i]].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)

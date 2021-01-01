@@ -77,7 +77,7 @@ class Marker: #pylint: disable=too-many-instance-attributes,too-few-public-metho
 
 markers = {
     "granite-monolith": Marker(
-        name="Monolith (Granite)",
+        name="Granite Monolith",
         description="A 5 meter monolith carved from a single piece of granite.\nHighly durable",
         icon_coords=(240,0),
         icon_image = 0,
@@ -151,7 +151,7 @@ Self-propagating, but only\neffective against high-tech societies",
         tags=["non-purchasable","surface", "biological", "high-tech", "spooky"]
     ),
     "good-cult": Marker(
-        name="High Quality Cult",
+        name="Established Cult",
         description="A highly organized priesthood dedicated to preserving\nthe message that \
 this site is dangerous.\nVulnerable to religious turmoil",
         icon_coords=(176,16),
@@ -336,7 +336,7 @@ the site will be safe.\nCould be used to calculate age",
         tags=["terraforming", "spooky"]
     ),
     "attractive-monument": Marker(
-        name="Attractive Monument",
+        name="Beautiful Monument",
         description="A pretty building for your site. Maybe people will\nwant to maintain it?",
         icon_coords=(112,16),
         icon_image = 0,
@@ -517,7 +517,7 @@ the site will be safe.\nCould be used to calculate age",
     ),
     "death-sculpture": Marker(
         name="Death Sculpture",
-        description="scary!",
+        description="Scary!",
         icon_coords=(224,0),
         icon_image = 0,
         base_cost=10000,

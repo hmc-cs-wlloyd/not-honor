@@ -21,6 +21,11 @@ class SimulationScreen:
         """Updates the simulation-in-progress screen"""
         if self.current_map.next_button.is_clicked():
             self.current_event_index += 1 #this will break stuff if the calling update() doesn't check and advance screen when appropriate
+        if self.current_map.next_button.is_moused_over():
+            self.current_map.next_button.button_color = pyxel.COLOR_LIGHTBLUE
+        else: 
+            self.current_map.next_button.button_color = pyxel.COLOR_DARKBLUE 
+
         if self.current_event_index >= len(self.events_from_simulation):
             self.done = True
             return

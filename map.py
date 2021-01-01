@@ -4,7 +4,7 @@ import random
 import pyxel
 import button
 import marker
-from const import SCREEN_WIDTH, SCREEN_HEIGHT, ICON_WIDTH, ICON_HEIGHT
+from const import SCREEN_WIDTH, SCREEN_HEIGHT, ICON_WIDTH, ICON_HEIGHT, INVENTORY_BOX_BORDER_THICKNESS, NUM_INVENTORY_BOXES, NUM_SOCIETAL_BOXES
 from util import center_text
 
 MAP_BOTTOM_OFFSET=20
@@ -45,7 +45,7 @@ class Map: #pylint: disable=too-many-instance-attributes
             width=40,
             height=9*MAP_BOTTOM_OFFSET/10,
             text="Simulate",
-            button_color=pyxel.COLOR_GRAY
+            button_color=None
         )
 
         self.next_button = button.Button(
@@ -63,7 +63,7 @@ class Map: #pylint: disable=too-many-instance-attributes
             width=30,
             height=9*MAP_BOTTOM_OFFSET/10,
             text="Back",
-            button_color=pyxel.COLOR_GRAY
+            button_color=None
         )
         #CREATE VISITORS AND A ROGUE THAT SPAWNS FROM THE WEST
         for _ in range(10): #generate n cells
@@ -165,20 +165,27 @@ class Map: #pylint: disable=too-many-instance-attributes
             self.simulate_button.draw()
             self.back_button.draw()
 
+            #draw the inventory
             inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN
-            center_text("Inventory", #draw the inventory
+            center_text("Inventory",
                     page_width=INVENTORY_WIDTH,
                     x_coord=0,
                     y_coord=inventory_y_coord,
                     text_color=pyxel.COLOR_WHITE)
-            player.draw_inventory(0, inventory_y_coord, INVENTORY_WIDTH, ICON_HEIGHT) #BAD ASSUMPTION THAT INVENTORY IS ONLY 1 ROW
-
-            center_text("Societal Features", #draw the inventory
+            for i in range(0,NUM_INVENTORY_BOXES): #draw the inventory with a border around each box
+                pyxel.rectb(5+(i*(ICON_WIDTH+(2*INVENTORY_BOX_BORDER_THICKNESS))), inventory_y_coord + ICON_HEIGHT - INVENTORY_BOX_BORDER_THICKNESS, ICON_WIDTH+(INVENTORY_BOX_BORDER_THICKNESS*2), ICON_HEIGHT+(INVENTORY_BOX_BORDER_THICKNESS*2), pyxel.COLOR_LIGHTBLUE)
+            player.draw_inventory(5+INVENTORY_BOX_BORDER_THICKNESS, inventory_y_coord, SCREEN_WIDTH, ICON_HEIGHT)
+            
+            #draw the societal features
+            center_text("Societal Features", 
                     page_width=SOCIETAL_MODIFIER_WIDTH,
                     x_coord=INVENTORY_WIDTH,
                     y_coord=inventory_y_coord,
                     text_color=pyxel.COLOR_WHITE)
-            player.draw_global_buffs(INVENTORY_WIDTH, inventory_y_coord, SOCIETAL_MODIFIER_WIDTH, ICON_HEIGHT)
+            inventory_width = (NUM_INVENTORY_BOXES*ICON_WIDTH) + 64 #draw the societal factors with a border around each box, 64 is margin between this and societal boxes
+            for i in range(0,NUM_SOCIETAL_BOXES): #draw the societal features with a border around each box
+                pyxel.rectb(inventory_width + (i*(ICON_WIDTH+(2*INVENTORY_BOX_BORDER_THICKNESS))), inventory_y_coord + ICON_HEIGHT - INVENTORY_BOX_BORDER_THICKNESS, ICON_WIDTH+(INVENTORY_BOX_BORDER_THICKNESS*2), ICON_HEIGHT+(INVENTORY_BOX_BORDER_THICKNESS*2), pyxel.COLOR_LIGHTBLUE)
+            player.draw_global_buffs(inventory_width + INVENTORY_BOX_BORDER_THICKNESS, inventory_y_coord, SCREEN_WIDTH, SCREEN_HEIGHT)
 
             if self.selected_inventory_item is not None: #selected defense follows mouse
                 selected_item_icon_x = marker.markers[self.selected_inventory_item].icon_coords[0]

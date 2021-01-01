@@ -93,19 +93,35 @@ class App: #pylint: disable=too-many-instance-attributes
             self.shop = Shop(self.marker_options, self.player)
         if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON):
             self.shop.make_purchase(self.player)
+            
         if self.shop.finish_button.is_clicked():
             self.screen = Screen.MAP
+        if self.shop.finish_button.is_moused_over():
+            self.shop.finish_button.button_color = pyxel.COLOR_LIME
+        else: 
+            self.shop.finish_button.button_color = pyxel.COLOR_GREEN
 
     def update_map(self):
         """Handles updates while the player is on the map screen"""
         self.map.update(self.player)
+
         if self.map.simulate_button.is_clicked():
             self.shop = None # Reset the shop
             print("Headed to simulation")
             self.screen = Screen.SIMULATION
             Map().cells = []
+        if self.map.simulate_button.is_moused_over():
+            self.map.simulate_button.button_color = pyxel.COLOR_LIME
+        else: 
+            self.map.simulate_button.button_color = pyxel.COLOR_GREEN   
+
         if self.map.back_button.is_clicked():
             self.screen = Screen.SHOP
+        if self.map.back_button.is_moused_over():
+            self.map.back_button.button_color = pyxel.COLOR_LIGHTBLUE
+        else: 
+            self.map.back_button.button_color = pyxel.COLOR_DARKBLUE 
+
 
     def update_simulation(self):
         """Handles updates while the players is on the simulation screen"""

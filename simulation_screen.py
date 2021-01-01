@@ -38,7 +38,7 @@ class SimulationScreen:
         event_message = str(self.events_from_simulation[self.current_event_index][0]) + ": " \
                                     + events[self.events_from_simulation[self.current_event_index][1]].description
         pyxel.blt(x=0,
-                  y=SCREEN_HEIGHT-(MAP_BOTTOM_MARGIN-ICON_HEIGHT),
+                  y=SCREEN_HEIGHT-(MAP_BOTTOM_MARGIN-ICON_HEIGHT//2),
                   img=events[self.events_from_simulation[self.current_event_index][1]].icon_image,
                   u=events[self.events_from_simulation[self.current_event_index][1]].icon_coords[0],
                   v=events[self.events_from_simulation[self.current_event_index][1]].icon_coords[1],
@@ -47,5 +47,5 @@ class SimulationScreen:
         center_text(event_message,
                     page_width=SCREEN_WIDTH-events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
                     x_coord=events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
-                    y_coord = SCREEN_HEIGHT-(MAP_BOTTOM_MARGIN-ICON_HEIGHT),
+                    y_coord = SCREEN_HEIGHT-(MAP_BOTTOM_MARGIN-ICON_HEIGHT//2),
                     text_color=pyxel.COLOR_WHITE)

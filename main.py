@@ -1,8 +1,13 @@
 """Main file for working title Not a Place of Honor, a game developed for itch.io's Historical Game Jam 3"""
 
 from enum import Enum
+import copy
 import pyxel
+<<<<<<< HEAD
 import random
+=======
+from simulation_screen import SimulationScreen
+>>>>>>> a323a784368c5761085e7fdd269ee2e21e3086bf
 from util import center_text
 from const import SCREEN_WIDTH, SCREEN_HEIGHT
 from shop import Shop
@@ -37,6 +42,7 @@ class App: #pylint: disable=too-many-instance-attributes
         self.map = Map()
         self.which_tip_index = None
         self.available_tips = [0, 1, 2, 3, 4] #5 possible tips to share with player
+        self.simulation_screen = None
         pyxel.load("justmessingaround.pyxres")
         pyxel.run(self.update, self.draw)
 
@@ -91,19 +97,19 @@ class App: #pylint: disable=too-many-instance-attributes
 
     def update_simulation(self):
         """Handles updates while the players is on the simulation screen"""
-        self.map.update(self.player, is_simulation=True)
-        if self.map.next_button.is_clicked():
-            print("Headed to results")
+        if self.simulations_run < self.phase:
+            self.latest_simulation_failed, event_log, map_log, _ = simulate.simulate(self.phase*YEARS_IN_PHASE,
+                                                                                  self.map.map,
+                                                                                  self.player.global_buffs)
+            self.simulations_run += 1
+            self.simulation_screen = SimulationScreen(copy.deepcopy(self.map), event_log, map_log)
+
+        self.simulation_screen.update(self.player)
+        if self.simulation_screen.done:
             self.screen = Screen.RESULTS
 
     def update_results(self):
         """Handles updates while the players is on the results screen"""
-        if self.simulations_run < self.phase:
-            self.latest_simulation_failed, simulation_log, _ = simulate.simulate(self.phase*YEARS_IN_PHASE,
-                                                                              self.map.map,
-                                                                              self.player.global_buffs)
-            print(simulation_log)
-            self.simulations_run += 1
         if pyxel.btnp(pyxel.KEY_ENTER):
             if self.latest_simulation_failed or self.phase == YEARS_TO_WIN//YEARS_IN_PHASE:
                 self.reset_game()
@@ -165,7 +171,7 @@ class App: #pylint: disable=too-many-instance-attributes
         """Draws frames while the player is on the simulation screen"""
         pyxel.cls(pyxel.COLOR_BLACK)
         pyxel.mouse(visible=True)
-        self.map.draw(self.player, is_simulation=True)
+        self.simulation_screen.draw(self.player)
 
     def draw_results(self):
         """Draws frames while the player is on the results screen"""

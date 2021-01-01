@@ -21,36 +21,20 @@ class Map: #pylint: disable=too-many-instance-attributes
         self.clicked_inven = None
 
         self.map = [
-        ["dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand",
-         "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand"],
-        ["dark-sand", "dark-sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand",
-         "sand", "sand", "sand", "sand"],
-        ["dark-sand", "sand", "sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand",
-         "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand",
-         "light-sand"],
-        ["dark-sand", "sand", "light-sand", "light-sand", "marbled-tile", "marbled-smoke", "marbled-smoke",
-         "marbled-tile", "marbled-tile", "marbled-tile", "pink-candles", "fire", "fire", "marbled-smoke",
-         "marbled-smoke", "marbled-smoke"],
-        ["dark-sand", "sand", "light-sand", "marbled-smoke", "marbled-tile", "marbled-tile", "marbled-tile",
-         "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile",
-         "marbled-tile", "fire"],
-        ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile",
-         "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile",
-         "marbled-tile", "marbled-tile"],
-        ["dark-sand", "sand", "light-sand", "marbled-smoke", "marbled-tile", "marbled-tile", "yellow-candles",
-         "pink-candles", "concrete", "concrete", "colorful-stone", "colorful-stone", "colorful-stone", "colorful-stone",
-         "concrete", "concrete"],
-        ["dark-sand", "sand", "light-sand", "marbled-smoke", "marbled-tile", "marbled-tile", "pink-candles",
-         "blue-candles", "concrete", "colorful-stone", "colorful-stone", "concrete", "colorful-stone", "colorful-stone",
-         "concrete", "concrete"],
-        ["dark-sand", "sand", "light-sand", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete",
-         "concrete", "colorful-stone", "concrete", "colorful-stone", "concrete", "concrete", "concrete"],
-        ["dark-sand", "sand", "light-sand", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete",
-         "concrete", "colorful-stone", "concrete", "colorful-stone", "concrete", "concrete", "concrete"],
-        ["dark-sand", "sand", "light-sand", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete",
-         "concrete", "colorful-stone", "concrete", "colorful-stone", "concrete", "concrete", "concrete"],
-        ["dark-sand", "sand", "light-sand", "concrete", "concrete", "concrete", "concrete", "concrete", "concrete",
-         "concrete", "colorful-stone", "concrete", "colorful-stone", "concrete", "concrete", "concrete"]
+        ["dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "sand", "light-sand"],
+        ["dark-sand", "dark-sand", "dark-sand", "dark-sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "dark-sand", "sand", "sand", "sand"],
+        ["dark-sand", "dark-sand", "sand", "sand", "sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "sand", "sand", "sand", "sand", "dark-sand"],
+        ["dark-sand", "sand", "sand", "light-sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "light-sand", "sand", "dark-sand", "dark-sand"],
+
+        ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "sand", "sand", "dark-sand"],
+        ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "core-top-left", "core-top-right", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "sand", "dark-sand"],
+        ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "core-bottom-left", "core-bottom-right", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "sand", "dark-sand"],
+        ["dark-sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "sand", "sand", "dark-sand"],
+        
+        ["dark-sand", "sand", "sand", "light-sand", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "marbled-tile", "light-sand", "light-sand", "light-sand", "light-sand", "sand", "dark-sand", "dark-sand"],
+        ["dark-sand", "dark-sand", "sand", "sand", "light-sand", "light-sand", "light-sand", "light-sand", "light-sand", "sand", "sand", "sand", "sand", "sand", "dark-sand", "dark-sand"],
+        ["dark-sand", "dark-sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "sand", "dark-sand", "dark-sand", "sand", "dark-sand", "dark-sand", "dark-sand"],
+        ["dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand", "dark-sand"]
         ]
 
         self.simulate_button = button.Button(

@@ -134,17 +134,18 @@ class Map: #pylint: disable=too-many-instance-attributes
                     if pyxel.mouse_y < inventory_y_coord: #player in map
                         self.clicked_inven = False
 
-            if self.selected_col is not None and self.selected_row is not None: #on square selection...
-                if self.clicked_inven is False: #place defense if possible on map
-                    if self.map[self.selected_row][self.selected_col] == "site":
-                        pyxel.play(0,4,loop=False)
-                    elif self.selected_inventory_item not in player.inventory and \
-                       self.selected_inventory_item is not None:
+                if self.selected_col is not None and self.selected_row is not None: #on square selection...
+                    if self.clicked_inven is False: #place defense if possible on map
+                        if self.map[self.selected_row][self.selected_col] == "site" and \
+                           self.selected_inventory_item is not None:
+                            pyxel.play(0,4,loop=False)
+                        elif self.selected_inventory_item not in player.inventory and \
+                           self.selected_inventory_item is not None:
 
-                        self.map[self.selected_row][self.selected_col] = self.selected_inventory_item #update self.map
+                            self.map[self.selected_row][self.selected_col] = self.selected_inventory_item #update self.map
 
-                        self.clicked_inven = None
-                        self.selected_inventory_item = None
+                            self.clicked_inven = None
+                            self.selected_inventory_item = None
         else:
             ###VISITOR SIMULATION DATA
             for i in cells:

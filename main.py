@@ -18,6 +18,7 @@ class Screen(Enum):
     TITLE = "title"
     SHOP = "shop"
     MAP = "map"
+    SIMULATION = "simulation"
     RESULTS = "results"
 
 class App: #pylint: disable=too-many-instance-attributes
@@ -51,6 +52,8 @@ class App: #pylint: disable=too-many-instance-attributes
             self.update_shop()
         if self.screen == Screen.MAP:
             self.update_map()
+        if self.screen == Screen.SIMULATION:
+            self.update_simulation()
         if self.screen == Screen.RESULTS:
             self.update_results()
 
@@ -71,17 +74,24 @@ class App: #pylint: disable=too-many-instance-attributes
     def update_map(self):
         """Handles updates while the player is on the map screen"""
         self.map.update(self.player)
-        if self.map.results_button.is_clicked():
+        if self.map.simulate_button.is_clicked():
             self.shop = None # Reset the shop
-            self.screen = Screen.RESULTS
+            print("Headed to simulation")
+            self.screen = Screen.SIMULATION
         if self.map.back_button.is_clicked():
             self.screen = Screen.SHOP
 
+    def update_simulation(self):
+        """Handles updates while the players is on the simulation screen"""
+        self.map.update(self.player, is_simulation=True)
+        if self.map.next_button.is_clicked():
+            print("Headed to results")
+            self.screen = Screen.RESULTS
 
     def update_results(self):
-        """Handles updates while the players is on the simulation screen"""
+        """Handles updates while the players is on the results screen"""
         if self.simulations_run < self.phase:
-            self.latest_simulation_failed, simulation_log = simulate.simulate(self.phase*YEARS_IN_PHASE,
+            self.latest_simulation_failed, simulation_log, _ = simulate.simulate(self.phase*YEARS_IN_PHASE,
                                                                               self.map.map,
                                                                               self.player.global_buffs)
             print(simulation_log)
@@ -103,12 +113,15 @@ class App: #pylint: disable=too-many-instance-attributes
             self.draw_shop()
         elif self.screen == Screen.MAP:
             self.draw_map()
+        elif self.screen == Screen.SIMULATION:
+            self.draw_simulation()
         elif self.screen == Screen.RESULTS:
             self.draw_results()
 
     def draw_title(self): #pylint: disable=no-self-use
         """Draws frames while the player is on the title screen"""
         pyxel.cls(pyxel.COLOR_BLACK)
+        pyxel.mouse(visible=False)
         pyxel.blt(0, 0, 2, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
         center_text("Not a Place of Honor", page_width=SCREEN_WIDTH, y_coord=66, text_color=pyxel.COLOR_WHITE)
         center_text("- PRESS ENTER TO START -", page_width=SCREEN_WIDTH, y_coord=126, text_color=pyxel.COLOR_WHITE)
@@ -124,8 +137,14 @@ class App: #pylint: disable=too-many-instance-attributes
     def draw_map(self):
         """Draws frames while the player is on the map screen"""
         pyxel.cls(pyxel.COLOR_BLACK)
+        pyxel.mouse(visible=True)
         self.map.draw(self.player)
 
+    def draw_simulation(self):
+        """Draws frames while the player is on the simulation screen"""
+        pyxel.cls(pyxel.COLOR_BLACK)
+        pyxel.mouse(visible=True)
+        self.map.draw(self.player, is_simulation=True)
 
     def draw_results(self):
         """Draws frames while the player is on the results screen"""

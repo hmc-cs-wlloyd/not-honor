@@ -3,6 +3,7 @@
 import random
 import math
 from marker import markers
+import copy
 
 LOW_TECH = 0
 MEDIUM_TECH = 1
@@ -14,7 +15,11 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
     dead = False
     event_list = []
     map_list = []
-    time_period_map = site_map
+    time_period_map = copy.deepcopy(site_map)
+    #set default stats
+    usability, visibility, respectability, likability, \
+        understandability = (10,0,0,0,0)
+    
 
     for i in range(int(years/200)):
         
@@ -24,7 +29,8 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         sot = state_of_tech(current_year)
         print("state of tech is " + str(sot))
 
-        event, event_year = get_random_event(current_year, sot, site_map)
+        event, event_year = get_random_event(current_year, sot, site_map,usability,
+                                             visibility, respectability, likability, understandability)
         if event != "":
             print ("In the year " + str(event_year) + ", " + str(event) +
                     " happened!")            
@@ -33,7 +39,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         #handle instakill events
         if any("aliens" in tup for tup in event_list) or any("cult-dig" in tup for tup in event_list):
             dead = True
-            return dead, event_list
+            return dead, event_list, map_list
 
         #handle events that change the map
         vikings = (event =="vikings")
@@ -60,15 +66,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         print("200 year probability of mining is " + str(miners))
         mine_die = random.random()
         if mine_die < miners:
-            mine_year = current_year - random.randint(1,199)
-            if mine_year <= event_year:
-                mine_year = event_year + 1
+            mine_year = random.randint(event_year+1,current_year-1)
             print("I rolled " + str(mine_die) +
                   ", so mining did happen in year " +
                   str(mine_year))
             event_list.append((mine_year, "miners"))
             dead = True
-            return dead, event_list
+            return dead, event_list, map_list
         print("I rolled " + str(mine_die) +
               ", so no mining happened by year " + str(current_year))
 
@@ -77,15 +81,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
               str(archaeologists))
         arch_die = random.random()
         if arch_die < archaeologists:
-            arch_year = current_year - random.randint(1,199)
-            if arch_year <= event_year:
-                arch_year = event_year + 1
+            arch_year = random.randint(event_year+1,current_year-1)
             print("I rolled " + str(arch_die) +
                   ", so archaeology did happen in year " +
                   str(arch_year))
             event_list.append((arch_year, "archaeologists"))
             dead = True
-            return dead, event_list
+            return dead, event_list, map_list
         print("I rolled " + str(arch_die) +
               ", so no archaeology happened by year " + str(current_year))
 
@@ -94,15 +96,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
               str(dams))
         dam_die = random.random()
         if dam_die < dams:
-            dam_year = current_year - random.randint(1,199)
-            if dam_year <= event_year:
-                dam_year = event_year + 1
+            dam_year = random.randint(event_year+1,current_year-1)
             print("I rolled " + str(dam_die) +
                   ", so dam bulidng did happen in year " +
                   str(dam_year))
             dead = True
             event_list.append((dam_year, "dams"))
-            return dead, event_list
+            return dead, event_list, map_list
         print("I rolled " + str(dam_die) +
               ", so no dam building happened by year " + str(current_year))
 
@@ -111,15 +111,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
               str(teens))
         teen_die = random.random()
         if teen_die < teens:
-            teen_year = current_year - random.randint(1,199)
-            if teen_year <= event_year:
-                teen_year = event_year + 1
+            teen_year = random.randint(event_year+1,current_year-1)
             print("I rolled " + str(teen_die) +
                   ", so teens did happen in year " +
                   str(teen_year))
             dead = True
             event_list.append((teen_year, "teens"))
-            return dead, event_list
+            return dead, event_list, map_list
         print("I rolled " + str(teen_die) +
               ", so no teens happened by year " + str(current_year))
 
@@ -127,14 +125,12 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         print("200 year probability of transit tunnel is " + str(transit_tunnel))
         transit_tunnel_die = random.random()
         if transit_tunnel_die < transit_tunnel:
-            transit_tunnel_year = current_year - random.randint(1, 199)
-            if transit_tunnel_year <= event_year:
-                transit_tunnel_year = event_year + 1
+            transit_tunnel_year = random.randint(event_year+1,current_year-1)
             print("I rolled " + str(transit_tunnel_die) + ", so a transit tunnel breached the site in year " +str(
                 transit_tunnel_year))
             dead = True
             event_list.append((transit_tunnel_year, "tunnel"))
-            return dead, event_list        
+            return dead, event_list, map_list        
         print("I rolled " + str(transit_tunnel_die) + ", so no transit tunnel disrupted the site by year " + str(
             current_year))
         print(str(current_year) + ": " + str(dead))
@@ -143,7 +139,8 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
 
     return dead, event_list, map_list
 
-def get_random_event(current_year, sot, site_map):
+def get_random_event(current_year, sot, site_map,usability, visibility, respectability, likability,
+        understandability):
     """Potentially generates an event given a year"""
 
     event = ""
@@ -193,11 +190,14 @@ def get_random_event(current_year, sot, site_map):
     elif sot == 1 and die < .45:
         event = "smog"
 
-    elif sot == 1 and year < 3000 and die < .47:
+    elif sot == 1 and current_year < 3000 and die < .47:
         event = "klingon"
 
     elif sot == 2 and die < .45:
         event = "turtle"
+
+    elif sot > 0 and current_year >2500 and respectability>3 and die <.4:
+        event == "park"
     
 
     return event, event_year
@@ -281,6 +281,7 @@ def get_stats(site_map, global_buffs, current_year,sot, event_list): #pylint: di
     turtle = any("cat-holics" in tup for tup in event_list)
     goths = any("goths" in tup for tup in event_list)
     faultline = any("faultline" in tup for tup in event_list)
+    park = any("park" in tup for tup in event_list)
 
     for buff in global_buffs:
         values_list = get_stats_for_marker(buff, current_year, sot,klingon, turtle,goths, faultline)
@@ -333,6 +334,9 @@ def get_stats(site_map, global_buffs, current_year,sot, event_list): #pylint: di
         usability += 20
     if smog:
         visibility -= 20
+    if park:
+        usability -= 20
+        likability += 15
     
     
     print("Pre-normalization understandability: ", understandability, " visibility: ", visibility, " respectability: ", respectability, " likability: ", likability, " usability: ", usability)

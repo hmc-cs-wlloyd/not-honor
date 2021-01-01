@@ -29,10 +29,9 @@ class Map: #pylint: disable=too-many-instance-attributes
         ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
         ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
         ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
-
         ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
-        ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
-        ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null", "site", "site", "null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null", "site", "site", "null", "null", "null", "null", "null", "null", "null"],
         ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
         ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
         ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
@@ -137,14 +136,11 @@ class Map: #pylint: disable=too-many-instance-attributes
 
             if self.selected_col is not None and self.selected_row is not None: #on square selection...
                 if self.clicked_inven is False: #place defense if possible on map
-                    if self.selected_inventory_item not in player.inventory and \
+                    if self.map[self.selected_row][self.selected_col] == "site":
+                        pyxel.play(0,4,loop=False)
+                    elif self.selected_inventory_item not in player.inventory and \
                        self.selected_inventory_item is not None:
 
-                        pyxel.blt(self.selected_col*16, self.selected_row*16,
-                                  marker.markers[self.selected_inventory_item].icon_image,
-                                  marker.markers[self.selected_inventory_item].icon_coords[0],
-                                  marker.markers[self.selected_inventory_item].icon_coords[1],
-                                  ICON_WIDTH, ICON_HEIGHT)
                         self.map[self.selected_row][self.selected_col] = self.selected_inventory_item #update self.map
 
                         self.clicked_inven = None
@@ -159,7 +155,7 @@ class Map: #pylint: disable=too-many-instance-attributes
         pyxel.bltm(0, 0, 7, 0, 232, 32, 24)
         for row in range(12): #draw the terrain
             for col in range(16):
-                if self.map[row][col] != "null":
+                if self.map[row][col] != "null" and self.map[row][col] != "site":
                     pyxel.blt(col*16, row*16, marker.markers[self.map[row][col]].icon_image,
                               marker.markers[self.map[row][col]].icon_coords[0],
                               marker.markers[self.map[row][col]].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)

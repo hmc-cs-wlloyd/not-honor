@@ -63,7 +63,7 @@ class Shelf:
                     SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET-16,
                     marker.markers[self.marker_on_shelf].description,
                     pyxel.COLOR_WHITE)'''
-            center_text(marker.markers[self.marker_on_shelf].description, SCREEN_WIDTH, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET-16, pyxel.COLOR_WHITE)
+            center_text(marker.markers[self.marker_on_shelf].description, SCREEN_WIDTH, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET-28, pyxel.COLOR_WHITE)
 
             self.hover_on_item = True
         else: 
@@ -107,7 +107,7 @@ class Shop:
             for j in range(SHOP_COLUMNS):
                 if 2*i+j < len(available_marker_options):
                     self.shelves.append(Shelf(x_coord=(SCREEN_WIDTH//SHOP_COLUMNS * j) + (4),
-                        y_coord=((SHOP_TOP_OFFSET + ((SCREEN_HEIGHT-SHOP_TOP_OFFSET-SHOP_BOTTOM_OFFSET)//(SHOP_ROWS+1))*i)+(16*i)) + 8,
+                        y_coord=((SHOP_TOP_OFFSET + ((SCREEN_HEIGHT-SHOP_TOP_OFFSET-SHOP_BOTTOM_OFFSET)//(SHOP_ROWS+1))*i)+(8*i)) + 8,
                         width=(SCREEN_WIDTH//SHOP_COLUMNS)-8,
                         height=(SCREEN_HEIGHT-SHOP_TOP_OFFSET-SHOP_BOTTOM_OFFSET)//(SHOP_ROWS+1),
                         marker_on_shelf=available_marker_options[marker_index],

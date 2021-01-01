@@ -24,7 +24,7 @@ class Button: #pylint: disable=too-many-instance-attributes
 
     def is_clicked(self):
         """Returns true if the button is clicked in the current frame"""
-        return pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON) and self.is_moused_over()
+        return pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON, hold=2, period=16) and self.is_moused_over()
 
     def draw(self):
         """Draws the button to the screen"""

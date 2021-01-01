@@ -2,8 +2,10 @@
 
 import pyxel
 
+
 class Button: #pylint: disable=too-many-instance-attributes
     """A class representing physical buttons with text upon them"""
+
     def __init__(self, x_coord, y_coord, width, height, text, button_color, #pylint: disable=too-many-arguments
              border_color=pyxel.COLOR_WHITE, text_color=pyxel.COLOR_WHITE):
         self.x_coord = x_coord
@@ -14,6 +16,7 @@ class Button: #pylint: disable=too-many-instance-attributes
         self.button_color = button_color
         self.border_color = border_color
         self.text_color = text_color
+        self.is_clickable = False
 
     def is_moused_over(self):
         """Returns true if the mouse is currently above the button"""
@@ -24,7 +27,13 @@ class Button: #pylint: disable=too-many-instance-attributes
 
     def is_clicked(self):
         """Returns true if the button is clicked in the current frame"""
-        return pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON, hold=2, period=16) and self.is_moused_over()
+        if not self.is_clickable:
+            if not pyxel.btn(pyxel.MOUSE_LEFT_BUTTON):
+                self.is_clickable = True
+            return False
+        if pyxel.btn(pyxel.MOUSE_LEFT_BUTTON) and self.is_moused_over():
+            self.is_clickable = False
+            return True
 
     def draw(self):
         """Draws the button to the screen"""

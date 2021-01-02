@@ -25,6 +25,7 @@ class Map: #pylint: disable=too-many-instance-attributes
         self.clicked_inven = None
         self.death_margins = death_margins
         self.coords_for_bonuses = [] #hold a tuple - x coord, y coord, and color for border
+        self.show_directions = False
 
         self.map = [
         ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
@@ -50,13 +51,22 @@ class Map: #pylint: disable=too-many-instance-attributes
             button_color=None
         )
 
+        self.directions_button = button.Button(
+            x_coord=SCREEN_WIDTH-100,
+            y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET,
+            width=50,
+            height=9*MAP_BOTTOM_OFFSET/10,
+            text="Directions",
+            button_color=pyxel.COLOR_PURPLE
+        )
+
         self.next_button = button.Button(
             x_coord=(SCREEN_WIDTH-30) // 2,
             y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET,
             width=30,
             height=9*MAP_BOTTOM_OFFSET/10,
             text="Next",
-            button_color=pyxel.COLOR_GRAY
+            button_color=pyxel.COLOR_DARKBLUE
         )
 
         self.back_button = button.Button(
@@ -228,6 +238,7 @@ class Map: #pylint: disable=too-many-instance-attributes
         if not is_simulation:
             self.simulate_button.draw()
             self.back_button.draw()
+            self.directions_button.draw()
 
             #draw the inventory
             inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN
@@ -258,10 +269,57 @@ class Map: #pylint: disable=too-many-instance-attributes
             if self.selected_inventory_item is not None: #selected defense follows mouse
                 selected_item_icon_x = marker.markers[self.selected_inventory_item].icon_coords[0]
                 selected_item_icon_y = marker.markers[self.selected_inventory_item].icon_coords[1]
-                pyxel.blt(pyxel.mouse_x, pyxel.mouse_y, 0, selected_item_icon_x, selected_item_icon_y, ICON_WIDTH,
-                          ICON_HEIGHT)
+                pyxel.blt(pyxel.mouse_x, pyxel.mouse_y, 0, selected_item_icon_x, selected_item_icon_y, ICON_WIDTH, ICON_HEIGHT)
+            
+            #show directions
+            if self.show_directions is True:
+                #background
+                border_margin = 2
+                pyxel.rect(16-border_margin, 16-border_margin, (SCREEN_WIDTH-16*2)+(border_margin*2), (SCREEN_HEIGHT-16*3.5-4)+(border_margin*2), pyxel.COLOR_NAVY)
+                pyxel.rect(16, 16, SCREEN_WIDTH-16*2, SCREEN_HEIGHT-16*3.5-4, pyxel.COLOR_PEACH)
+      
+                text_margin = 8
+                pyxel.text(16+text_margin, 16+text_margin, "DIRECTIONS", pyxel.COLOR_PURPLE)
+                pyxel.text(16+text_margin, (16*2), "Place defenses from your inventory onto the map to \nprevent visitors from messing with the nuclear site!", pyxel.COLOR_NAVY)
+                pyxel.text(16+text_margin, (16*3)+4, "BONUSES", pyxel.COLOR_PURPLE)
+                pyxel.text(16+text_margin, (16*4)-4, "Place certain defenses next to each other!", pyxel.COLOR_CYAN)               
+                pyxel.text(16+text_margin, (16*4)+text_margin, "SPOOKY defenses enhance\neach other\'s respectability\nbonus and likability\npenalty", pyxel.COLOR_NAVY)
+                i=0 #show all spooky defenses
+                for elem in marker.markers: #for simplicity don't show the ruined things 
+                    if "spooky" in marker.markers[elem].tags and not "ruined" in marker.markers[elem].tags:
+                        pyxel.blt(16+text_margin+(i*19), (16*6)+2, 0, marker.markers[elem].icon_coords[0], marker.markers[elem].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
+                        i+=1
+                
+                pyxel.text(16+text_margin+112, (16*4)+text_margin, "VISITOR\'S CENTERS enhance\nthe effectiveness of\nEDUCATIONAL defenses", pyxel.COLOR_NAVY)
+                pyxel.blt(16+text_margin+112, (16*5)+text_margin+4, 0, marker.markers["visitor-center"].icon_coords[0], marker.markers["visitor-center"].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
+                pyxel.text(16+text_margin+18+112, (16*5)+(text_margin*2-2)+4, "+", pyxel.COLOR_NAVY)
+                i=0 #show all educational defenses
+                for elem in marker.markers:
+                    if "educational" in marker.markers[elem].tags:
+                        pyxel.blt((16+text_margin)+16+text_margin+(i*19)+112, (16*5)+text_margin+4, 0, marker.markers[elem].icon_coords[0], marker.markers[elem].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
+                        i+=1
+
+                pyxel.text(16+text_margin, (16*7)+text_margin, "DANGER SIGNS and DISGUSTED\nFACES enhance each\nother\'s effectiveness", pyxel.COLOR_NAVY)
+                pyxel.blt(16+text_margin, (16*8)+text_margin+4, 0, marker.markers["danger-sign"].icon_coords[0], marker.markers["danger-sign"].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
+                pyxel.blt(16+text_margin+19, (16*8)+text_margin+4, 0, marker.markers["disgust-faces"].icon_coords[0], marker.markers["disgust-faces"].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
+
+                pyxel.text(16+text_margin+112, (16*7)+text_margin, "TERRAFORMING defenses of\nthe same name have\nrespectability bonuses\nand land use penalties", pyxel.COLOR_NAVY)
+                i=0 #show all terraforming defenses
+                for elem in marker.markers:
+                    if "terraforming" in marker.markers[elem].tags:
+                        pyxel.blt(16+text_margin+(i*19)+112, (16*8)+(text_margin*2)+2, 0, marker.markers[elem].icon_coords[0], marker.markers[elem].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
+                        i+=1
+
+                pyxel.text(16+text_margin, (16*10)+text_margin, "MONOLITHS boost each other\'s\nrespectability bonuses\nand usability penalties", pyxel.COLOR_NAVY)
+                i=0 #show all monolith defenses 
+                for elem in marker.markers: #for simplicity don't show the ruined ones
+                    if "monolith" in marker.markers[elem].tags and not "ruined" in marker.markers[elem].tags:
+                        pyxel.blt(16+text_margin+(i*19), (16*11)+text_margin+4, 0, marker.markers[elem].icon_coords[0], marker.markers[elem].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
+                        i+=1
+
+
         else:
-            self.next_button.draw()
+            self.next_button.draw() #showing the simulation
             ###DRAW VISITORS###
             for i in cells:
                 i.draw()

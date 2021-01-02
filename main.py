@@ -93,11 +93,18 @@ class App: #pylint: disable=too-many-instance-attributes
         """Handles updates while the player is on the title screen"""
         if self.continue_button.is_clicked():
             self.screen = Screen.DIRECTIONS
+        if self.continue_button.is_moused_over():
+            self.continue_button.button_color = pyxel.COLOR_LIGHTBLUE
+        else: 
+            self.continue_button.button_color = pyxel.COLOR_DARKBLUE
 
     def update_directions(self):
         if self.continue_button.is_clicked():
             self.screen = Screen.SHOP
-
+        if self.continue_button.is_moused_over():
+            self.continue_button.button_color = pyxel.COLOR_LIGHTBLUE
+        else: 
+            self.continue_button.button_color = pyxel.COLOR_DARKBLUE
     def update_shop(self):
         """Handles updates while the player is on the shop screen"""
         if self.shop is None:
@@ -133,6 +140,14 @@ class App: #pylint: disable=too-many-instance-attributes
         else: 
             self.map.back_button.button_color = pyxel.COLOR_DARKBLUE 
 
+        if self.map.directions_button.is_moused_over():
+            self.map.show_directions = True
+            self.map.directions_button.button_color = pyxel.COLOR_PEACH
+        else: 
+            self.map.show_directions = False
+            self.map.directions_button.button_color = pyxel.COLOR_ORANGE   
+
+
 
     def update_simulation(self):
         """Handles updates while the players is on the simulation screen"""
@@ -159,6 +174,10 @@ class App: #pylint: disable=too-many-instance-attributes
                 self.phase += 1
                 self.player.add_funding(100000)
                 self.screen = Screen.TIP
+        if self.continue_button.is_moused_over():
+            self.continue_button.button_color = pyxel.COLOR_LIGHTBLUE
+        else: 
+            self.continue_button.button_color = pyxel.COLOR_DARKBLUE
 
     def update_tip(self):
         if self.which_tip_index is None and len(self.available_tips) != 0: #make sure array of available tips isn't empty
@@ -170,6 +189,10 @@ class App: #pylint: disable=too-many-instance-attributes
                 del self.available_tips[self.which_tip_index]
             self.which_tip_index = None
             #print("SIZE OF TIPS %d", len(self.available_tips))
+        if self.continue_button.is_moused_over():
+            self.continue_button.button_color = pyxel.COLOR_LIGHTBLUE
+        else: 
+            self.continue_button.button_color = pyxel.COLOR_DARKBLUE
 
     def draw(self):
         """Draws frame each frame"""

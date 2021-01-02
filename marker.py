@@ -445,7 +445,8 @@ the site will be safe.\nCould be used to calculate age",
     ),
     "bad-cult": Marker(
         name="Bargain Cult",
-        description="Founding an Atomic Priesthood sounds expensive. But you have a cousin, Marvin-",
+        description="Founding an Atomic Priesthood sounds expensive.\n\
+        But you have a cousin Marvin...",
         icon_coords=(176,0),
         icon_image = 0,
         base_cost=24000,
@@ -879,6 +880,25 @@ the site will be safe.\nCould be used to calculate age",
     "site": Marker(
         name="Null Marker",
         description="",
+        icon_coords=(0, 0),
+        icon_image = 1,
+        base_cost=0,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (0,0,0),
+        visibility_decay = "constant",
+        respectability_init = (0,0,0),
+        respectability_decay = "constant",
+        likability_init = (0,0,0),
+        likability_decay = "constant",
+        understandability_init = (0,0,0),
+        understandability_decay = "constant",
+        tags=["non-purchasable"]
+    )
+    "math": Marker(
+        name="Mathematical Symbols",
+        description="Some say math is a \"universal language\".\
+        This could show that something important is here.",
         icon_coords=(0, 0),
         icon_image = 1,
         base_cost=0,

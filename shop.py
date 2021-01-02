@@ -90,7 +90,7 @@ class Shelf:
                     bar_label = " Likeable"
                 elif i == 4: 
                     stat_to_present = self.average_tuple(current_item.understandability_init)
-                    bar_label = "Effective"
+                    bar_label = " Clarity"
 
                 if stat_to_present >= 0: #positive stat
                     #positive green

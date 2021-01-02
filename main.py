@@ -132,6 +132,14 @@ class App: #pylint: disable=too-many-instance-attributes
         else: 
             self.map.back_button.button_color = pyxel.COLOR_DARKBLUE 
 
+        if self.map.directions_button.is_moused_over():
+            self.map.show_directions = True
+            self.map.directions_button.button_color = pyxel.COLOR_PEACH
+        else: 
+            self.map.show_directions = False
+            self.map.directions_button.button_color = pyxel.COLOR_ORANGE   
+
+
 
     def update_simulation(self):
         """Handles updates while the players is on the simulation screen"""

@@ -52,13 +52,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         #handle instakill events
         if any("aliens" in tup for tup in event_list) or any("cult-dig" in tup for tup in event_list):
             dead = True
-            margins_list = [("mining", mining_margin),
-                    ("archaeology", archaeology_margin),
-                    ("dams", dam_margin),
-                    ("teens", teen_margin),
-                    ("tunnels", tunnel_margin)]
+            margins_dict = {"mining": mining_margin,
+                            "archaeology": archaeology_margin,
+                            "dams":  dam_margin,
+                            "teens": teen_margin,
+                            "tunnels": tunnel_margin}
             map_list.append(time_period_map)
-            return dead, event_list, map_list, margins_list
+            return dead, event_list, map_list, margins_dict
 
         #handle events that change the map
 
@@ -88,13 +88,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
             event_list.append((mine_year, "miners"))
             dead = True
             mining_margin = 0
-            margins_list = [("mining", mining_margin),
-                    ("archaeology", archaeology_margin),
-                    ("dams", dam_margin),
-                    ("teens", teen_margin),
-                    ("tunnels", tunnel_margin)]
+            margins_dict = {"mining": mining_margin,
+                            "archaeology": archaeology_margin,
+                            "dams":  dam_margin,
+                            "teens": teen_margin,
+                            "tunnels": tunnel_margin}
             map_list.append(time_period_map)
-            return dead, event_list, map_list, margins_list
+            return dead, event_list, map_list, margins_dict
         print("I rolled " + str(mine_die) +
               ", so no mining happened by year " + str(current_year))
         mining_margin = min(mining_margin, mine_die-miners)
@@ -111,13 +111,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
             event_list.append((arch_year, "archaeologists"))
             dead = True
             archaeology_margin = 0
-            margins_list = [("mining", mining_margin),
-                    ("archaeology", archaeology_margin),
-                    ("dams", dam_margin),
-                    ("teens", teen_margin),
-                    ("tunnels", tunnel_margin)]
+            margins_dict = {"mining": mining_margin,
+                            "archaeology": archaeology_margin,
+                            "dams":  dam_margin,
+                            "teens": teen_margin,
+                            "tunnels": tunnel_margin}
             map_list.append(time_period_map)
-            return dead, event_list, map_list, margins_list
+            return dead, event_list, map_list, margins_dict
         print("I rolled " + str(arch_die) +
               ", so no archaeology happened by year " + str(current_year))
         archaeology_margin = min(archaeology_margin, arch_die-archaeologists)
@@ -134,13 +134,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
             dead = True
             event_list.append((dam_year, "dams"))
             dam_margin = 0
-            margins_list = [("mining", mining_margin),
-                    ("archaeology", archaeology_margin),
-                    ("dams", dam_margin),
-                    ("teens", teen_margin),
-                    ("tunnels", tunnel_margin)]
+            margins_dict = {"mining": mining_margin,
+                            "archaeology": archaeology_margin,
+                            "dams":  dam_margin,
+                            "teens": teen_margin,
+                            "tunnels": tunnel_margin}
             map_list.append(time_period_map)
-            return dead, event_list, map_list, margins_list
+            return dead, event_list, map_list, margins_dict
         print("I rolled " + str(dam_die) +
               ", so no dam building happened by year " + str(current_year))
         dam_margin = min(dam_margin, dam_die-dams)
@@ -157,13 +157,13 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
             dead = True
             teen_margin = 0
             event_list.append((teen_year, "teens"))
-            margins_list = [("mining", mining_margin),
-                    ("archaeology", archaeology_margin),
-                    ("dams", dam_margin),
-                    ("teens", teen_margin),
-                    ("tunnels", tunnel_margin)]
+            margins_dict = {"mining": mining_margin,
+                            "archaeology": archaeology_margin,
+                            "dams":  dam_margin,
+                            "teens": teen_margin,
+                            "tunnels": tunnel_margin}
             map_list.append(time_period_map)
-            return dead, event_list, map_list, margins_list
+            return dead, event_list, map_list, margins_dict
         print("I rolled " + str(teen_die) +
               ", so no teens happened by year " + str(current_year))
         teen_margin = min(teen_margin, teen_die-teens)
@@ -178,25 +178,25 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
             dead = True
             event_list.append((transit_tunnel_year, "tunnel"))
             tunnel_margin = 0
-            margins_list = [("mining", mining_margin),
-                    ("archaeology", archaeology_margin),
-                    ("dams", dam_margin),
-                    ("teens", teen_margin),
-                    ("tunnels", tunnel_margin)]
+            margins_dict = {"mining": mining_margin,
+                            "archaeology": archaeology_margin,
+                            "dams":  dam_margin,
+                            "teens": teen_margin,
+                            "tunnels": tunnel_margin}
             map_list.append(time_period_map)
-            return dead, event_list, map_list, margins_list    
+            return dead, event_list, map_list, margins_dict    
         print("I rolled " + str(transit_tunnel_die) + ", so no transit tunnel disrupted the site by year " + str(
             current_year))
         tunnel_margin = min(tunnel_margin, transit_tunnel_die - transit_tunnel)
 
         
-    margins_list = [("mining", mining_margin),
-                    ("archaeology", archaeology_margin),
-                    ("dams", dam_margin),
-                    ("teens", teen_margin),
-                    ("tunnels", tunnel_margin)]
+    margins_dict = {"mining": mining_margin,
+                            "archaeology": archaeology_margin,
+                            "dams":  dam_margin,
+                            "teens": teen_margin,
+                            "tunnels": tunnel_margin}
 
-    return dead, event_list, map_list, margins_list
+    return dead, event_list, map_list, margins_dict
 
 def get_random_event(current_year, sot, site_map,usability, visibility, respectability, likability,
         understandability):

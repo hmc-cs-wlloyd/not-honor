@@ -1,15 +1,15 @@
 """Contains simulation code to test whether a nuclear waste site with a given set of markers remains undisturbed"""
 
+import copy
 import random
 import math
 from marker import markers
-import copy
 
 LOW_TECH = 0
 MEDIUM_TECH = 1
 HIGH_TECH = 2
 
-def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,too-many-statements
+def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,too-many-statements,too-many-return-statements
     """Runs the simulation"""
 
     dead = False
@@ -26,10 +26,10 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
     dam_margin = 1
     teen_margin = 1
     tunnel_margin = 1
-    
+
 
     for i in range(int(years/200)):
-        
+
         current_year = 2000+(200*(i+1))
         print("Simulating to " + str(current_year))
 
@@ -40,7 +40,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
                                              visibility, respectability, likability, understandability)
         if event != "":
             print ("In the year " + str(event_year) + ", " + str(event) +
-                    " happened!")            
+                    " happened!")
             event_list.append((event_year, event))
             vikings = (event =="vikings")
             earthquake = (event == "earthquake")
@@ -48,7 +48,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
             if vikings or earthquake or faultline:
                 time_period_map = get_modified_map(time_period_map, vikings, earthquake, faultline)
             map_list.append(time_period_map)
-        
+
         #handle instakill events
         if any("aliens" in tup for tup in event_list) or any("cult-dig" in tup for tup in event_list):
             dead = True
@@ -189,7 +189,6 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
             current_year))
         tunnel_margin = min(tunnel_margin, transit_tunnel_die - transit_tunnel)
 
-        
     margins_dict = {"mining": mining_margin,
                             "archaeology": archaeology_margin,
                             "dams":  dam_margin,
@@ -198,7 +197,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
 
     return dead, event_list, map_list, margins_dict
 
-def get_random_event(current_year, sot, site_map,usability, visibility, respectability, likability,
+def get_random_event(current_year, sot, site_map,usability, visibility, respectability, likability, #pylint: disable=too-many-arguments,too-many-branches
         understandability):
     """Potentially generates an event given a year"""
 
@@ -215,49 +214,48 @@ def get_random_event(current_year, sot, site_map,usability, visibility, respecta
                 num_monoliths += 1
 
     if current_year > 5000 and sot == 2:
-        if die < .1:
+        if die < .000001:
             event = "aliens"
 
     elif current_year > 2400:
-        if die < .1:
+        if die < .01:
             event = "goths"
 
     elif current_year > 2600 and sot == 0:
-        if die < .1:
+        if die < .01:
             event = "vikings"
 
-    elif die < .2:
+    elif die < .001:
         event = "earthquake"
 
     elif any("bad-cult" in row for row in site_map) and \
          current_year > 3000 and die <.5:
         event = "cult-dig"
 
-    elif die < .3:
+    elif die < .0001:
         event = "faultline"
 
     elif any("bad-cult" in row for row in site_map) and any("ray-cats" in row for row in site_map)and \
          current_year > 3000 and die <.5:
         event = "cat-holics"
 
-    elif num_monoliths > 5 and die <.4:
+    elif num_monoliths > 5 and die <.1:
         event = "stonehenge"
 
-    elif die < .4:
+    elif die < .01:
         event = "flood"
 
-    elif sot == 1 and die < .45:
+    elif sot == 1 and die < .05:
         event = "smog"
 
-    elif sot == 1 and current_year < 3000 and die < .47:
+    elif sot == 1 and current_year < 3000 and die < .047:
         event = "klingon"
 
-    elif sot == 2 and die < .45:
+    elif sot == 2 and die < .0045:
         event = "turtle"
 
     elif sot > 0 and current_year >2500 and respectability>3 and die <.4:
-        event == "park"
-    
+        event = "park"
 
     return event, event_year
 
@@ -273,7 +271,7 @@ def get_knowledge_of_past(visibility, respectability, likability,
         kop = 3
     elif visibility > .4:
         kop = 2
-    elif likability > .3 or respectability > .3:
+    elif visibility > .2 and (likability > .3 or respectability > .3):
         kop = 1
     return kop
 
@@ -321,7 +319,7 @@ def state_of_tech(current_year):
     return tech
 
 
-def get_stats(site_map, global_buffs, current_year,sot, event_list): #pylint: disable=too-many-branches
+def get_stats(site_map, global_buffs, current_year,sot, event_list): #pylint: disable=too-many-branches,too-many-locals
     """gives the 5 stats given your equipment, year, and state of tech"""
 
     usability = 100
@@ -330,7 +328,6 @@ def get_stats(site_map, global_buffs, current_year,sot, event_list): #pylint: di
     respectability = 0
     understandability = 0
 
-    
     #stat changes for events
     catholics = any("cat-holics" in tup for tup in event_list)
     stonehenge = any("stonehenge" in tup for tup in event_list)
@@ -396,8 +393,7 @@ def get_stats(site_map, global_buffs, current_year,sot, event_list): #pylint: di
     if park:
         usability -= 20
         likability += 15
-    
-    
+
     print("Pre-normalization understandability: ", understandability, " visibility: ", visibility, " respectability: ", respectability, " likability: ", likability, " usability: ", usability)
     return normalize_stat(usability), normalize_stat(visibility), normalize_stat(respectability),\
         normalize_stat(likability), normalize_stat(understandability)
@@ -408,14 +404,14 @@ def normalize_stat(stat_value):
     stat_value = max(stat_value, -100)
     return stat_value / 100
 
-def get_stats_for_marker(marker_id, current_year, sot, klingon, turtle, goths, faultline):
+def get_stats_for_marker(marker_id, current_year, sot, klingon, turtle, goths, faultline): #pylint: disable=too-many-arguments,too-many-branches
     """Gets the stats for a particular marker, adjusted for decay and state of technology"""
     inits_list = [list(markers[marker_id].usability_init),
                   list(markers[marker_id].visibility_init),
                   list(markers[marker_id].respectability_init),
                   list(markers[marker_id].likability_init),
                   list(markers[marker_id].understandability_init)]
-    
+
     #very special case for goth event - flip likability for spoopy stuff
     if goths:
         if "spooky" in markers[marker_id].tags:
@@ -440,9 +436,9 @@ def get_stats_for_marker(marker_id, current_year, sot, klingon, turtle, goths, f
             inits_list[1][0] = 2* inits_list[1][0]
             inits_list[1][1] = 2* inits_list[1][1]
             inits_list[1][2] = 2* inits_list[1][2]
-        
-            
-    
+
+
+
     decays_list =[markers[marker_id].usability_decay, markers[marker_id].visibility_decay,
                   markers[marker_id].respectability_decay, markers[marker_id].likability_decay,
                   markers[marker_id].understandability_decay]
@@ -734,11 +730,11 @@ def miner_prob(knowledge_of_past, value_of_materials, years): #pylint: disable=t
 
     # calculate knowlege_multiplier - deterministic
     if knowledge_of_past == 3:
-        knowledge_multiplier = .6
+        knowledge_multiplier = .001
     elif knowledge_of_past == 2:
-        knowledge_multiplier = .6
+        knowledge_multiplier = .001
     elif knowledge_of_past == 1:
-        knowledge_multiplier = .6
+        knowledge_multiplier = .001
     else:
         knowledge_multiplier = 1
 
@@ -766,26 +762,24 @@ def arch_prob(knowledge_of_past, start_year):
     if knowledge_of_past == 3:
         prob = 0
     elif knowledge_of_past == 2:
-        if start_year < 2300:
+        if start_year < 3000:
             prob = 0
         elif start_year < 5000:
-            prob = .05
+            prob = .01
         else:
-            prob = .1
+            prob = .02
     elif knowledge_of_past == 1:
-        if start_year < 2300:
-            prob = .05
+        if start_year < 3000:
+            prob = .01
         elif start_year < 5000:
-            prob = .2
+            prob = .02
         else:
-            prob = .3
+            prob = .03
     else:
-        if start_year < 2300:
-            prob = .01
-        elif start_year < 5000:
-            prob = .05
+        if start_year < 3000:
+            prob = 0
         else:
-            prob = .01
+            prob = .001
 
     return prob
 
@@ -794,26 +788,26 @@ def dam_prob(knowledge_of_past, usability, start_year):
     if knowledge_of_past == 3:
         prob = 0
     elif start_year < 2300:
-        if usability > .1:
-            prob = .02
+        if usability > .5:
+            prob = .002
         elif usability > 0:
-            prob = .01
+            prob = .001
         else:
-            prob= .005
+            prob= .0005
     elif start_year < 5000:
-        if usability > .1:
-            prob = .03
+        if usability > .51:
+            prob = .003
         elif usability > 0:
-            prob = .02
+            prob = .002
         else:
-            prob = .01
+            prob = .0001
     else:
-        if usability > .1:
-            prob = .05
+        if usability > .5:
+            prob = .005
         elif usability > 0:
-            prob = .04
+            prob = .004
         else:
-            prob = .03
+            prob = .0003
     return prob
 
 def teen_prob(visibility, respectability):
@@ -821,11 +815,11 @@ def teen_prob(visibility, respectability):
     if visibility < .3 or respectability > .8:
         prob = 0
     elif respectability > .6:
-        prob = .001
+        prob = .0001
     elif respectability > .3:
-        prob = .01
+        prob = .001
     else:
-        prob = .03
+        prob = .003
     return prob
 
 def transit_tunnel_prob(state_of_technology, understandability, visibility):
@@ -837,7 +831,7 @@ def transit_tunnel_prob(state_of_technology, understandability, visibility):
     elif state_of_technology == MEDIUM_TECH:
         base_probability = .001
     else:
-        base_probability = .1
+        base_probability = .001
     return base_probability*(1-awareness_of_danger)
 
 def get_modified_map(time_period_map, vikings, earthquake, faultline):
@@ -860,4 +854,3 @@ def get_modified_map(time_period_map, vikings, earthquake, faultline):
                 elif time_period_map[row_num][col_num] == "wooden-monolith":
                     new_map[row_num][col_num] = "ruined-wooden-monolith"
     return new_map
-                    

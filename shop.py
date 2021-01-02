@@ -176,7 +176,7 @@ class Shop:
                 page_width=SCREEN_WIDTH,
                 y_coord=10,
                 text_color=pyxel.COLOR_WHITE)
-        #self.inventory_button.draw()
+        pyxel.text(5, SHOP_TOP_OFFSET//10, "WIPP-SIM10000", pyxel.COLOR_WHITE)
         self.finish_button.draw()
 
         inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN

@@ -66,6 +66,8 @@ class SimulationScreen:
                         x_coord=events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
                         y_coord = SCREEN_HEIGHT-(MAP_BOTTOM_MARGIN-ICON_HEIGHT//2),
                         text_color=pyxel.COLOR_WHITE)
+            #lol cover up the visitors_button 
+            pyxel.rect(SCREEN_WIDTH-45, SCREEN_HEIGHT - 20, 45, 9*20/10, pyxel.COLOR_BLACK)
         else: #DRAW VISITOR KEY
             if self.show_visitors is True:
                 #miner

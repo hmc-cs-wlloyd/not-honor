@@ -16,13 +16,14 @@ CENTER_POINT_OF_CORE_Y=96
 
 class Map: #pylint: disable=too-many-instance-attributes
     """A class representing the map of the waste site, including the placement of markers"""
-    def __init__(self):
+    def __init__(self, death_margins):
         global cells
         cells = []
         self.selected_col = None
         self.selected_row = None
         self.selected_inventory_item = None
         self.clicked_inven = None
+        self.death_margins = death_margins
 
         self.map = [
         ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
@@ -65,54 +66,85 @@ class Map: #pylint: disable=too-many-instance-attributes
             text="Back",
             button_color=None
         )
-        #CREATE VISITORS AND A ROGUE THAT SPAWNS FROM THE WEST
-        for _ in range(10): #generate n cells
+
+        #print("death margins: " + str(self.death_margins))
+        #calculate radius for various dot types
+        if self.death_margins["mining"] == 0:
+            mine_radius = 0
+        else:
+            mine_radius = self.death_margins["mining"]*128 + 40
+        if self.death_margins["archaeology"] == 0:
+            arch_radius = 0
+        else:
+            arch_radius = death_margins["archaeology"]*128 + 40
+        if self.death_margins["dams"] == 0:
+            dam_radius = 0
+        else:
+            dam_radius = death_margins["dams"]*128 + 40
+        if self.death_margins["teens"] == 0:
+            teen_radius = 0
+        else:
+            teen_radius = death_margins["teens"]*128 + 40
+        if self.death_margins["tunnels"] == 0:
+            tunnel_radius = 0
+        else:
+            tunnel_radius = death_margins["tunnels"]*128 + 40
+
+        #set colors for intruder types
+        mine_color = pyxel.COLOR_GRAY
+        arch_color = pyxel.COLOR_RED
+        dam_color = pyxel.COLOR_GREEN
+        teen_color = pyxel.COLOR_DARKBLUE
+        tunnel_color = pyxel.COLOR_BROWN
+
+        #lists for iterating over when making visitors
+        visitor_type_list = ["arch", "arch", "mine", "mine", "dam", "dam", "teen", "teen", "tunnel", "tunnel"]
+        visitor_color_list = [arch_color, arch_color, mine_color, mine_color, dam_color, dam_color,
+                              teen_color, teen_color, tunnel_color, tunnel_color]
+        visitor_radius_list = [arch_radius, arch_radius, mine_radius, mine_radius, dam_radius, dam_radius,
+                               teen_radius, teen_radius, tunnel_radius, tunnel_radius]
+
+        
+        #CREATE VISITORSFROM THE WEST
+        for j in range(10): #generate n cells
             visitor = Cell(x=random.randrange(0,1),
                            y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16),
                            direction_spawned_from="W",
-                           allowable_core_distance=128)
+                           intruder_type= visitor_type_list[j],
+                           intruder_color = visitor_color_list[j],
+                           allowable_core_distance= visitor_radius_list[j])
             cells.append(visitor)
-        rogue_visitor = Cell(x=random.randrange(0,1),
-                             y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16),
-                             direction_spawned_from="W",
-                             allowable_core_distance = 0)#add one rogue that can travel all the way to center
-        cells.append(rogue_visitor)
 
         #CREATE SOME THAT SPAWN FROM THE NORTH
-        for _ in range(10):
-            visitor = Cell(x=random.randrange(0, SCREEN_WIDTH-4), y=random.randrange(0,1), direction_spawned_from="N", allowable_core_distance=128)
+        for j in range(10):
+            visitor = Cell(x=random.randrange(0, SCREEN_WIDTH-4), y=random.randrange(0,1),
+                           direction_spawned_from="N",
+                           intruder_type= visitor_type_list[j],
+                           intruder_color = visitor_color_list[j],
+                           allowable_core_distance= visitor_radius_list[j])
             cells.append(visitor)
-        rogue_visitor = Cell(x=random.randrange(0, SCREEN_WIDTH-4),
-                             y=random.randrange(0,1),
-                             direction_spawned_from="N",
-                             allowable_core_distance=0)#add one rogue that can travel all the way to center
-        cells.append(rogue_visitor)
+
 
         #CREATE SOME THAT SPAWN FROM THE EAST
-        for _ in range(10):
+        for j in range(10):
             visitor = Cell(x=random.randrange(SCREEN_WIDTH-5, SCREEN_WIDTH-4),
                            y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16),
                            direction_spawned_from="E",
-                           allowable_core_distance=128)
+                           intruder_type= visitor_type_list[j],
+                           intruder_color = visitor_color_list[j],
+                           allowable_core_distance= visitor_radius_list[j])
             cells.append(visitor)
-        rogue_visitor = Cell(x=random.randrange(SCREEN_WIDTH-5, SCREEN_WIDTH-4),
-                             y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16),
-                             direction_spawned_from="E",
-                             allowable_core_distance=0)#add one rogue that can travel all the way to center
-        cells.append(rogue_visitor)
+        
 
         #CREATE SOME THAT SPAWN FROM THE SOUTH
-        for _ in range(10):
+        for j in range(10):
             visitor = Cell(x=random.randrange(0, SCREEN_WIDTH-4),
                            y=random.randrange(SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-17,SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16),
                            direction_spawned_from="S",
-                           allowable_core_distance=128)
+                           intruder_type= visitor_type_list[j],
+                           intruder_color = visitor_color_list[j],
+                           allowable_core_distance= visitor_radius_list[j])
             cells.append(visitor)
-        rogue_visitor = Cell(x=random.randrange(0, SCREEN_WIDTH-4),
-                             y=random.randrange(SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-17,SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16),
-                             direction_spawned_from="S",
-                             allowable_core_distance=0)#add one rogue that can travel all the way to center
-        cells.append(rogue_visitor)
 
     def update(self, player, is_simulation=False):
         """Updates the map state"""
@@ -207,7 +239,7 @@ class Map: #pylint: disable=too-many-instance-attributes
 class Cell:
     """A class representing a square that random-walks around the map to represent visitors approaching the site in the
     simulation"""
-    def __init__(self, x, y, direction_spawned_from, allowable_core_distance):
+    def __init__(self, x, y, direction_spawned_from, allowable_core_distance, intruder_type, intruder_color):
         self.directions_name = ("S","SW","W","NW","N","NE","E","SE") #possible directions
         self.x_coord = x
         self.y_coord = y
@@ -215,13 +247,13 @@ class Cell:
         self.speed = random.randrange(2,3) #cell speed
         self.direction = random.choice(self.directions_name) #movement direction
         self.allowable_core_distance = allowable_core_distance
+        self.intruder_type = intruder_type
+        self.intruder_color = intruder_color
 
     def draw(self):
         """Draw the cell to the screen"""
-        if self.allowable_core_distance > 0:
-            pyxel.rect(self.x_coord,self.y_coord,4,4,pyxel.COLOR_RED) #draw the cell
-        else:
-            pyxel.rect(self.x_coord,self.y_coord,4,4,pyxel.COLOR_GREEN) #draw the rogue
+        pyxel.rect(self.x_coord,self.y_coord,4,4,self.intruder_color) #draw the cell
+
 
     def wander(self):
         """Move the cell along its path"""
@@ -248,7 +280,10 @@ class Cell:
         if new_x_coord < 0 or new_x_coord >= SCREEN_WIDTH or new_y_coord < 0 or \
            new_y_coord > SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-13:
       
-            new_visitor_allowable_distance = self.allowable_core_distance #respawn a visitor with the same allowable core distance
+            new_visitor_allowable_distance = self.allowable_core_distance #respawn a visitor with the same stats
+            new_intruder_type = self.intruder_type
+            new_intruder_color = self.intruder_color
+            
             cells.remove(self)
             rand_direction = random.choice(("N","E","S","W")) 
             x = 0
@@ -266,7 +301,8 @@ class Cell:
                 x=random.randrange(0,1)
                 y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16)
 
-            visitor = Cell(x, y, direction_spawned_from=rand_direction, allowable_core_distance=new_visitor_allowable_distance)
+            visitor = Cell(x, y, direction_spawned_from=rand_direction, allowable_core_distance=new_visitor_allowable_distance,
+                           intruder_color=new_intruder_color, intruder_type=new_intruder_type)
             cells.append(visitor)
 
         #turn around if about to move into unpermitted area

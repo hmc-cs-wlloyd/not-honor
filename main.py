@@ -392,6 +392,7 @@ class App: #pylint: disable=too-many-instance-attributes
     def draw_results(self):
         """Draws frames while the player is on the results screen"""
         pyxel.cls(pyxel.COLOR_BLACK)
+        #not_playing_music = True
 
         pyxel.mouse(visible=True)
         if self.simulations_run < self.phase:
@@ -405,6 +406,7 @@ class App: #pylint: disable=too-many-instance-attributes
                 center_text("Your facility went 10,000 years undisturbed", SCREEN_WIDTH,
                             SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
                 self.continue_button.draw()
+                
             else:
                 center_text("Your facility went " + str(self.phase*YEARS_IN_PHASE) + " years undisturbed",
                             SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
@@ -412,6 +414,9 @@ class App: #pylint: disable=too-many-instance-attributes
                             str((self.phase+1)*YEARS_IN_PHASE) + " years",
                             SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
                 self.continue_button.draw()
+                #if not_playing_music:
+                    #pyxel.playm(3, loop=False)
+                   # not_playing_music= False
     
     def draw_tip(self):
         pyxel.cls(pyxel.COLOR_BLACK)

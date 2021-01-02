@@ -17,6 +17,8 @@ import tips
 
 YEARS_IN_PHASE=400
 YEARS_TO_WIN=10000
+not_playing_result_music = True
+not_playing_title_music = True
 
 class Screen(Enum):
     """An enum containing all possible screens in the game"""
@@ -61,6 +63,8 @@ class App: #pylint: disable=too-many-instance-attributes
 
     def reset_game(self):
         """Resets state to the beginning of a new game"""
+        global not_playing_title_music 
+        not_playing_title_music = True
         self.player = Player()
         self.map = Map({"mining":1, "archaeology":1, "dams":1, "teens":1, "tunnels":1})
         self.available_tips = list(range(19)) #19 possible tips to share with player
@@ -95,6 +99,10 @@ class App: #pylint: disable=too-many-instance-attributes
 
     def update_title(self):
         """Handles updates while the player is on the title screen"""
+        global not_playing_title_music
+        if not_playing_title_music:
+                    pyxel.playm(0, loop=False)
+                    not_playing_title_music= False
         if pyxel.btnp(pyxel.KEY_ENTER):
             self.screen = Screen.INTRO_1
 
@@ -134,6 +142,7 @@ class App: #pylint: disable=too-many-instance-attributes
     def update_directions_2(self):
         if self.continue_button.is_clicked():
             self.screen = Screen.SHOP
+            not_playing_title_music = True
         if self.continue_button.is_moused_over():
             self.continue_button.button_color = pyxel.COLOR_LIGHTBLUE
         else: 
@@ -199,11 +208,14 @@ class App: #pylint: disable=too-many-instance-attributes
 
     def update_results(self):
         """Handles updates while the players is on the results screen"""
+        global not_playing_result_music
         if self.continue_button.is_clicked():
             if self.latest_simulation_failed or self.phase == YEARS_TO_WIN//YEARS_IN_PHASE:
+                not_playing_result_music = True
                 self.reset_game()
                 self.screen = Screen.TITLE
             else:
+                not_playing_result_music = True
                 self.phase += 1
                 self.player.add_funding(100000)
                 self.screen = Screen.TIP
@@ -392,19 +404,26 @@ class App: #pylint: disable=too-many-instance-attributes
     def draw_results(self):
         """Draws frames while the player is on the results screen"""
         pyxel.cls(pyxel.COLOR_BLACK)
-
+        global not_playing_result_music
         pyxel.mouse(visible=True)
         if self.simulations_run < self.phase:
             center_text("Simulating...", SCREEN_WIDTH, SCREEN_HEIGHT//2, pyxel.COLOR_WHITE)
         elif self.latest_simulation_failed:
             center_text("Waste Repository Breached. Game Over.", SCREEN_WIDTH, SCREEN_HEIGHT//2, pyxel.COLOR_WHITE)
             self.continue_button.draw()
+            if not_playing_result_music:
+                    pyxel.playm(4, loop=False)
+                    not_playing_result_music= False
         else:
             if self.phase == YEARS_TO_WIN//YEARS_IN_PHASE:
                 center_text("YOU WIN!", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
                 center_text("Your facility went 10,000 years undisturbed", SCREEN_WIDTH,
                             SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
                 self.continue_button.draw()
+                if not_playing_result_music:
+                    pyxel.playm(3, loop=False)
+                    not_playing_result_music= False
+                
             else:
                 center_text("Your facility went " + str(self.phase*YEARS_IN_PHASE) + " years undisturbed",
                             SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
@@ -412,6 +431,9 @@ class App: #pylint: disable=too-many-instance-attributes
                             str((self.phase+1)*YEARS_IN_PHASE) + " years",
                             SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
                 self.continue_button.draw()
+                if not_playing_result_music:
+                    pyxel.playm(3, loop=False)
+                    not_playing_result_music= False
     
     def draw_tip(self):
         pyxel.cls(pyxel.COLOR_BLACK)

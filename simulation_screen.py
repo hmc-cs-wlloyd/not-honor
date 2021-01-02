@@ -9,11 +9,12 @@ MAP_BOTTOM_MARGIN = 8 + ICON_HEIGHT*3
 
 class SimulationScreen:
     """A class representing the simulation-in-progress screen"""
-    def __init__(self, initial_map, events_from_simulation, maps_from_simulation):
+    def __init__(self, initial_map, events_from_simulation, maps_from_simulation, death_margins):
         self.current_map = initial_map
         self.current_event_index = 0
         self.events_from_simulation = events_from_simulation
         self.maps_from_simulation = maps_from_simulation
+        self.death_margins = death_margins
         self.done = False
         pyxel.playm(2,loop=True)
 

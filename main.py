@@ -39,7 +39,7 @@ class App: #pylint: disable=too-many-instance-attributes
         self.simulations_run = 0
         self.latest_simulation_failed = False
         self.player = Player()
-        self.map = Map()
+        self.map = Map({"mining":1, "archaeology":1, "dams":1, "teens":1, "tunnels":1})
         self.which_tip_index = None
         self.available_tips = [0, 1, 2, 3, 4] #5 possible tips to share with player
         self.continue_button = button.Button(
@@ -58,7 +58,7 @@ class App: #pylint: disable=too-many-instance-attributes
     def reset_game(self):
         """Resets state to the beginning of a new game"""
         self.player = Player()
-        self.map = Map()
+        self.map = Map({"mining":1, "archaeology":1, "dams":1, "teens":1, "tunnels":1})
         self.available_tips = [0, 1, 2, 3, 4] #5 possible tips to share with player
         self.phase = 1
         self.simulations_run = 0
@@ -119,7 +119,7 @@ class App: #pylint: disable=too-many-instance-attributes
             self.shop = None # Reset the shop
             print("Headed to simulation")
             self.screen = Screen.SIMULATION
-            Map().cells = []
+            
         if self.map.simulate_button.is_moused_over():
             self.map.simulate_button.button_color = pyxel.COLOR_LIME
         else: 
@@ -136,11 +136,13 @@ class App: #pylint: disable=too-many-instance-attributes
     def update_simulation(self):
         """Handles updates while the players is on the simulation screen"""
         if self.simulations_run < self.phase:
-            self.latest_simulation_failed, event_log, map_log, _ = simulate.simulate(self.phase*YEARS_IN_PHASE,
+            self.latest_simulation_failed, event_log, map_log, death_margins = simulate.simulate(self.phase*YEARS_IN_PHASE,
                                                                                   self.map.map,
                                                                                   self.player.global_buffs)
+            print(death_margins)
+            Map(death_margins).cells = []
             self.simulations_run += 1
-            self.simulation_screen = SimulationScreen(copy.deepcopy(self.map), event_log, map_log)
+            self.simulation_screen = SimulationScreen(copy.deepcopy(self.map), event_log, map_log, death_margins)
 
         self.simulation_screen.update(self.player)
         if self.simulation_screen.done:

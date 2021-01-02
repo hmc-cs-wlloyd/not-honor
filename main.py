@@ -7,7 +7,7 @@ import random
 from simulation_screen import SimulationScreen
 from util import center_text
 from const import SCREEN_WIDTH, SCREEN_HEIGHT
-from shop import Shop
+from shop import Shop, STAT_BAR_SIDE_MARGIN, STAT_BAR_HEIGHT, HALF_STAT_BAR_WIDTH
 from player import Player
 from map import Map
 import marker
@@ -21,8 +21,11 @@ YEARS_TO_WIN=10000
 class Screen(Enum):
     """An enum containing all possible screens in the game"""
     TITLE = "title"
-    INTRO = "intro"
-    DIRECTIONS = "directions"
+    INTRO_1 = "intro_1"
+    INTRO_2 = "intro_2"
+    INTRO_3 = "intro_3"
+    DIRECTIONS_1 = "directions_1"
+    DIRECTIONS_2 = "directions_2"
     SHOP = "shop"
     MAP = "map"
     SIMULATION = "simulation"
@@ -69,10 +72,16 @@ class App: #pylint: disable=too-many-instance-attributes
         """Updates game data each frame"""
         if self.screen == Screen.TITLE:
             self.update_title()
-        if self.screen == Screen.INTRO:
-            self.update_intro()
-        if self.screen == Screen.DIRECTIONS:
-            self.update_directions()
+        if self.screen == Screen.INTRO_1:
+            self.update_intro_1()
+        if self.screen == Screen.INTRO_2:
+            self.update_intro_2()
+        if self.screen == Screen.INTRO_3:
+            self.update_intro_3()
+        if self.screen == Screen.DIRECTIONS_1:
+            self.update_directions_1()
+        if self.screen == Screen.DIRECTIONS_2:
+            self.update_directions_2()
         if self.screen == Screen.SHOP:
             self.update_shop()
         if self.screen == Screen.MAP:
@@ -87,24 +96,49 @@ class App: #pylint: disable=too-many-instance-attributes
     def update_title(self):
         """Handles updates while the player is on the title screen"""
         if pyxel.btnp(pyxel.KEY_ENTER):
-            self.screen = Screen.INTRO
+            self.screen = Screen.INTRO_1
 
-    def update_intro(self):
+    def update_intro_1(self):
         """Handles updates while the player is on the title screen"""
         if self.continue_button.is_clicked():
-            self.screen = Screen.DIRECTIONS
+            self.screen = Screen.INTRO_2
         if self.continue_button.is_moused_over():
             self.continue_button.button_color = pyxel.COLOR_LIGHTBLUE
         else: 
             self.continue_button.button_color = pyxel.COLOR_DARKBLUE
 
-    def update_directions(self):
+    def update_intro_2(self):
+        if self.continue_button.is_clicked():
+            self.screen = Screen.INTRO_3
+        if self.continue_button.is_moused_over():
+            self.continue_button.button_color = pyxel.COLOR_LIGHTBLUE
+        else: 
+            self.continue_button.button_color = pyxel.COLOR_DARKBLUE
+
+    def update_intro_3(self):
+        if self.continue_button.is_clicked():
+            self.screen = Screen.DIRECTIONS_1
+        if self.continue_button.is_moused_over():
+            self.continue_button.button_color = pyxel.COLOR_LIGHTBLUE
+        else: 
+            self.continue_button.button_color = pyxel.COLOR_DARKBLUE
+
+    def update_directions_1(self):
+        if self.continue_button.is_clicked():
+            self.screen = Screen.DIRECTIONS_2
+        if self.continue_button.is_moused_over():
+            self.continue_button.button_color = pyxel.COLOR_LIGHTBLUE
+        else: 
+            self.continue_button.button_color = pyxel.COLOR_DARKBLUE
+
+    def update_directions_2(self):
         if self.continue_button.is_clicked():
             self.screen = Screen.SHOP
         if self.continue_button.is_moused_over():
             self.continue_button.button_color = pyxel.COLOR_LIGHTBLUE
         else: 
             self.continue_button.button_color = pyxel.COLOR_DARKBLUE
+
     def update_shop(self):
         """Handles updates while the player is on the shop screen"""
         if self.shop is None:
@@ -146,7 +180,6 @@ class App: #pylint: disable=too-many-instance-attributes
         else: 
             self.map.show_directions = False
             self.map.directions_button.button_color = pyxel.COLOR_ORANGE   
-
 
 
     def update_simulation(self):
@@ -198,10 +231,16 @@ class App: #pylint: disable=too-many-instance-attributes
         """Draws frame each frame"""
         if self.screen == Screen.TITLE:
             self.draw_title()
-        elif self.screen == Screen.INTRO:
-            self.draw_intro()
-        elif self.screen == Screen.DIRECTIONS:
-            self.draw_directions()
+        elif self.screen == Screen.INTRO_1:
+            self.draw_intro_1()
+        elif self.screen == Screen.INTRO_2:
+            self.draw_intro_2()
+        elif self.screen == Screen.INTRO_3:
+            self.draw_intro_3()
+        elif self.screen == Screen.DIRECTIONS_1:
+            self.draw_directions_1()
+        elif self.screen == Screen.DIRECTIONS_2:
+            self.draw_directions_2()
         elif self.screen == Screen.SHOP:
             self.draw_shop()
         elif self.screen == Screen.MAP:
@@ -221,18 +260,114 @@ class App: #pylint: disable=too-many-instance-attributes
         center_text("Not a Place of Honor", page_width=SCREEN_WIDTH, y_coord=66, text_color=pyxel.COLOR_WHITE)
         center_text("- PRESS ENTER TO START -", page_width=SCREEN_WIDTH, y_coord=126, text_color=pyxel.COLOR_WHITE)
 
-    def draw_intro(self): 
+    def draw_intro_1(self): 
         pyxel.cls(pyxel.COLOR_BLACK)
         pyxel.mouse(visible=True)
         center_text("Doctor!  I\'m glad you\'re here!", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+        center_text('Thanks for coming all this way to meet with the team for', SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+        center_text("the Waste Isolation Pilot Plant. We\'re simulating how to", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
+        center_text("keep future generations of humans (who may not understand", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3), pyxel.COLOR_WHITE)
+        center_text("English) away from nuclear waste sites and", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4), pyxel.COLOR_WHITE)
+        center_text("we need your advice!", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*5), pyxel.COLOR_WHITE)
         self.continue_button.draw()
 
-    def draw_directions(self): 
+    def draw_intro_2(self): 
         pyxel.cls(pyxel.COLOR_BLACK)
         pyxel.mouse(visible=True)
-        center_text("To start, we\'ll give you a budget of $X.", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+        center_text("Our scientists have found that humans behave differently", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT-16, pyxel.COLOR_WHITE)
+        center_text('towards a place based on five observable aspects', SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT-20, pyxel.COLOR_WHITE)
+        pyxel.text(8,SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2)-8, "Land Usability - ", pyxel.COLOR_YELLOW)
+        pyxel.text(78, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2)-8, "How usable the land appears to be", pyxel.COLOR_WHITE)
+        pyxel.text(8, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3)-8, "Visibility - ", pyxel.COLOR_YELLOW)
+        pyxel.text(62, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3)-8, "How visually noticeable the land is", pyxel.COLOR_WHITE)
+        pyxel.text(8, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4)-8, "Respectability - ", pyxel.COLOR_YELLOW)
+        pyxel.text(78, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4)-8, "How likely visitors are to preserve the land", pyxel.COLOR_WHITE)
+        pyxel.text(8, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*5)-8, "Likability - ", pyxel.COLOR_YELLOW)
+        pyxel.text(62, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*5)-8, "How charming the land is", pyxel.COLOR_WHITE)
+        pyxel.text(8, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*6)-8, "Message Clarity - ", pyxel.COLOR_YELLOW)
+        pyxel.text(78, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*6)-8, "How well the land is communicating to\nstay away", pyxel.COLOR_WHITE)
         self.continue_button.draw()
 
+    def draw_intro_3(self): 
+        pyxel.cls(pyxel.COLOR_BLACK)
+        pyxel.mouse(visible=True)
+        center_text("You\'ll also find that there are different types of humans", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT-64, pyxel.COLOR_WHITE)
+        center_text('who will visit the simulated nuclear site. They have', SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT-60, pyxel.COLOR_WHITE)
+        center_text("different interests in regard to the five aspects,", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2)-60, pyxel.COLOR_WHITE)
+        center_text("so you\'ll have to put up the right defenses to keep", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3)-60, pyxel.COLOR_WHITE)
+        center_text("them all away!", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4)-60, pyxel.COLOR_WHITE)
+        center_text("For example...", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4)-44, pyxel.COLOR_WHITE)
+
+        pyxel.blt((SCREEN_WIDTH/2)-(16*3)-8, SCREEN_HEIGHT//2-4, 0, 0, 32, 16, 16)
+        pyxel.blt(SCREEN_WIDTH/2-8, SCREEN_HEIGHT//2-4, 0, 0, 32, 16, 16)
+        pyxel.blt((SCREEN_WIDTH/2)+(16*3)-8, SCREEN_HEIGHT//2-4, 0, 0, 32, 16, 16)
+
+        pyxel.text(16, SCREEN_HEIGHT//2+22, "Architects ", pyxel.COLOR_YELLOW)
+        pyxel.text(16+44, SCREEN_HEIGHT//2+22, "like to dig up open spaces but will preserve", pyxel.COLOR_WHITE) 
+        center_text("spaces with high respectability", SCREEN_WIDTH, SCREEN_HEIGHT//2+22+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+
+        self.continue_button.draw()
+
+    def draw_directions_1(self): 
+        pyxel.cls(pyxel.COLOR_BLACK)
+        pyxel.mouse(visible=True)
+        center_text("Remaining Budget: $" + str(self.player.funding),
+                page_width=SCREEN_WIDTH,
+                y_coord=10,
+                text_color=pyxel.COLOR_YELLOW)
+        center_text("To start, we\'ll give you a budget of $100,000", SCREEN_WIDTH, SCREEN_HEIGHT//2-72, pyxel.COLOR_WHITE)
+        center_text('On the next page, you\'ll be able to buy items', SCREEN_WIDTH, SCREEN_HEIGHT//2-48, pyxel.COLOR_WHITE)
+        center_text("to affect your simulation. Some items need to be placed", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT-48, pyxel.COLOR_WHITE)
+        center_text("and others will be applied as global social factors.", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2)-48, pyxel.COLOR_WHITE)
+
+        #FOR AN EXAMPLE OF THE STAT BARS so they don't look scary the first time you see them
+        for i in range(5): #keep plain gray bars on the screen outside of hover
+            stat_to_present = 5
+            if i == 0:
+                stat_to_present = 5
+                bar_label = " Land Use"
+            elif i == 1: 
+                stat_to_present = -3
+                bar_label = "  Visible"
+            elif i == 2: 
+                stat_to_present = -8
+                bar_label = "Respectable"
+            elif i == 3: 
+                stat_to_present = 9
+                bar_label = " Likeable"
+            elif i == 4: 
+                stat_to_present = 4
+                bar_label = " Clarity"
+
+            if stat_to_present >= 0: #positive stat
+                pyxel.rect(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT/2-12, stat_to_present*2, STAT_BAR_HEIGHT, pyxel.COLOR_GREEN)
+                pyxel.rect(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH+stat_to_present*2, SCREEN_HEIGHT/2-12, HALF_STAT_BAR_WIDTH-(stat_to_present*2), STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
+                pyxel.rect(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT/2-12, HALF_STAT_BAR_WIDTH, STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
+                pyxel.line(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT/2-12, ((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT/2-12+8-1, pyxel.COLOR_YELLOW)
+            else:#negative stat
+                pyxel.rect(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH+stat_to_present*2, SCREEN_HEIGHT/2-12, stat_to_present*-2, STAT_BAR_HEIGHT, pyxel.COLOR_RED)
+                pyxel.rect(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT/2-12, HALF_STAT_BAR_WIDTH-(stat_to_present*-2), STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
+                pyxel.rect(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT/2-12, HALF_STAT_BAR_WIDTH, STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
+            pyxel.line(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT/2-12, ((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT/2-12+8-1, pyxel.COLOR_YELLOW)
+            pyxel.text(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT/2-12+8, bar_label, pyxel.COLOR_GRAY)
+        
+        center_text("Each item have different land usability, visibility,", SCREEN_WIDTH, SCREEN_HEIGHT//2+16, pyxel.COLOR_WHITE)
+        center_text("respectability, likability and message clarity,", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT+16, pyxel.COLOR_WHITE)
+        center_text("so keep those in mind as you pick your strategy!", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2)+16, pyxel.COLOR_WHITE)
+
+        self.continue_button.draw()
+
+    def draw_directions_2(self): 
+        pyxel.cls(pyxel.COLOR_BLACK)
+        pyxel.mouse(visible=True)
+        center_text("GOOD LUCK!", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_GREEN)
+        center_text('After placing your purchased items, we\'ll begin', SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+        center_text("the simulation! Let\'s make sure your design withstands", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
+        center_text("human intrusion for 400 years, then we\'ll try for", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3), pyxel.COLOR_WHITE)
+        center_text("longer and longer time spans! Also, I\'m sure some of", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4), pyxel.COLOR_WHITE)
+        center_text("the other scientists will want to talk to you...", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*5), pyxel.COLOR_WHITE)
+        center_text("I\'ll let you know if I see anyone!", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*6), pyxel.COLOR_WHITE)
+        self.continue_button.draw()
 
     def draw_shop(self):
         """Draws frames while the player is on the shop screen"""

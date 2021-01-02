@@ -17,6 +17,7 @@ class SimulationScreen:
         self.maps_from_simulation = maps_from_simulation
         self.death_margins = death_margins
         self.done = False
+        self.show_visitors = False
         pyxel.playm(2,loop=True)
 
     def update(self, player):
@@ -27,6 +28,13 @@ class SimulationScreen:
             self.current_map.next_button.button_color = pyxel.COLOR_LIGHTBLUE
         else:
             self.current_map.next_button.button_color = pyxel.COLOR_DARKBLUE
+
+        if self.current_map.visitors_button.is_moused_over():
+            self.show_visitors = True
+            self.current_map.visitors_button.button_color = pyxel.COLOR_PEACH
+        else: 
+            self.show_visitors = False
+            self.current_map.visitors_button.button_color = pyxel.COLOR_ORANGE  
 
         if self.current_event_index >= len(self.events_from_simulation):
             self.done = True
@@ -59,23 +67,23 @@ class SimulationScreen:
                         y_coord = SCREEN_HEIGHT-(MAP_BOTTOM_MARGIN-ICON_HEIGHT//2),
                         text_color=pyxel.COLOR_WHITE)
         else: #DRAW VISITOR KEY
-            #miner
-            pyxel.rect(32,SCREEN_WIDTH-44,4,4,pyxel.COLOR_GRAY)
-            pyxel.text(32+8, SCREEN_WIDTH-44, "Miner", pyxel.COLOR_WHITE)
+            if self.show_visitors is True:
+                #miner
+                pyxel.rect(32,SCREEN_WIDTH-44,4,4,pyxel.COLOR_GRAY)
+                pyxel.text(32+8, SCREEN_WIDTH-44, "Miner", pyxel.COLOR_WHITE)
 
-            #architect
-            pyxel.rect(104,SCREEN_WIDTH-44,4,4,pyxel.COLOR_RED)
-            pyxel.text(104+8, SCREEN_WIDTH-44, "Architect", pyxel.COLOR_WHITE)
+                #architect
+                pyxel.rect(104,SCREEN_WIDTH-44,4,4,pyxel.COLOR_RED)
+                pyxel.text(104+8, SCREEN_WIDTH-44, "Architect", pyxel.COLOR_WHITE)
 
-            #dam builder
-            pyxel.rect(176,SCREEN_WIDTH-44,4,4,pyxel.COLOR_GREEN)
-            pyxel.text(176+8, SCREEN_WIDTH-44, "Dam Builder", pyxel.COLOR_WHITE)
+                #dam builder
+                pyxel.rect(176,SCREEN_WIDTH-44,4,4,pyxel.COLOR_GREEN)
+                pyxel.text(176+8, SCREEN_WIDTH-44, "Dam Builder", pyxel.COLOR_WHITE)
 
-            #teenager
-            pyxel.rect(64,SCREEN_WIDTH-32,4,4,pyxel.COLOR_DARKBLUE)
-            pyxel.text(64+8, SCREEN_WIDTH-32, "Teenager", pyxel.COLOR_WHITE)
+                #teenager
+                pyxel.rect(64,SCREEN_WIDTH-32,4,4,pyxel.COLOR_DARKBLUE)
+                pyxel.text(64+8, SCREEN_WIDTH-32, "Teenager", pyxel.COLOR_WHITE)
 
-            #teenager
-            pyxel.rect(128,SCREEN_WIDTH-32,4,4,pyxel.COLOR_BROWN)
-            pyxel.text(128+8, SCREEN_WIDTH-32, "Transit Tunnel Maker", pyxel.COLOR_WHITE)
-            
+                #teenager
+                pyxel.rect(128,SCREEN_WIDTH-32,4,4,pyxel.COLOR_BROWN)
+                pyxel.text(128+8, SCREEN_WIDTH-32, "Transit Tunnel Maker", pyxel.COLOR_WHITE)

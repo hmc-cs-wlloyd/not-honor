@@ -2,7 +2,7 @@
 
 import math
 import pyxel
-from const import ICON_HEIGHT, SCREEN_HEIGHT, SCREEN_WIDTH, STAT_BAR_HEIGHT, STAT_BAR_SIDE_MARGIN, HALF_STAT_BAR_WIDTH
+from const import ICON_WIDTH, ICON_HEIGHT, SCREEN_HEIGHT, SCREEN_WIDTH, STAT_BAR_HEIGHT, STAT_BAR_SIDE_MARGIN, HALF_STAT_BAR_WIDTH
 from util import center_text
 from event import events
 
@@ -93,7 +93,7 @@ class SimulationScreen:
         if self.events_from_simulation[self.current_event_index][1] != "null":
             event_message = str(self.events_from_simulation[self.current_event_index][0]) + ": " \
                                         + events[self.events_from_simulation[self.current_event_index][1]].description
-            pyxel.blt(x=0,
+            pyxel.blt(x=8,
                       y=SCREEN_HEIGHT-MAP_BOTTOM_MARGIN+ICON_HEIGHT//2+4,
                       img=events[self.events_from_simulation[self.current_event_index][1]].icon_image,
                       u=events[self.events_from_simulation[self.current_event_index][1]].icon_coords[0],
@@ -110,21 +110,21 @@ class SimulationScreen:
         else: #DRAW VISITOR KEY
             if self.show_visitors is True:
                 #miner
-                pyxel.rect(32,SCREEN_WIDTH-40,4,4,pyxel.COLOR_GRAY)
-                pyxel.text(32+8, SCREEN_WIDTH-40, "Miner", pyxel.COLOR_WHITE)
+                pyxel.blt(32, SCREEN_WIDTH-44, 0, 160, 32, ICON_WIDTH, ICON_HEIGHT)
+                pyxel.text(32+ICON_WIDTH+8, SCREEN_WIDTH-36, "Miner", pyxel.COLOR_GRAY)
 
                 #architect
-                pyxel.rect(104,SCREEN_WIDTH-40,4,4,pyxel.COLOR_RED)
-                pyxel.text(104+8, SCREEN_WIDTH-40, "Architect", pyxel.COLOR_WHITE)
+                pyxel.blt(104, SCREEN_WIDTH-44, 0, 0, 16, ICON_WIDTH, ICON_HEIGHT)
+                pyxel.text(104+4+ICON_WIDTH, SCREEN_WIDTH-36, "Architect", pyxel.COLOR_RED)
 
                 #dam builder
-                pyxel.rect(176,SCREEN_WIDTH-40,4,4,pyxel.COLOR_GREEN)
-                pyxel.text(176+8, SCREEN_WIDTH-40, "Dam Builder", pyxel.COLOR_WHITE)
+                pyxel.blt(176, SCREEN_WIDTH-44, 0, 176, 32, ICON_WIDTH, ICON_HEIGHT)
+                pyxel.text(176+8+ICON_WIDTH, SCREEN_WIDTH-36, "Dam Builder", pyxel.COLOR_BROWN)
 
                 #teenager
-                pyxel.rect(64,SCREEN_WIDTH-28,4,4,pyxel.COLOR_DARKBLUE)
-                pyxel.text(64+8, SCREEN_WIDTH-28, "Teenager", pyxel.COLOR_WHITE)
+                pyxel.blt(60, SCREEN_WIDTH-28, 0, 16, 0, ICON_WIDTH, ICON_HEIGHT)
+                pyxel.text(56+4+ICON_WIDTH, SCREEN_WIDTH-20, "Teenager", pyxel.COLOR_DARKBLUE)
 
-                #teenager
-                pyxel.rect(128,SCREEN_WIDTH-28,4,4,pyxel.COLOR_BROWN)
-                pyxel.text(128+8, SCREEN_WIDTH-28, "Transit Tunnel Maker", pyxel.COLOR_WHITE)
+                #tunnel maker
+                pyxel.blt(144, SCREEN_WIDTH-28, 0, 48, 0, ICON_WIDTH, ICON_HEIGHT)
+                pyxel.text(144+4+ICON_WIDTH, SCREEN_WIDTH-20, "Billionaire", pyxel.COLOR_GREEN)

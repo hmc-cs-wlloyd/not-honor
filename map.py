@@ -116,9 +116,9 @@ class Map: #pylint: disable=too-many-instance-attributes
         #set colors for intruder types
         mine_color = pyxel.COLOR_GRAY
         arch_color = pyxel.COLOR_RED
-        dam_color = pyxel.COLOR_GREEN
+        dam_color = pyxel.COLOR_BROWN
         teen_color = pyxel.COLOR_DARKBLUE
-        tunnel_color = pyxel.COLOR_BROWN
+        tunnel_color = pyxel.COLOR_GREEN
 
         #lists for iterating over when making visitors
         visitor_type_list = ["arch", "arch", "mine", "mine", "dam", "dam", "teen", "teen", "tunnel", "tunnel"]

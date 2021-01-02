@@ -15,6 +15,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
     dead = False
     event_list = [(0, "null")]
     map_list = [site_map]
+    stats_list = []
     time_period_map = copy.deepcopy(site_map)
     #set default stats
     usability, visibility, respectability, likability, \
@@ -36,6 +37,11 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         sot = state_of_tech(current_year)
         print("state of tech is " + str(sot))
 
+        usability, visibility, respectability, likability, \
+        understandability = get_stats(time_period_map, global_buffs, current_year, sot, event_list)
+        if len(event_list) > len(stats_list):
+            stats_list.append((usability, visibility, respectability, likability, understandability))
+
         event, event_year = get_random_event(current_year, sot, site_map,usability,
                                              visibility, respectability, likability, understandability,
                                              global_buffs)
@@ -43,6 +49,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
             print ("In the year " + str(event_year) + ", " + str(event) +
                     " happened!")
             event_list.append((event_year, event))
+            stats_list.append((usability, visibility, respectability, likability, understandability))
             vikings = (event =="vikings")
             earthquake = (event == "earthquake")
             faultline = (event == "faultline")
@@ -59,13 +66,10 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
                             "teens": teen_margin,
                             "tunnels": tunnel_margin}
             map_list.append(time_period_map)
-            return dead, event_list, map_list, margins_dict
+            return dead, event_list, map_list, margins_dict, stats_list
 
         #handle events that change the map
 
-
-        usability, visibility, respectability, likability, \
-        understandability = get_stats(time_period_map, global_buffs, current_year, sot, event_list)
 
         print("usability, visibility, respectability, likability, understandability:")
         print(usability, visibility,respectability,  likability,
@@ -87,6 +91,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
                   ", so mining did happen in year " +
                   str(mine_year))
             event_list.append((mine_year, "miners"))
+            stats_list.append((usability, visibility, respectability, likability, understandability))
             dead = True
             mining_margin = 0
             margins_dict = {"mining": mining_margin,
@@ -95,7 +100,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
                             "teens": teen_margin,
                             "tunnels": tunnel_margin}
             map_list.append(time_period_map)
-            return dead, event_list, map_list, margins_dict
+            return dead, event_list, map_list, margins_dict, stats_list
         print("I rolled " + str(mine_die) +
               ", so no mining happened by year " + str(current_year))
         mining_margin = min(mining_margin, mine_die-miners)
@@ -110,6 +115,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
                   ", so archaeology did happen in year " +
                   str(arch_year))
             event_list.append((arch_year, "archaeologists"))
+            stats_list.append((usability, visibility, respectability, likability, understandability))
             dead = True
             archaeology_margin = 0
             margins_dict = {"mining": mining_margin,
@@ -118,7 +124,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
                             "teens": teen_margin,
                             "tunnels": tunnel_margin}
             map_list.append(time_period_map)
-            return dead, event_list, map_list, margins_dict
+            return dead, event_list, map_list, margins_dict, stats_list
         print("I rolled " + str(arch_die) +
               ", so no archaeology happened by year " + str(current_year))
         archaeology_margin = min(archaeology_margin, arch_die-archaeologists)
@@ -134,6 +140,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
                   str(dam_year))
             dead = True
             event_list.append((dam_year, "dams"))
+            stats_list.append((usability, visibility, respectability, likability, understandability))
             dam_margin = 0
             margins_dict = {"mining": mining_margin,
                             "archaeology": archaeology_margin,
@@ -141,7 +148,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
                             "teens": teen_margin,
                             "tunnels": tunnel_margin}
             map_list.append(time_period_map)
-            return dead, event_list, map_list, margins_dict
+            return dead, event_list, map_list, margins_dict, stats_list
         print("I rolled " + str(dam_die) +
               ", so no dam building happened by year " + str(current_year))
         dam_margin = min(dam_margin, dam_die-dams)
@@ -158,13 +165,14 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
             dead = True
             teen_margin = 0
             event_list.append((teen_year, "teens"))
+            stats_list.append((usability, visibility, respectability, likability, understandability))
             margins_dict = {"mining": mining_margin,
                             "archaeology": archaeology_margin,
                             "dams":  dam_margin,
                             "teens": teen_margin,
                             "tunnels": tunnel_margin}
             map_list.append(time_period_map)
-            return dead, event_list, map_list, margins_dict
+            return dead, event_list, map_list, margins_dict, stats_list
         print("I rolled " + str(teen_die) +
               ", so no teens happened by year " + str(current_year))
         teen_margin = min(teen_margin, teen_die-teens)
@@ -178,6 +186,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
                 transit_tunnel_year))
             dead = True
             event_list.append((transit_tunnel_year, "tunnel"))
+            stats_list.append((usability, visibility, respectability, likability, understandability))
             tunnel_margin = 0
             margins_dict = {"mining": mining_margin,
                             "archaeology": archaeology_margin,
@@ -185,7 +194,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
                             "teens": teen_margin,
                             "tunnels": tunnel_margin}
             map_list.append(time_period_map)
-            return dead, event_list, map_list, margins_dict
+            return dead, event_list, map_list, margins_dict, stats_list
         print("I rolled " + str(transit_tunnel_die) + ", so no transit tunnel disrupted the site by year " + str(
             current_year))
         tunnel_margin = min(tunnel_margin, transit_tunnel_die - transit_tunnel)
@@ -196,7 +205,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
                             "teens": teen_margin,
                             "tunnels": tunnel_margin}
 
-    return dead, event_list, map_list, margins_dict
+    return dead, event_list, map_list, margins_dict, stats_list
 
 def get_random_event(current_year, sot, site_map,usability, visibility, respectability, likability, #pylint: disable=too-many-arguments,too-many-branches
         understandability, global_buffs):
@@ -260,7 +269,6 @@ def get_random_event(current_year, sot, site_map,usability, visibility, respecta
     elif sot > 0 and current_year >2500 and respectability>3 and die <.4:
         event = "park"
 
-    print(event)
     return event, event_year
 
 def get_knowledge_of_past(visibility, respectability, likability,

@@ -8,7 +8,7 @@ from const import SCREEN_WIDTH, SCREEN_HEIGHT, ICON_WIDTH, ICON_HEIGHT, INVENTOR
 from util import center_text
 
 MAP_BOTTOM_OFFSET=20
-MAP_INVENTORY_BOTTOM_MARGIN = 8 + ICON_HEIGHT*3
+MAP_INVENTORY_BOTTOM_MARGIN = ICON_HEIGHT*4
 SOCIETAL_MODIFIER_WIDTH=80
 INVENTORY_WIDTH=SCREEN_WIDTH-SOCIETAL_MODIFIER_WIDTH
 CENTER_POINT_OF_CORE_X=112
@@ -44,45 +44,45 @@ class Map: #pylint: disable=too-many-instance-attributes
 
         self.simulate_button = button.Button(
             x_coord=SCREEN_WIDTH - 45,
-            y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET,
+            y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET + 8,
             width=40,
-            height=9*MAP_BOTTOM_OFFSET/10,
+            height=6*MAP_BOTTOM_OFFSET/10,
             text="Simulate",
             button_color=None
         )
 
         self.directions_button = button.Button(
             x_coord=SCREEN_WIDTH-100,
-            y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET,
+            y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET + 8,
             width=50,
-            height=9*MAP_BOTTOM_OFFSET/10,
+            height=6*MAP_BOTTOM_OFFSET/10,
             text="Directions",
             button_color=pyxel.COLOR_PURPLE
         )
 
         self.next_button = button.Button(
             x_coord=(SCREEN_WIDTH-30) // 2,
-            y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET,
+            y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET + 8,
             width=30,
-            height=9*MAP_BOTTOM_OFFSET/10,
+            height=6*MAP_BOTTOM_OFFSET/10,
             text="Next",
             button_color=pyxel.COLOR_DARKBLUE
         )
 
         self.visitors_button = button.Button(
             x_coord=SCREEN_WIDTH-45,
-            y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET,
+            y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET + 8,
             width=45,
-            height=9*MAP_BOTTOM_OFFSET/10,
+            height=6*MAP_BOTTOM_OFFSET/10,
             text="Visitors",
             button_color=pyxel.COLOR_ORANGE
         )
 
         self.back_button = button.Button(
             x_coord=5,
-            y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET,
+            y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET + 8,
             width=30,
-            height=9*MAP_BOTTOM_OFFSET/10,
+            height=6*MAP_BOTTOM_OFFSET/10,
             text="Back",
             button_color=None
         )
@@ -128,7 +128,7 @@ class Map: #pylint: disable=too-many-instance-attributes
         #CREATE VISITORSFROM THE WEST
         for j in range(10): #generate n cells
             visitor = Cell(x=random.randrange(0,1),
-                           y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16),
+                           y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-8),
                            direction_spawned_from="W",
                            intruder_type= visitor_type_list[j],
                            intruder_color = visitor_color_list[j],
@@ -148,7 +148,7 @@ class Map: #pylint: disable=too-many-instance-attributes
         #CREATE SOME THAT SPAWN FROM THE EAST
         for j in range(10):
             visitor = Cell(x=random.randrange(SCREEN_WIDTH-5, SCREEN_WIDTH-4),
-                           y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16),
+                           y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-8),
                            direction_spawned_from="E",
                            intruder_type= visitor_type_list[j],
                            intruder_color = visitor_color_list[j],
@@ -159,7 +159,7 @@ class Map: #pylint: disable=too-many-instance-attributes
         #CREATE SOME THAT SPAWN FROM THE SOUTH
         for j in range(10):
             visitor = Cell(x=random.randrange(0, SCREEN_WIDTH-4),
-                           y=random.randrange(SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-17,SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16),
+                           y=random.randrange(SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-9,SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-8),
                            direction_spawned_from="S",
                            intruder_type= visitor_type_list[j],
                            intruder_color = visitor_color_list[j],
@@ -250,7 +250,7 @@ class Map: #pylint: disable=too-many-instance-attributes
             self.directions_button.draw()
 
             #draw the inventory
-            inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN
+            inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN + 8
             center_text("Inventory",
                     page_width=INVENTORY_WIDTH,
                     x_coord=0,
@@ -380,7 +380,7 @@ class Cell:
 
         #remove visitor if it moves off screen and respawn the same visitor somewhere else
         if new_x_coord < 0 or new_x_coord >= SCREEN_WIDTH or new_y_coord < 0 or \
-           new_y_coord > SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-13:
+           new_y_coord > SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-5:
       
             new_visitor_allowable_distance = self.allowable_core_distance #respawn a visitor with the same stats
             new_intruder_type = self.intruder_type
@@ -395,13 +395,13 @@ class Cell:
                 y=random.randrange(0,1)
             elif rand_direction == "E":
                 x=random.randrange(SCREEN_WIDTH-5, SCREEN_WIDTH-4)
-                y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16)
+                y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-8)
             elif rand_direction == "S":
                 x=random.randrange(0, SCREEN_WIDTH-4)
-                y=random.randrange(SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-17,SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16)
+                y=random.randrange(SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-9,SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-8)
             elif rand_direction == "W":
                 x=random.randrange(0,1)
-                y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-16)
+                y=random.randrange(0, SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN-8)
 
             visitor = Cell(x, y, direction_spawned_from=rand_direction, allowable_core_distance=new_visitor_allowable_distance,
                            intruder_color=new_intruder_color, intruder_type=new_intruder_type)

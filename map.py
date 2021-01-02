@@ -24,6 +24,7 @@ class Map: #pylint: disable=too-many-instance-attributes
         self.selected_inventory_item = None
         self.clicked_inven = None
         self.death_margins = death_margins
+        self.coords_for_bonuses = [] #hold a tuple - x coord, y coord, and color for border
 
         self.map = [
         ["null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null"],
@@ -177,6 +178,36 @@ class Map: #pylint: disable=too-many-instance-attributes
 
                             self.map[self.selected_row][self.selected_col] = self.selected_inventory_item #update self.map
 
+                            ###ADJACENCY BONUSES!!!!!!!!!!
+                            for row in range (-1,2):
+                                for col in range(-1,2):
+                                    #check for out of bounds
+                                    if self.selected_col+col < 16 and self.selected_col+col > -1 and self.selected_row+row < 12 and self.selected_row+row > -1 and ((row==0 and col==0) is False): 
+                                        #check that there's a defense adjacent to current item
+                                        if self.map[self.selected_row+row][self.selected_col+col] != "null" and self.map[self.selected_row+row][self.selected_col+col] != "site":
+                                            #RED border for SPOOKY
+                                            if "spooky" in marker.markers[self.selected_inventory_item].tags and "spooky" in marker.markers[self.map[self.selected_row+row][self.selected_col+col]].tags:
+                                                self.coords_for_bonuses.append([self.selected_col*ICON_WIDTH, self.selected_row*ICON_HEIGHT, pyxel.COLOR_RED])
+                                                self.coords_for_bonuses.append([(self.selected_col+col)*ICON_WIDTH, (self.selected_row+row)*ICON_HEIGHT, pyxel.COLOR_RED])
+                                            #GREEN border for placing "pro-educational" things next to "educational" things
+                                            if ("pro-educational" in marker.markers[self.selected_inventory_item].tags and "educational" in marker.markers[self.map[self.selected_row+row][self.selected_col+col]].tags) \
+                                            or ("educational" in marker.markers[self.selected_inventory_item].tags and "pro-educational" in marker.markers[self.map[self.selected_row+row][self.selected_col+col]].tags):
+                                                self.coords_for_bonuses.append([self.selected_col*ICON_WIDTH, self.selected_row*ICON_HEIGHT, pyxel.COLOR_GREEN])
+                                                self.coords_for_bonuses.append([(self.selected_col+col)*ICON_WIDTH, (self.selected_row+row)*ICON_HEIGHT, pyxel.COLOR_GREEN])
+                                            #ORANGE border for danger signs and disgust faces next to each other
+                                            if self.selected_inventory_item=="danger-sign" and self.map[self.selected_row+row][self.selected_col+col]=="disgust-faces" \
+                                            or self.selected_inventory_item=="disgust-faces" and self.map[self.selected_row+row][self.selected_col+col]=="danger-sign":
+                                                self.coords_for_bonuses.append([self.selected_col*ICON_WIDTH, self.selected_row*ICON_HEIGHT, pyxel.COLOR_ORANGE])
+                                                self.coords_for_bonuses.append([(self.selected_col+col)*ICON_WIDTH, (self.selected_row+row)*ICON_HEIGHT, pyxel.COLOR_ORANGE])
+                                            #PURPLE border for the same terraforming objects
+                                            if "terraforming" in marker.markers[self.selected_inventory_item].tags and "terraforming" in marker.markers[self.map[self.selected_row+row][self.selected_col+col]].tags \
+                                            and self.map[self.selected_row+row][self.selected_col+col] == self.selected_inventory_item:
+                                                self.coords_for_bonuses.append([self.selected_col*ICON_WIDTH, self.selected_row*ICON_HEIGHT, pyxel.COLOR_PURPLE])
+                                                self.coords_for_bonuses.append([(self.selected_col+col)*ICON_WIDTH, (self.selected_row+row)*ICON_HEIGHT, pyxel.COLOR_PURPLE])
+                                            #LIGHTBLUE border for monoliths
+                                            if "monolith" in marker.markers[self.selected_inventory_item].tags and "monolith" in marker.markers[self.map[self.selected_row+row][self.selected_col+col]].tags:
+                                                self.coords_for_bonuses.append([self.selected_col*ICON_WIDTH, self.selected_row*ICON_HEIGHT, pyxel.COLOR_LIGHTBLUE])
+                                                self.coords_for_bonuses.append([(self.selected_col+col)*ICON_WIDTH, (self.selected_row+row)*ICON_HEIGHT, pyxel.COLOR_LIGHTBLUE])
                             self.clicked_inven = None
                             self.selected_inventory_item = None
         else:
@@ -229,12 +260,15 @@ class Map: #pylint: disable=too-many-instance-attributes
                 selected_item_icon_y = marker.markers[self.selected_inventory_item].icon_coords[1]
                 pyxel.blt(pyxel.mouse_x, pyxel.mouse_y, 0, selected_item_icon_x, selected_item_icon_y, ICON_WIDTH,
                           ICON_HEIGHT)
-
         else:
             self.next_button.draw()
             ###DRAW VISITORS###
             for i in cells:
                 i.draw()
+
+        #DRAW BORDERS TO SHOW ADJACENCY BONUSES
+        for elem in self.coords_for_bonuses: 
+            pyxel.rectb(elem[0], elem[1], ICON_WIDTH, ICON_HEIGHT, elem[2])
 
 class Cell:
     """A class representing a square that random-walks around the map to represent visitors approaching the site in the

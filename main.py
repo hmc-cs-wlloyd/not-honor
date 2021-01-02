@@ -2,8 +2,8 @@
 
 from enum import Enum
 import copy
-import pyxel
 import random
+import pyxel
 from simulation_screen import SimulationScreen
 from util import center_text
 from const import SCREEN_WIDTH, SCREEN_HEIGHT
@@ -185,13 +185,13 @@ class App: #pylint: disable=too-many-instance-attributes
     def update_simulation(self):
         """Handles updates while the players is on the simulation screen"""
         if self.simulations_run < self.phase:
-            self.latest_simulation_failed, event_log, map_log, death_margins = simulate.simulate(self.phase*YEARS_IN_PHASE,
-                                                                                  self.map.map,
-                                                                                  self.player.global_buffs)
+            self.latest_simulation_failed, event_log, map_log, death_margins, stats_list = simulate.simulate(self.phase*YEARS_IN_PHASE,
+                                                                                            self.map.map,
+                                                                                            self.player.global_buffs)
             print(death_margins)
             Map(death_margins).cells = []
             self.simulations_run += 1
-            self.simulation_screen = SimulationScreen(copy.deepcopy(self.map), event_log, map_log, death_margins)
+            self.simulation_screen = SimulationScreen(copy.deepcopy(self.map), event_log, map_log, death_margins, stats_list)
 
         self.simulation_screen.update(self.player)
         if self.simulation_screen.done:

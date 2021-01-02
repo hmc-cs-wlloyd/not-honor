@@ -1,7 +1,8 @@
 """A class representing the screen displaying an active simulation"""
 
+import math
 import pyxel
-from const import ICON_HEIGHT, SCREEN_HEIGHT, SCREEN_WIDTH
+from const import ICON_HEIGHT, SCREEN_HEIGHT, SCREEN_WIDTH, STAT_BAR_HEIGHT, STAT_BAR_SIDE_MARGIN, HALF_STAT_BAR_WIDTH
 from util import center_text
 from event import events
 
@@ -10,12 +11,13 @@ KEY_MARGIN=6
 
 class SimulationScreen:
     """A class representing the simulation-in-progress screen"""
-    def __init__(self, initial_map, events_from_simulation, maps_from_simulation, death_margins):
+    def __init__(self, initial_map, events_from_simulation, maps_from_simulation, death_margins, stats_from_simulation):
         self.current_map = initial_map
         self.current_event_index = 0
         self.events_from_simulation = events_from_simulation
         self.maps_from_simulation = maps_from_simulation
         self.death_margins = death_margins
+        self.stats_from_simulation = stats_from_simulation
         self.done = False
         self.show_visitors = False
         pyxel.playm(2,loop=True)
@@ -32,9 +34,9 @@ class SimulationScreen:
         if self.current_map.visitors_button.is_moused_over():
             self.show_visitors = True
             self.current_map.visitors_button.button_color = pyxel.COLOR_PEACH
-        else: 
+        else:
             self.show_visitors = False
-            self.current_map.visitors_button.button_color = pyxel.COLOR_ORANGE  
+            self.current_map.visitors_button.button_color = pyxel.COLOR_ORANGE
 
         if self.current_event_index >= len(self.events_from_simulation):
             self.done = True
@@ -46,16 +48,52 @@ class SimulationScreen:
         """Draws the simulation-in-progress screen"""
         self.current_map.draw(player, is_simulation=True)
 
-        center_text(" Simulating...",
-                    page_width=SCREEN_WIDTH,
-                    y_coord=SCREEN_HEIGHT-MAP_BOTTOM_MARGIN,
-                    text_color=pyxel.COLOR_WHITE)
+        # center_text(" Simulating...",
+        #             page_width=SCREEN_WIDTH,
+        #             y_coord=SCREEN_HEIGHT-MAP_BOTTOM_MARGIN,
+        #             text_color=pyxel.COLOR_WHITE)
 
+        stats_to_present = self.stats_from_simulation[self.current_event_index]
+        print(stats_to_present)
+        for i in range(5):
+            stat_to_present = stats_to_present[i]
+            bar_label = ""
+            if i == 0:
+                bar_label = " Land Use"
+            elif i == 1:
+                bar_label = "  Visible"
+            elif i == 2:
+                bar_label = "Respectable"
+            elif i == 3:
+                bar_label = " Likeable"
+            elif i == 4:
+                bar_label = " Clarity"
+
+            if stat_to_present >= 0: #positive stat
+                #positive green
+                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4, math.ceil(stat_to_present*HALF_STAT_BAR_WIDTH), STAT_BAR_HEIGHT, pyxel.COLOR_GREEN)
+                #remaining positive gray
+                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH+math.ceil(stat_to_present*HALF_STAT_BAR_WIDTH), SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4, HALF_STAT_BAR_WIDTH-(stat_to_present*HALF_STAT_BAR_WIDTH), STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
+                #negative gray
+                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4, HALF_STAT_BAR_WIDTH, STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
+                # yellow center line
+                pyxel.line(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4, ((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4+STAT_BAR_HEIGHT-1, pyxel.COLOR_YELLOW)
+            else:#negative stat
+                #negative red
+                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH+math.ceil(stat_to_present*HALF_STAT_BAR_WIDTH), SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4, -1*math.ceil(stat_to_present*HALF_STAT_BAR_WIDTH), STAT_BAR_HEIGHT, pyxel.COLOR_RED)
+                #remaining negative gray
+                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4, HALF_STAT_BAR_WIDTH-(-1*math.ceil(stat_to_present*HALF_STAT_BAR_WIDTH)), STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
+                #positive gray
+                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4, HALF_STAT_BAR_WIDTH, STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
+                # yellow center line
+                pyxel.line(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4, ((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4+STAT_BAR_HEIGHT-1, pyxel.COLOR_YELLOW)
+
+            pyxel.text(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4+8, bar_label, pyxel.COLOR_GRAY)
         if self.events_from_simulation[self.current_event_index][1] != "null":
             event_message = str(self.events_from_simulation[self.current_event_index][0]) + ": " \
                                         + events[self.events_from_simulation[self.current_event_index][1]].description
             pyxel.blt(x=0,
-                      y=SCREEN_HEIGHT-(MAP_BOTTOM_MARGIN-ICON_HEIGHT//2),
+                      y=SCREEN_HEIGHT-MAP_BOTTOM_MARGIN+ICON_HEIGHT//2+4,
                       img=events[self.events_from_simulation[self.current_event_index][1]].icon_image,
                       u=events[self.events_from_simulation[self.current_event_index][1]].icon_coords[0],
                       v=events[self.events_from_simulation[self.current_event_index][1]].icon_coords[1],
@@ -64,28 +102,28 @@ class SimulationScreen:
             center_text(event_message,
                         page_width=SCREEN_WIDTH-events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
                         x_coord=events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
-                        y_coord = SCREEN_HEIGHT-(MAP_BOTTOM_MARGIN-ICON_HEIGHT//2),
+                        y_coord = SCREEN_HEIGHT-MAP_BOTTOM_MARGIN+ICON_HEIGHT//2+4,
                         text_color=pyxel.COLOR_WHITE)
-            #lol cover up the visitors_button 
-            pyxel.rect(SCREEN_WIDTH-45, SCREEN_HEIGHT - 20, 45, 9*20/10, pyxel.COLOR_BLACK)
+            #lol cover up the visitors_button
+            pyxel.rect(SCREEN_WIDTH-45, SCREEN_HEIGHT - 20, 45, 20, pyxel.COLOR_BLACK)
         else: #DRAW VISITOR KEY
             if self.show_visitors is True:
                 #miner
-                pyxel.rect(32,SCREEN_WIDTH-44,4,4,pyxel.COLOR_GRAY)
-                pyxel.text(32+8, SCREEN_WIDTH-44, "Miner", pyxel.COLOR_WHITE)
+                pyxel.rect(32,SCREEN_WIDTH-40,4,4,pyxel.COLOR_GRAY)
+                pyxel.text(32+8, SCREEN_WIDTH-40, "Miner", pyxel.COLOR_WHITE)
 
                 #architect
-                pyxel.rect(104,SCREEN_WIDTH-44,4,4,pyxel.COLOR_RED)
-                pyxel.text(104+8, SCREEN_WIDTH-44, "Architect", pyxel.COLOR_WHITE)
+                pyxel.rect(104,SCREEN_WIDTH-40,4,4,pyxel.COLOR_RED)
+                pyxel.text(104+8, SCREEN_WIDTH-40, "Architect", pyxel.COLOR_WHITE)
 
                 #dam builder
-                pyxel.rect(176,SCREEN_WIDTH-44,4,4,pyxel.COLOR_GREEN)
-                pyxel.text(176+8, SCREEN_WIDTH-44, "Dam Builder", pyxel.COLOR_WHITE)
+                pyxel.rect(176,SCREEN_WIDTH-40,4,4,pyxel.COLOR_GREEN)
+                pyxel.text(176+8, SCREEN_WIDTH-40, "Dam Builder", pyxel.COLOR_WHITE)
 
                 #teenager
-                pyxel.rect(64,SCREEN_WIDTH-32,4,4,pyxel.COLOR_DARKBLUE)
-                pyxel.text(64+8, SCREEN_WIDTH-32, "Teenager", pyxel.COLOR_WHITE)
+                pyxel.rect(64,SCREEN_WIDTH-28,4,4,pyxel.COLOR_DARKBLUE)
+                pyxel.text(64+8, SCREEN_WIDTH-28, "Teenager", pyxel.COLOR_WHITE)
 
                 #teenager
-                pyxel.rect(128,SCREEN_WIDTH-32,4,4,pyxel.COLOR_BROWN)
-                pyxel.text(128+8, SCREEN_WIDTH-32, "Transit Tunnel Maker", pyxel.COLOR_WHITE)
+                pyxel.rect(128,SCREEN_WIDTH-28,4,4,pyxel.COLOR_BROWN)
+                pyxel.text(128+8, SCREEN_WIDTH-28, "Transit Tunnel Maker", pyxel.COLOR_WHITE)

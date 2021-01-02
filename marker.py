@@ -78,7 +78,7 @@ class Marker: #pylint: disable=too-many-instance-attributes,too-few-public-metho
 markers = {
     "wooden-monolith": Marker(
         name="Wooden Monolith",
-        description="A monolith made of wood",
+        description="A 5 meter monolith carved from wood.\nImpressive, but looks a bit flimsy",
         icon_coords=(224,16),
         icon_image = 0,
         base_cost=38000,
@@ -114,7 +114,7 @@ markers = {
     ),
     "metal-monolith": Marker(
         name="Metal Monolith",
-        description="A monolith made of metal",
+        description="A 5 meter monolith carved from granite.\nDurable",
         icon_coords=(240,16),
         icon_image = 0,
         base_cost=36000,
@@ -150,7 +150,7 @@ markers = {
     ),
     "granite-monolith": Marker(
         name="Granite Monolith",
-        description="A 5 meter monolith carved from a single piece of granite.\nHighly durable",
+        description="A 5 meter monolith carved from granite.\nHighly durable and impressive",
         icon_coords=(240,0),
         icon_image = 0,
         base_cost=42000,

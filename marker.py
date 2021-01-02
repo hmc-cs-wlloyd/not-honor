@@ -552,6 +552,24 @@ the site will be safe.\nCould be used to calculate age",
         understandability_decay = "constant",
         tags=["terraforming"]
     ),
+    "single-stone-monolith": Marker(
+        name="Single-Slab\nGranite Monolith",
+        description="A 3 meter monolith carved from a single piece of granite.\nResistant to earthquakes.",
+        icon_coords=(208,56),
+        icon_image = 0,
+        base_cost=80000,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (5,5,5),
+        visibility_decay = "slow_lin_0",
+        respectability_init = (6,6,6),
+        respectability_decay = "slow_lin_inc_8",
+        likability_init = (0,0,0),
+        likability_decay = "constant",
+        understandability_init = (9,9,9),
+        understandability_decay = "exp_0",
+        tags=["surface", "structure", "language-dependent", "low-tech", "monolith"]
+    ),
     #NOTE: THE TERRAINS ARE IN IMAGE 1
     "sand": Marker(
         name="Sand",

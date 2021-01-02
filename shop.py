@@ -55,7 +55,7 @@ class Shelf:
                 ICON_HEIGHT
         )
         if self.hover_on_item is False: #color border of shop item GREEN if HOVERED ON
-            pyxel.rectb(self.x_coord, self.y_coord, self.width, self.height, pyxel.COLOR_GRAY)
+            pyxel.rectb(self.x_coord, self.y_coord, self.width, self.height, pyxel.COLOR_DARKBLUE)
             '''for i in range(5): #keep plain gray bars on the screen outside of hover
                 pyxel.rect(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET, HALF_STAT_BAR_WIDTH*2, STAT_BAR_HEIGHT, pyxel.COLOR_GRAY)
                 pyxel.line(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET, ((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET+STAT_BAR_HEIGHT-1, pyxel.COLOR_YELLOW)
@@ -108,7 +108,7 @@ class Shelf:
                     #yellow center line
                     pyxel.line(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET, ((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET+STAT_BAR_HEIGHT-1, pyxel.COLOR_YELLOW)
                     
-                pyxel.text(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET+8, bar_label, pyxel.COLOR_GRAY)
+                pyxel.text(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET+8, bar_label, pyxel.COLOR_WHITE)
         else: 
             self.hover_on_item = False
 
@@ -177,7 +177,7 @@ class Shop:
         pyxel.text(5, SHOP_TOP_OFFSET//10, "WIPP-SIM10000", pyxel.COLOR_NAVY)
         self.finish_button.draw()
 
-        inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN
+        inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN + 8
         center_text("Inventory", #draw the inventory
                     page_width=INVENTORY_WIDTH,
                     x_coord=0,

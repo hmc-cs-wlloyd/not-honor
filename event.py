@@ -45,10 +45,10 @@ prettiest monuments, tearing them all down.",
     ),
     "earthquake": Event(
         name="Earthquake!",
-        description="The ground under the site shakes violently.\n\
-All monoliths are reduced to rubble.",
-        icon_coords=(1,49), #not done yet
-        icon_size = (61,45),
+        description="The ground under the site shakes violently. All\n\
+        monoliths are reduced to rubble.",
+        icon_coords=(144,48), 
+        icon_size = (16,16),
         icon_image = 0,
         fatal = False
     ),
@@ -68,8 +68,8 @@ the cansiters.",
         description="A new faultline emerges underneath the site.\n\
 All monoliths are reduced to rubble, and buried markers\n\
 are now visible to the naked eye.",
-        icon_coords=(1,49), #not done yet
-        icon_size = (61,45),
+        icon_coords=(128,48), 
+        icon_size = (16,16),
         icon_image = 0,
         fatal = False
     ),
@@ -78,7 +78,7 @@ are now visible to the naked eye.",
         description="When Ray Cats move in with the dubious cult,\n\
 everyone wants to see them. People seem to have forgotten\n\
 the cats\' intent, so they are seen as signs from god.",
-        icon_coords=(16,16), #not done yet
+        icon_coords=(176,48), 
         icon_size = (16,16),
         icon_image = 0,
         fatal = False
@@ -105,11 +105,10 @@ and moisture, making farming look promising.",
     ),
     "smog": Event(
         name="Great Smog Cloud",
-        description="A great cloud of smog drifts in from Los\n\
-Angeles and hovers over the region for centuries,\n\
-reducing visibility.",
-        icon_coords=(1,49), #not done yet
-        icon_size = (61,45),
+        description="A great cloud of smog drifts in from Los Angeles\n\
+and hovers over the region for centuries, reducing \nvisibility.",
+        icon_coords=(112,48),
+        icon_size = (16,16),
         icon_image = 0,
         fatal = False
     ),
@@ -118,19 +117,19 @@ reducing visibility.",
         description="A Star Trek fanatic is elected president, and\n\
 she makes it illegal to speak any language other than\n\
 Klingon within the US.",
-        icon_coords=(1,49), #not done yet
-        icon_size = (61,45),
+        icon_coords=(160,48), #not done yet
+        icon_size = (16,16),
         icon_image = 0,
         fatal = False
     ),
     "turtle": Event(
         name="Turtle Invasion",
         description="An accident with genetic technology has created\n\
-a race of super-turtles. They\’re really not that\n\
-different from us, but they don\’t speak English well\n\
-and they don\’t understand our drawings.",
-        icon_coords=(1,49), #not done yet
-        icon_size = (61,45),
+a race of super-turtles. They\'re really not that\n\
+different from us, but they don\'t speak English well\n\
+and they don\'t understand our drawings.",
+        icon_coords=(192,48),
+        icon_size = (16,16),
         icon_image = 0,
         fatal = False
     ),
@@ -139,16 +138,16 @@ and they don\’t understand our drawings.",
         description="A future society finds your site markers\n\
 impressive, and they designate the area as a protected\n\
 national park.",
-        icon_coords=(1,49), #not done yet
-        icon_size = (61,45),
+        icon_coords=(192,32), #not done yet
+        icon_size = (16,16),
         icon_image = 0,
         fatal = False
     ),
     "miners": Event(
         name="Miners",
         description="Miners breach the site!",
-        icon_coords=(1,49), #not done yet
-        icon_size = (61,45),
+        icon_coords=(160,32), #not done yet
+        icon_size = (16,16),
         icon_image = 0,
         fatal = True
     ),
@@ -163,8 +162,8 @@ national park.",
     "dams": Event(
         name="Dams",
         description="Dam builders breach the site!",
-        icon_coords=(1,49), #not done yet
-        icon_size = (61,45),
+        icon_coords=(176,32), 
+        icon_size = (16,16),
         icon_image = 0,
         fatal = True
     ),

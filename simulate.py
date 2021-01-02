@@ -269,7 +269,6 @@ def get_random_event(current_year, sot, site_map,usability, visibility, respecta
     elif sot > 0 and current_year >2500 and respectability>3 and die <.4:
         event = "park"
 
-    print(event)
     return event, event_year
 
 def get_knowledge_of_past(visibility, respectability, likability,

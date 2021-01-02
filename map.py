@@ -105,7 +105,7 @@ class Map: #pylint: disable=too-many-instance-attributes
         visitor_radius_list = [arch_radius, arch_radius, mine_radius, mine_radius, dam_radius, dam_radius,
                                teen_radius, teen_radius, tunnel_radius, tunnel_radius]
 
-        
+
         #CREATE VISITORSFROM THE WEST
         for j in range(10): #generate n cells
             visitor = Cell(x=random.randrange(0,1),
@@ -135,7 +135,7 @@ class Map: #pylint: disable=too-many-instance-attributes
                            intruder_color = visitor_color_list[j],
                            allowable_core_distance= visitor_radius_list[j])
             cells.append(visitor)
-        
+
 
         #CREATE SOME THAT SPAWN FROM THE SOUTH
         for j in range(10):
@@ -156,7 +156,7 @@ class Map: #pylint: disable=too-many-instance-attributes
 
                 inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN
                 if self.selected_inventory_item is None:
-                    if pyxel.mouse_y > inventory_y_coord + 16: #player in inventory
+                    if pyxel.mouse_y > inventory_y_coord + 16 and pyxel.mouse_y < inventory_y_coord + 16 + ICON_HEIGHT + 2*INVENTORY_BOX_BORDER_THICKNESS: #player in inventory
                         for i in range(len(player.inventory)): #BAD ASSUMPTION THAT INVENTORY IS ONLY 1 ROW
                             if pyxel.mouse_x >= 5 + (i*(ICON_WIDTH + 2*INVENTORY_BOX_BORDER_THICKNESS)) and \
                                             pyxel.mouse_x < 5 + ((i+1)*(ICON_WIDTH + 2*INVENTORY_BOX_BORDER_THICKNESS)):

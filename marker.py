@@ -166,7 +166,7 @@ this site is dangerous.\nVulnerable to religious turmoil",
         likability_init = (5,5,5),
         likability_decay = "constant",
         understandability_init = (10,10,10),
-        understandability_decay = "lin_0",
+        understandability_decay = "slow_lin_0",
         tags=["active", "biological", "culture-linked", "low-tech", "religious", "global"]
     ),
     "ray-cats": Marker(

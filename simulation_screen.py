@@ -105,6 +105,9 @@ class SimulationScreen:
                         x_coord=events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
                         y_coord = SCREEN_HEIGHT-MAP_BOTTOM_MARGIN+ICON_HEIGHT//2+4,
                         text_color=pyxel.COLOR_WHITE)
+            #show explosion if you die
+            if events[self.events_from_simulation[self.current_event_index][1]].fatal:
+                pyxel.blt(SCREEN_WIDTH/2 -32, 80, 1, 72, 208, 64,48, 0)
             #lol cover up the visitors_button
             pyxel.rect(SCREEN_WIDTH-45, SCREEN_HEIGHT - 20, 45, 20, pyxel.COLOR_BLACK)
         else: #DRAW VISITOR KEY

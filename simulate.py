@@ -77,7 +77,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         vom = get_value_of_materials(current_year)
         print ("value of materials is " + str(vom))
 
-        miners = miner_prob(kop, vom, 200)
+        miners = miner_prob(kop, vom, understandability, 200)
         print("200 year probability of mining is " + str(miners))
         mine_die = random.random()
         if mine_die < miners:
@@ -99,7 +99,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
               ", so no mining happened by year " + str(current_year))
         mining_margin = min(mining_margin, mine_die-miners)
 
-        archaeologists = arch_prob(kop, current_year-200)
+        archaeologists = arch_prob(kop, current_year-200, understandability)
         print("200 year probability of archaeologists is " +
               str(archaeologists))
         arch_die = random.random()
@@ -122,7 +122,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
               ", so no archaeology happened by year " + str(current_year))
         archaeology_margin = min(archaeology_margin, arch_die-archaeologists)
 
-        dams = dam_prob(kop, usability, current_year-200)
+        dams = dam_prob(kop, usability, current_year-200, understandability)
         print("200 year probability of dam builders is " +
               str(dams))
         dam_die = random.random()
@@ -145,7 +145,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
               ", so no dam building happened by year " + str(current_year))
         dam_margin = min(dam_margin, dam_die-dams)
 
-        teens = teen_prob(visibility, respectability)
+        teens = teen_prob(visibility, respectability, understandability)
         print("200 year probability of teens is " +
               str(teens))
         teen_die = random.random()
@@ -184,7 +184,7 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
                             "teens": teen_margin,
                             "tunnels": tunnel_margin}
             map_list.append(time_period_map)
-            return dead, event_list, map_list, margins_dict    
+            return dead, event_list, map_list, margins_dict
         print("I rolled " + str(transit_tunnel_die) + ", so no transit tunnel disrupted the site by year " + str(
             current_year))
         tunnel_margin = min(tunnel_margin, transit_tunnel_die - transit_tunnel)
@@ -701,7 +701,7 @@ def get_visibility_adjacency_bonus(site_map): #pylint: disable=too-many-branches
 
     return neighbors/2
 
-def miner_prob(knowledge_of_past, value_of_materials, years): #pylint: disable=too-many-branches
+def miner_prob(knowledge_of_past, value_of_materials, understandability, years): #pylint: disable=too-many-branches
     """gives probability that a miner digs a bad hole in the given time span"""
 
     #calculate value_multiplier - probabilistic
@@ -729,16 +729,12 @@ def miner_prob(knowledge_of_past, value_of_materials, years): #pylint: disable=t
     #print("value multiplier is " + str(value_multiplier))
 
     # calculate knowlege_multiplier - deterministic
-    if knowledge_of_past == 3:
-        knowledge_multiplier = .001
-    elif knowledge_of_past == 2:
-        knowledge_multiplier = .001
-    elif knowledge_of_past == 1:
-        knowledge_multiplier = .001
+    if knowledge_of_past != 0:
+        knowledge_multiplier = .001*(1-understandability)/1
     else:
         knowledge_multiplier = 1
 
-    bhr = .05 #magic! was 83 in source, but then you always lose
+    bhr = .001 #magic! was 83 in source, but then you always lose
 
     #drill rate is the avg # of bores per sq m per 1000 yrs
     drill_rate = bhr * value_multiplier * knowledge_multiplier
@@ -755,7 +751,7 @@ def miner_prob(knowledge_of_past, value_of_materials, years): #pylint: disable=t
     return prob
 
 
-def arch_prob(knowledge_of_past, start_year):
+def arch_prob(knowledge_of_past, start_year, understandability):
     """gives total probability of at least one disruptive archaeological
     dig over 200 years, given start year"""
     #should also take state_of_technology?
@@ -765,61 +761,61 @@ def arch_prob(knowledge_of_past, start_year):
         if start_year < 3000:
             prob = 0
         elif start_year < 5000:
-            prob = .01
+            prob = .01 * (.5 - understandability)/.5
         else:
-            prob = .02
+            prob = .02 * (.5 - understandability)/.5
     elif knowledge_of_past == 1:
         if start_year < 3000:
-            prob = .01
+            prob = .01 * (.5 - understandability)/.5
         elif start_year < 5000:
-            prob = .02
+            prob = .02 * (.5 - understandability)/.5
         else:
-            prob = .03
+            prob = .03 * (.5 - understandability)/.5
     else:
         if start_year < 3000:
             prob = 0
         else:
-            prob = .001
+            prob = .001 * (.5 - understandability)/.5
 
     return prob
 
-def dam_prob(knowledge_of_past, usability, start_year):
+def dam_prob(knowledge_of_past, usability, start_year, understandability):
     """gives total prob of at least one dam construction over 200 years"""
     if knowledge_of_past == 3:
         prob = 0
     elif start_year < 2300:
         if usability > .5:
-            prob = .002
+            prob = .002 * (.5 - understandability)/.5
         elif usability > 0:
-            prob = .001
+            prob = .001 * (.5 - understandability)/.5
         else:
             prob= .0005
     elif start_year < 5000:
         if usability > .51:
-            prob = .003
+            prob = .003 * (.5 - understandability)/.5
         elif usability > 0:
-            prob = .002
+            prob = .002 * (.5 - understandability)/.5
         else:
-            prob = .0001
+            prob = .0001 * (.5 - understandability)/.5
     else:
         if usability > .5:
-            prob = .005
+            prob = .005 * (.5 - understandability)/.5
         elif usability > 0:
-            prob = .004
+            prob = .004 * (.5 - understandability)/.5
         else:
-            prob = .0003
+            prob = .0003 * (.5 - understandability)/.5
     return prob
 
-def teen_prob(visibility, respectability):
+def teen_prob(visibility, respectability, understandability):
     """gives total prob of random teen violence breaching the site"""
     if visibility < .3 or respectability > .8:
         prob = 0
     elif respectability > .6:
-        prob = .0001
+        prob = .0001 * (1 - understandability)/1
     elif respectability > .3:
-        prob = .001
+        prob = .001 * (1 - understandability)/1
     else:
-        prob = .003
+        prob = .003 * (1 - understandability)/1
     return prob
 
 def transit_tunnel_prob(state_of_technology, understandability, visibility):

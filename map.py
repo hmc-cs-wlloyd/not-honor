@@ -278,7 +278,7 @@ class Map: #pylint: disable=too-many-instance-attributes
             if self.selected_inventory_item is not None: #selected defense follows mouse
                 selected_item_icon_x = marker.markers[self.selected_inventory_item].icon_coords[0]
                 selected_item_icon_y = marker.markers[self.selected_inventory_item].icon_coords[1]
-                pyxel.blt(pyxel.mouse_x, pyxel.mouse_y, 0, selected_item_icon_x, selected_item_icon_y, ICON_WIDTH, ICON_HEIGHT,0)
+                pyxel.blt(pyxel.mouse_x-8, pyxel.mouse_y-8, 0, selected_item_icon_x, selected_item_icon_y, ICON_WIDTH, ICON_HEIGHT,0)
             
             #show directions
             if self.show_directions is True:

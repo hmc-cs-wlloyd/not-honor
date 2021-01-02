@@ -46,7 +46,7 @@ def draw_chosen_tip(chosen_tip):
         center_text("I sure wouldn\'t want to hang out here!", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
 
     elif chosen_tip == 3:
-        pyxel.blt((SCREEN_WIDTH/2)-24, 40, 1, 160, 104, 56, 56)
+        pyxel.blt((SCREEN_WIDTH/2)-24, 40, 0, 144, 184, 56, 56)
         pyxel.blt((SCREEN_WIDTH/2)-8, 48, 0, 240, 0, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)+8, 48, 0, 240, 16, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2), 64, 0, 224, 16, 16, 16)
@@ -56,7 +56,7 @@ def draw_chosen_tip(chosen_tip):
         center_text("Who knows how long they might last!", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
 
     elif chosen_tip == 4:
-        pyxel.blt((SCREEN_WIDTH/2)-16, 56, 1, 133, 200, 56, 40)
+        pyxel.blt((SCREEN_WIDTH/2)-16, 56, 1, 149, 200, 56, 40)
         pyxel.blt((SCREEN_WIDTH/2)-5, 64, 0, 176, 0, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)+11, 64, 0, 176, 16, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_4_x, sci_4_y, 16,16)
@@ -67,7 +67,7 @@ def draw_chosen_tip(chosen_tip):
         center_text("Hey, where are you going?", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4), pyxel.COLOR_WHITE)
 
     elif chosen_tip == 5:
-        pyxel.blt((SCREEN_WIDTH/2)-16, 56, 1, 133, 200, 56, 40)
+        pyxel.blt((SCREEN_WIDTH/2)-16, 56, 1, 149, 200, 56, 40)
         pyxel.blt((SCREEN_WIDTH/2)-5, 64, 0, 160, 16, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)+11, 64, 0, 144, 16, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_1_x, sci_1_y, 16,16)
@@ -77,7 +77,7 @@ def draw_chosen_tip(chosen_tip):
         center_text("or have a human face yourself...", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3), pyxel.COLOR_WHITE)
 
     elif chosen_tip == 6:
-        pyxel.blt((SCREEN_WIDTH/2)-24, 40, 1, 160, 104, 56, 56)
+        pyxel.blt((SCREEN_WIDTH/2)-24, 40, 0, 144, 184, 56, 56)
         pyxel.blt((SCREEN_WIDTH/2)-8, 48, 0, 192, 0, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)+8, 48, 0, 128, 16, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)-8, 64, 0, 80, 16, 16, 16)
@@ -88,7 +88,7 @@ def draw_chosen_tip(chosen_tip):
         center_text("They would be well complemented by a VISITORS CENTER!", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
 
     elif chosen_tip == 7:
-        pyxel.blt((SCREEN_WIDTH/2)-16, 56, 1, 133, 200, 56, 40)
+        pyxel.blt((SCREEN_WIDTH/2)-16, 56, 1, 149, 200, 56, 40)
         pyxel.blt((SCREEN_WIDTH/2)-5, 64, 0, 160, 0, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)+11, 64, 0, 224, 0, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_3_x, sci_3_y, 16,16)
@@ -106,7 +106,7 @@ def draw_chosen_tip(chosen_tip):
         center_text('long as you can read the genes, it\'s foolproof!', SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3), pyxel.COLOR_WHITE)
 
     elif chosen_tip == 9:
-        pyxel.blt((SCREEN_WIDTH/2)-16, 56, 1, 133, 200, 56, 40)
+        pyxel.blt((SCREEN_WIDTH/2)-16, 56, 1, 149, 200, 56, 40)
         pyxel.blt((SCREEN_WIDTH/2)-5, 64, 0, 208, 0, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)+11, 64, 0, 192, 16, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_1_x, sci_1_y, 16,16)

@@ -24,8 +24,8 @@ class SimulationScreen:
             self.current_event_index += 1 #this will break stuff if the calling update() doesn't check and advance screen when appropriate
         if self.current_map.next_button.is_moused_over():
             self.current_map.next_button.button_color = pyxel.COLOR_LIGHTBLUE
-        else: 
-            self.current_map.next_button.button_color = pyxel.COLOR_DARKBLUE 
+        else:
+            self.current_map.next_button.button_color = pyxel.COLOR_DARKBLUE
 
         if self.current_event_index >= len(self.events_from_simulation):
             self.done = True
@@ -42,17 +42,18 @@ class SimulationScreen:
                     y_coord=SCREEN_HEIGHT-MAP_BOTTOM_MARGIN,
                     text_color=pyxel.COLOR_WHITE)
 
-        event_message = str(self.events_from_simulation[self.current_event_index][0]) + ": " \
-                                    + events[self.events_from_simulation[self.current_event_index][1]].description
-        pyxel.blt(x=0,
-                  y=SCREEN_HEIGHT-(MAP_BOTTOM_MARGIN-ICON_HEIGHT//2),
-                  img=events[self.events_from_simulation[self.current_event_index][1]].icon_image,
-                  u=events[self.events_from_simulation[self.current_event_index][1]].icon_coords[0],
-                  v=events[self.events_from_simulation[self.current_event_index][1]].icon_coords[1],
-                  w=events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
-                  h=events[self.events_from_simulation[self.current_event_index][1]].icon_size[1])
-        center_text(event_message,
-                    page_width=SCREEN_WIDTH-events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
-                    x_coord=events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
-                    y_coord = SCREEN_HEIGHT-(MAP_BOTTOM_MARGIN-ICON_HEIGHT//2),
-                    text_color=pyxel.COLOR_WHITE)
+        if self.events_from_simulation[self.current_event_index][1] != "null":
+            event_message = str(self.events_from_simulation[self.current_event_index][0]) + ": " \
+                                        + events[self.events_from_simulation[self.current_event_index][1]].description
+            pyxel.blt(x=0,
+                      y=SCREEN_HEIGHT-(MAP_BOTTOM_MARGIN-ICON_HEIGHT//2),
+                      img=events[self.events_from_simulation[self.current_event_index][1]].icon_image,
+                      u=events[self.events_from_simulation[self.current_event_index][1]].icon_coords[0],
+                      v=events[self.events_from_simulation[self.current_event_index][1]].icon_coords[1],
+                      w=events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
+                      h=events[self.events_from_simulation[self.current_event_index][1]].icon_size[1])
+            center_text(event_message,
+                        page_width=SCREEN_WIDTH-events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
+                        x_coord=events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
+                        y_coord = SCREEN_HEIGHT-(MAP_BOTTOM_MARGIN-ICON_HEIGHT//2),
+                        text_color=pyxel.COLOR_WHITE)

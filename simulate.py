@@ -13,8 +13,8 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
     """Runs the simulation"""
 
     dead = False
-    event_list = []
-    map_list = []
+    event_list = [(0, "null")]
+    map_list = [site_map]
     time_period_map = copy.deepcopy(site_map)
     #set default stats
     usability, visibility, respectability, likability, \

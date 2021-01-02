@@ -183,6 +183,14 @@ national park.",
         icon_size = (16,16),
         icon_image = 0,
         fatal = True
+    ),
+    "null": Event(
+        name="Null",
+        description="Nothing happens",
+        icon_coords=(255,255),
+        icon_size = (0,0),
+        icon_image = 0,
+        fatal = False
     )
 }
 

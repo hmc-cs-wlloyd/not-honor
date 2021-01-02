@@ -13,10 +13,12 @@ class SimulationScreen:
     """A class representing the simulation-in-progress screen"""
     def __init__(self, initial_map, events_from_simulation, maps_from_simulation, death_margins, stats_from_simulation):
         self.current_map = initial_map
+        self.current_map.death_margins = death_margins
+        print(death_margins)
+        self.current_map.generate_visitors()
         self.current_event_index = 0
         self.events_from_simulation = events_from_simulation
         self.maps_from_simulation = maps_from_simulation
-        self.death_margins = death_margins
         self.stats_from_simulation = stats_from_simulation
         self.done = False
         self.show_visitors = False
@@ -54,7 +56,6 @@ class SimulationScreen:
         #             text_color=pyxel.COLOR_WHITE)
 
         stats_to_present = self.stats_from_simulation[self.current_event_index]
-        print(stats_to_present)
         for i in range(5):
             stat_to_present = stats_to_present[i]
             bar_label = ""

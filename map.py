@@ -87,28 +87,31 @@ class Map: #pylint: disable=too-many-instance-attributes
             button_color=None
         )
 
+        self.generate_visitors()
+
+    def generate_visitors(self):
         #print("death margins: " + str(self.death_margins))
         #calculate radius for various dot types
         if self.death_margins["mining"] == 0:
             mine_radius = 0
         else:
-            mine_radius = self.death_margins["mining"]*128 + 40
+            mine_radius = self.death_margins["mining"]*128 + 50
         if self.death_margins["archaeology"] == 0:
             arch_radius = 0
         else:
-            arch_radius = death_margins["archaeology"]*128 + 40
+            arch_radius = self.death_margins["archaeology"]*128 + 50
         if self.death_margins["dams"] == 0:
             dam_radius = 0
         else:
-            dam_radius = death_margins["dams"]*128 + 40
+            dam_radius = self.death_margins["dams"]*128 + 50
         if self.death_margins["teens"] == 0:
             teen_radius = 0
         else:
-            teen_radius = death_margins["teens"]*128 + 40
+            teen_radius = self.death_margins["teens"]*128 + 50
         if self.death_margins["tunnels"] == 0:
             tunnel_radius = 0
         else:
-            tunnel_radius = death_margins["tunnels"]*128 + 40
+            tunnel_radius = self.death_margins["tunnels"]*128 + 50
 
         #set colors for intruder types
         mine_color = pyxel.COLOR_GRAY
@@ -387,7 +390,7 @@ class Cell:
             new_intruder_color = self.intruder_color
             
             cells.remove(self)
-            rand_direction = random.choice(("N","E","S","W")) 
+            rand_direction = random.choice(("N","E","S","W"))
             x = 0
             y = 0
             if rand_direction == "N":
@@ -409,8 +412,6 @@ class Cell:
 
         #turn around if about to move into unpermitted area
         elif abs(new_x_coord-CENTER_POINT_OF_CORE_X) + abs(new_y_coord-CENTER_POINT_OF_CORE_Y) < self.allowable_core_distance:
-            self.direction = self.direction_spawned_from #turn around in the direction spawned from
-            move[0] = random.randrange(directions[self.direction][0][0],directions[self.direction][0][1]) + smallOffset #change relative x to a random number between min x and max x
-            move[1] = random.randrange(directions[self.direction][1][0],directions[self.direction][1][1]) + smallOffset #change relative x to a random number between min x and max x
+            move = [0,0]
         self.x_coord += move[0]
         self.y_coord += move[1]

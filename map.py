@@ -197,6 +197,8 @@ class Map: #pylint: disable=too-many-instance-attributes
                             pyxel.play(0,4,loop=False)
                         elif self.selected_inventory_item not in player.inventory and \
                            self.selected_inventory_item is not None:
+                            if self.map[self.selected_row][self.selected_col] != "null":
+                                pyxel.play(0,20,loop=False)
 
                             self.map[self.selected_row][self.selected_col] = self.selected_inventory_item #update self.map
 

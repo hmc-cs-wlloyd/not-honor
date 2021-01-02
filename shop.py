@@ -35,6 +35,7 @@ class Shelf:
                 pyxel.mouse_y < self.y_coord + self.height
     def draw(self):
         """Draws the shelf and its contents to the screen"""
+        pyxel.rect(self.x_coord, self.y_coord, self.width, self.height, pyxel.COLOR_BLACK)
         center_text(text=marker.markers[self.marker_on_shelf].name,
                 page_width=self.width,
                 y_coord=self.y_coord+3,
@@ -168,11 +169,12 @@ class Shop:
 
     def draw(self, player):
         """Draws the shop to the screen"""
+        pyxel.cls(pyxel.COLOR_LIGHTBLUE)
         center_text("Remaining Budget: $" + str(player.funding),
                 page_width=SCREEN_WIDTH,
                 y_coord=10,
-                text_color=pyxel.COLOR_WHITE)
-        pyxel.text(5, SHOP_TOP_OFFSET//10, "WIPP-SIM10000", pyxel.COLOR_WHITE)
+                text_color=pyxel.COLOR_NAVY)
+        pyxel.text(5, SHOP_TOP_OFFSET//10, "WIPP-SIM10000", pyxel.COLOR_NAVY)
         self.finish_button.draw()
 
         inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN
@@ -180,19 +182,21 @@ class Shop:
                     page_width=INVENTORY_WIDTH,
                     x_coord=0,
                     y_coord=inventory_y_coord,
-                    text_color=pyxel.COLOR_WHITE)
+                    text_color=pyxel.COLOR_NAVY)
         for i in range(0,NUM_INVENTORY_BOXES): #draw the inventory with a border around each box
-            pyxel.rectb(5 + (i*(ICON_WIDTH+(2*INVENTORY_BOX_BORDER_THICKNESS))), inventory_y_coord + ICON_HEIGHT - INVENTORY_BOX_BORDER_THICKNESS, ICON_WIDTH+(INVENTORY_BOX_BORDER_THICKNESS*2), ICON_HEIGHT+(INVENTORY_BOX_BORDER_THICKNESS*2), pyxel.COLOR_LIGHTBLUE)
+            pyxel.rectb(5 + (i*(ICON_WIDTH+(2*INVENTORY_BOX_BORDER_THICKNESS))), inventory_y_coord + ICON_HEIGHT - INVENTORY_BOX_BORDER_THICKNESS,
+                        ICON_WIDTH+(INVENTORY_BOX_BORDER_THICKNESS*2), ICON_HEIGHT+(INVENTORY_BOX_BORDER_THICKNESS*2), pyxel.COLOR_DARKBLUE)
         player.draw_inventory(5 + INVENTORY_BOX_BORDER_THICKNESS, inventory_y_coord, SCREEN_WIDTH, ICON_HEIGHT)
         
         center_text("Societal Features", #draw the inventory
                     page_width=SOCIETAL_MODIFIER_WIDTH,
                     x_coord=INVENTORY_WIDTH,
                     y_coord=inventory_y_coord,
-                    text_color=pyxel.COLOR_WHITE)
+                    text_color=pyxel.COLOR_NAVY)
         inventory_width = (NUM_INVENTORY_BOXES*ICON_WIDTH) + 64 #draw the societal factors with a border around each box, 64 is margin between this and societal boxes
         for i in range(0,NUM_SOCIETAL_BOXES): #draw the inventory with a border around each box
-            pyxel.rectb(inventory_width + (i*(ICON_WIDTH+(2*INVENTORY_BOX_BORDER_THICKNESS))), inventory_y_coord + ICON_HEIGHT - INVENTORY_BOX_BORDER_THICKNESS, ICON_WIDTH+(INVENTORY_BOX_BORDER_THICKNESS*2), ICON_HEIGHT+(INVENTORY_BOX_BORDER_THICKNESS*2), pyxel.COLOR_LIGHTBLUE)
+            pyxel.rectb(inventory_width + (i*(ICON_WIDTH+(2*INVENTORY_BOX_BORDER_THICKNESS))), inventory_y_coord + ICON_HEIGHT - INVENTORY_BOX_BORDER_THICKNESS,
+                        ICON_WIDTH+(INVENTORY_BOX_BORDER_THICKNESS*2), ICON_HEIGHT+(INVENTORY_BOX_BORDER_THICKNESS*2), pyxel.COLOR_DARKBLUE)
         player.draw_global_buffs(inventory_width + INVENTORY_BOX_BORDER_THICKNESS, inventory_y_coord, SCREEN_WIDTH, ICON_HEIGHT)
 
         for shelf in self.shelves:

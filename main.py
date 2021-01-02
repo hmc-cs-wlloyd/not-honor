@@ -101,7 +101,7 @@ class App: #pylint: disable=too-many-instance-attributes
         """Handles updates while the player is on the title screen"""
         global not_playing_title_music
         if not_playing_title_music:
-                    pyxel.playm(0, loop=False)
+                    pyxel.playm(0, loop=True)
                     not_playing_title_music= False
         if pyxel.btnp(pyxel.KEY_ENTER):
             self.screen = Screen.INTRO_1
@@ -269,8 +269,9 @@ class App: #pylint: disable=too-many-instance-attributes
         pyxel.cls(pyxel.COLOR_BLACK)
         pyxel.mouse(visible=False)
         pyxel.blt(0, 0, 2, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-        center_text("Not a Place of Honor", page_width=SCREEN_WIDTH, y_coord=66, text_color=pyxel.COLOR_WHITE)
-        center_text("- PRESS ENTER TO START -", page_width=SCREEN_WIDTH, y_coord=126, text_color=pyxel.COLOR_WHITE)
+        center_text("Not a Place of Honor", page_width=SCREEN_WIDTH-2, y_coord=85, text_color=pyxel.COLOR_WHITE)
+        center_text("Not a Place of Honor", page_width=SCREEN_WIDTH, y_coord=86, text_color=pyxel.COLOR_BLACK)
+        center_text("- PRESS ENTER TO START -", page_width=SCREEN_WIDTH, y_coord=160, text_color=pyxel.COLOR_BLACK)
 
     def draw_intro_1(self): 
         pyxel.cls(pyxel.COLOR_BLACK)

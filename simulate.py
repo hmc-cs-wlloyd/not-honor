@@ -37,7 +37,8 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         print("state of tech is " + str(sot))
 
         event, event_year = get_random_event(current_year, sot, site_map,usability,
-                                             visibility, respectability, likability, understandability)
+                                             visibility, respectability, likability, understandability,
+                                             global_buffs)
         if event != "":
             print ("In the year " + str(event_year) + ", " + str(event) +
                     " happened!")
@@ -198,65 +199,68 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
     return dead, event_list, map_list, margins_dict
 
 def get_random_event(current_year, sot, site_map,usability, visibility, respectability, likability, #pylint: disable=too-many-arguments,too-many-branches
-        understandability):
+        understandability, global_buffs):
     """Potentially generates an event given a year"""
 
     event = ""
     #generate a year for the thing to have happened i
     event_year = current_year - random.randint(0,199)
 
-
+    
     die = random.random()
+    print("bad cult? " + str(("bad-cult" in global_buffs)))
+    print("current year: " + str(current_year))
+    print(die)
+    print('met dig conditions: ' + str(("bad-cult" in global_buffs) and current_year > 3000 and die <.5))
     num_monoliths =0
     for row in site_map:
         for tile in row:
             if "monolith" in markers[tile].tags:
                 num_monoliths += 1
 
-    if current_year > 5000 and sot == 2:
-        if die < .000001:
+    if current_year > 5000 and sot == 2 and die < .000005:
             event = "aliens"
 
-    elif current_year > 2400:
-        if die < .01:
+    elif current_year > 2400 and die < .01:
             event = "goths"
 
-    elif current_year > 2600 and sot == 0:
-        if die < .01:
+    elif current_year > 2600 and sot == 0 and die < .01:
             event = "vikings"
 
-    elif die < .001:
+    elif die < .004:
         event = "earthquake"
 
-    elif any("bad-cult" in row for row in site_map) and \
-         current_year > 3000 and die <.5:
+    elif ("bad-cult" in global_buffs) and current_year > 3000 and die <.5:
+        print("cult dig!!!")
         event = "cult-dig"
 
-    elif die < .0001:
+    elif die < .006:
         event = "faultline"
 
-    elif any("bad-cult" in row for row in site_map) and any("ray-cats" in row for row in site_map)and \
-         current_year > 3000 and die <.5:
+    elif ("bad-cult" in global_buffs) and ("ray-cats" in global_buffs)and \
+         current_year > 3000 and die <.6:
         event = "cat-holics"
 
-    elif num_monoliths > 5 and die <.1:
+    elif num_monoliths > 5 and die <.05:
         event = "stonehenge"
 
     elif die < .01:
         event = "flood"
 
-    elif sot == 1 and die < .05:
-        event = "smog"
 
     elif sot == 1 and current_year < 3000 and die < .047:
         event = "klingon"
 
-    elif sot == 2 and die < .0045:
+    elif sot == 2 and die < .03:
         event = "turtle"
 
+    elif sot == 1 and die < .2:
+        event = "smog"
+        
     elif sot > 0 and current_year >2500 and respectability>3 and die <.4:
         event = "park"
 
+    print(event)
     return event, event_year
 
 def get_knowledge_of_past(visibility, respectability, likability,

@@ -34,6 +34,7 @@ class Button: #pylint: disable=too-many-instance-attributes
         if pyxel.btn(pyxel.MOUSE_LEFT_BUTTON) and self.is_moused_over():
             self.is_clickable = False
             return True
+        return False
 
     def draw(self):
         """Draws the button to the screen"""

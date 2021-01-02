@@ -39,6 +39,8 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
 
         usability, visibility, respectability, likability, \
         understandability = get_stats(time_period_map, global_buffs, current_year, sot, event_list)
+        if len(event_list) > len(stats_list):
+            stats_list.append((usability, visibility, respectability, likability, understandability))
 
         event, event_year = get_random_event(current_year, sot, site_map,usability,
                                              visibility, respectability, likability, understandability,
@@ -69,8 +71,6 @@ def simulate(years, site_map, global_buffs): #pylint: disable=too-many-locals,to
         #handle events that change the map
 
 
-        if len(event_list) > len(stats_list):
-            stats_list.append((usability, visibility, respectability, likability, understandability))
         print("usability, visibility, respectability, likability, understandability:")
         print(usability, visibility,respectability,  likability,
               understandability)

@@ -15,6 +15,10 @@ SHOP_ROWS = 2
 SHOP_TOP_OFFSET=20
 SHOP_BOTTOM_OFFSET=80
 
+STAT_BAR_SIDE_MARGIN=6
+STAT_BAR_HEIGHT = 8
+HALF_STAT_BAR_WIDTH = 20
+
 @dataclass
 class Shelf:
     """A class representing a shelf in the shop. Shelves contain markers for sale and their current prices"""
@@ -53,19 +57,61 @@ class Shelf:
                 ICON_WIDTH,
                 ICON_HEIGHT
         )
-        if self.hover_on_item is False:
+        if self.hover_on_item is False: #color border of shop item GREEN if HOVERED ON
             pyxel.rectb(self.x_coord, self.y_coord, self.width, self.height, pyxel.COLOR_GRAY)
+            '''for i in range(5): #keep plain gray bars on the screen outside of hover
+                pyxel.rect(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET, HALF_STAT_BAR_WIDTH*2, STAT_BAR_HEIGHT, pyxel.COLOR_GRAY)
+                pyxel.line(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET, ((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET+STAT_BAR_HEIGHT-1, pyxel.COLOR_YELLOW)
+        '''
         elif self.hover_on_item is True:
             pyxel.rectb(self.x_coord, self.y_coord, self.width, self.height, pyxel.COLOR_GREEN)
         
         if self.is_mouse_on_shelf():
-            '''pyxel.text(0,
-                    SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET-16,
-                    marker.markers[self.marker_on_shelf].description,
-                    pyxel.COLOR_WHITE)'''
-            center_text(marker.markers[self.marker_on_shelf].description, SCREEN_WIDTH, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET-28, pyxel.COLOR_WHITE)
-
             self.hover_on_item = True
+            current_item = marker.markers[self.marker_on_shelf]
+
+            #description
+            center_text(current_item.description, SCREEN_WIDTH, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET-28, pyxel.COLOR_WHITE)
+
+            stat_to_present = self.average_tuple(current_item.usability_init)
+            bar_label = "Land Utility"
+            for i in range(5):
+                if i == 0:
+                    stat_to_present = self.average_tuple(current_item.usability_init)
+                    bar_label = " Land Use"
+                elif i == 1: 
+                    stat_to_present = self.average_tuple(current_item.visibility_init)
+                    bar_label = "  Visible"
+                elif i == 2: 
+                    stat_to_present = self.average_tuple(current_item.respectability_init)
+                    bar_label = "Respectable"
+                elif i == 3: 
+                    stat_to_present = self.average_tuple(current_item.likability_init)
+                    bar_label = " Likeable"
+                elif i == 4: 
+                    stat_to_present = self.average_tuple(current_item.understandability_init)
+                    bar_label = "Effective"
+
+                if stat_to_present >= 0: #positive stat
+                    #positive green
+                    pyxel.rect(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET, stat_to_present*2, STAT_BAR_HEIGHT, pyxel.COLOR_GREEN)
+                    #remaining positive gray
+                    pyxel.rect(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH+stat_to_present*2, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET, HALF_STAT_BAR_WIDTH-(stat_to_present*2), STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
+                    #negative gray
+                    pyxel.rect(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET, HALF_STAT_BAR_WIDTH, STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
+                    #yellow center line
+                    pyxel.line(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET, ((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET+STAT_BAR_HEIGHT-1, pyxel.COLOR_YELLOW)
+                else:#negative stat
+                    #negative red
+                    pyxel.rect(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH+stat_to_present*2, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET, stat_to_present*-2, STAT_BAR_HEIGHT, pyxel.COLOR_RED)
+                    #remaining negative gray
+                    pyxel.rect(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET, HALF_STAT_BAR_WIDTH-(stat_to_present*-2), STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
+                    #positive gray
+                    pyxel.rect(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET, HALF_STAT_BAR_WIDTH, STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
+                    #yellow center line
+                    pyxel.line(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET, ((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET+STAT_BAR_HEIGHT-1, pyxel.COLOR_YELLOW)
+                    
+                pyxel.text(((SCREEN_WIDTH/5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT-SHOP_BOTTOM_OFFSET+8, bar_label, pyxel.COLOR_GRAY)
         else: 
             self.hover_on_item = False
 
@@ -77,6 +123,13 @@ class Shelf:
                 y_coord=self.y_coord+self.height/2,
                 text_color=pyxel.COLOR_RED,
                 x_coord=self.x_coord)
+
+    def average_tuple(self, tuple):
+        sum = 0
+        for i in tuple: 
+            sum = sum + i 
+        res = sum / len(tuple)
+        return round(res)
 
 class Shop:
     """A class representing an instance of the shop. Consists of a list of shelves with markers for sale on them"""

@@ -6,6 +6,7 @@ from util import center_text
 from event import events
 
 MAP_BOTTOM_MARGIN = 8 + ICON_HEIGHT*3
+KEY_MARGIN=6
 
 class SimulationScreen:
     """A class representing the simulation-in-progress screen"""
@@ -37,7 +38,7 @@ class SimulationScreen:
         """Draws the simulation-in-progress screen"""
         self.current_map.draw(player, is_simulation=True)
 
-        center_text("Simulating...",
+        center_text(" Simulating...",
                     page_width=SCREEN_WIDTH,
                     y_coord=SCREEN_HEIGHT-MAP_BOTTOM_MARGIN,
                     text_color=pyxel.COLOR_WHITE)
@@ -57,3 +58,24 @@ class SimulationScreen:
                         x_coord=events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
                         y_coord = SCREEN_HEIGHT-(MAP_BOTTOM_MARGIN-ICON_HEIGHT//2),
                         text_color=pyxel.COLOR_WHITE)
+        else: #DRAW VISITOR KEY
+            #miner
+            pyxel.rect(32,SCREEN_WIDTH-44,4,4,pyxel.COLOR_GRAY)
+            pyxel.text(32+8, SCREEN_WIDTH-44, "Miner", pyxel.COLOR_WHITE)
+
+            #architect
+            pyxel.rect(104,SCREEN_WIDTH-44,4,4,pyxel.COLOR_RED)
+            pyxel.text(104+8, SCREEN_WIDTH-44, "Architect", pyxel.COLOR_WHITE)
+
+            #dam builder
+            pyxel.rect(176,SCREEN_WIDTH-44,4,4,pyxel.COLOR_GREEN)
+            pyxel.text(176+8, SCREEN_WIDTH-44, "Dam Builder", pyxel.COLOR_WHITE)
+
+            #teenager
+            pyxel.rect(64,SCREEN_WIDTH-32,4,4,pyxel.COLOR_DARKBLUE)
+            pyxel.text(64+8, SCREEN_WIDTH-32, "Teenager", pyxel.COLOR_WHITE)
+
+            #teenager
+            pyxel.rect(128,SCREEN_WIDTH-32,4,4,pyxel.COLOR_BROWN)
+            pyxel.text(128+8, SCREEN_WIDTH-32, "Transit Tunnel Maker", pyxel.COLOR_WHITE)
+            

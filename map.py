@@ -66,7 +66,7 @@ class Map: #pylint: disable=too-many-instance-attributes
             width=30,
             height=9*MAP_BOTTOM_OFFSET/10,
             text="Next",
-            button_color=pyxel.COLOR_GRAY
+            button_color=pyxel.COLOR_DARKBLUE
         )
 
         self.back_button = button.Button(

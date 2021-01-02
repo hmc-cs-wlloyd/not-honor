@@ -125,7 +125,7 @@ def draw_chosen_tip(chosen_tip):
         pyxel.blt((SCREEN_WIDTH/2)-8, 56, 1, 208, 200, 40, 40)
         pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_3_x, sci_3_y, 16,16)
         pyxel.blt((SCREEN_WIDTH/2)+8, 64, 0, 16, 0, 16, 16)
-        center_text("Modeling the behavior of TEENS in the simulation was difficult.", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+        center_text("Modeling the behavior of TEENS in the simulation was hard.", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
         center_text("The\'re just so random and destructive, you know?", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
         center_text(' Dang kids!', SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
         
@@ -134,13 +134,14 @@ def draw_chosen_tip(chosen_tip):
         pyxel.blt((SCREEN_WIDTH/2)+8, 64, 0, 0, 16, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_4_x, sci_4_y, 16,16)
         center_text("As an ARCHAEOLOGIST, I\'m a bit offended by the simulation.", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
-        center_text("I wouldn\'t be scared off just because something seems \"spooky\"!", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+        center_text("I wouldn\'t be scared off just because", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+        center_text('something seems \"spooky\"', SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
 
     elif chosen_tip == 13:
         pyxel.blt((SCREEN_WIDTH/2)-8, 56, 1, 208, 200, 40, 40)
         pyxel.blt((SCREEN_WIDTH/2)+8, 64, 0, 48, 0, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_1_x, sci_1_y, 16,16)
-        center_text("We\'re always updating the simulation to include new threats.", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+        center_text("We\'re always updating the simulation to model new threats.", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
         center_text("Just recently, we added TRANSIT TUNNELS as a potential ", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
         center_text('intrusion, like the one proposed by famous entrepreneur', SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
         center_text('Stretch Beaver.', SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3), pyxel.COLOR_WHITE)
@@ -149,9 +150,9 @@ def draw_chosen_tip(chosen_tip):
         pyxel.blt((SCREEN_WIDTH/2)-8, 56, 1, 208, 200, 40, 40)
         pyxel.blt((SCREEN_WIDTH/2)+8, 64, 0, 176, 32, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_2_x, sci_2_y, 16,16)        
-        center_text("You might not think DAMS would be a big threat in the desert,", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
-        center_text("but we\'re modeling them all the same. As long as the", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
-        center_text('land utility remains low, you should be pretty safe though.', SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
+        center_text("You might not think DAMS would be a big threat", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+        center_text(" in the desert, but we\'re modeling them all the same. As long as the", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+        center_text('land utility remains low, you should be safe.', SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
 
     elif chosen_tip == 15:
         pyxel.blt((SCREEN_WIDTH/2)-8, 56, 1, 208, 200, 40, 40)

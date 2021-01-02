@@ -50,7 +50,7 @@ class App: #pylint: disable=too-many-instance-attributes
         self.available_tips = list(range(19)) #19 possible tips to share with player
         self.continue_button = button.Button(
             x_coord=SCREEN_WIDTH/2-30,
-            y_coord=180,
+            y_coord=190,
             width=60,
             height=20,
             text="CONTINUE",
@@ -275,6 +275,8 @@ class App: #pylint: disable=too-many-instance-attributes
 
     def draw_intro_1(self): 
         pyxel.cls(pyxel.COLOR_BLACK)
+        pyxel.blt(0,0,2,0,0,256,256)
+        pyxel.rect(8,8, 240, 240, pyxel.COLOR_BLACK)
         pyxel.mouse(visible=True)
         center_text("Doctor!  I\'m glad you\'re here!", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
         center_text('Thanks for coming all this way to meet with the team for', SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
@@ -286,23 +288,28 @@ class App: #pylint: disable=too-many-instance-attributes
 
     def draw_intro_2(self): 
         pyxel.cls(pyxel.COLOR_BLACK)
+        pyxel.blt(0,0,2,0,0,256,256)
+        pyxel.rect(8,8, 240, 240, pyxel.COLOR_BLACK)
         pyxel.mouse(visible=True)
         center_text("Our scientists have found that humans behave differently", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT-16, pyxel.COLOR_WHITE)
         center_text('towards a place based on five observable aspects', SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT-20, pyxel.COLOR_WHITE)
-        pyxel.text(8,SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2)-8, "Land Usability - ", pyxel.COLOR_YELLOW)
-        pyxel.text(78, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2)-8, "How usable the site appears to be", pyxel.COLOR_WHITE)
-        pyxel.text(8, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3)-8, "Visibility - ", pyxel.COLOR_YELLOW)
-        pyxel.text(62, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3)-8, "How visually noticeable the site is", pyxel.COLOR_WHITE)
-        pyxel.text(8, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4)-8, "Respectability - ", pyxel.COLOR_YELLOW)
-        pyxel.text(78, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4)-8, "How likely visitors are to preserve the site", pyxel.COLOR_WHITE)
-        pyxel.text(8, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*5)-8, "Likability - ", pyxel.COLOR_YELLOW)
-        pyxel.text(62, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*5)-8, "How charming the site is", pyxel.COLOR_WHITE)
-        pyxel.text(8, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*6)-8, "Message Clarity - ", pyxel.COLOR_YELLOW)
-        pyxel.text(78, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*6)-8, "How well the site is communicating to\nstay away", pyxel.COLOR_WHITE)
+        pyxel.text(8,SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2)-8, "  Land Usability - ", pyxel.COLOR_YELLOW)
+        pyxel.text(78, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2)-8, " How usable the site appears to be", pyxel.COLOR_WHITE)
+        pyxel.text(8, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3)-6, "  Visibility - ", pyxel.COLOR_YELLOW)
+        pyxel.text(62, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3)-6, " How visually noticeable the site is", pyxel.COLOR_WHITE)
+        pyxel.text(8, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4)-4, "  Respectability - ", pyxel.COLOR_YELLOW)
+        pyxel.text(78, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4)-4, " How likely visitors are to preserve", pyxel.COLOR_WHITE)
+        pyxel.text(78, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*5)-2, " the site", pyxel.COLOR_WHITE)
+        pyxel.text(8, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*6), "  Likability - ", pyxel.COLOR_YELLOW)
+        pyxel.text(62, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*6), " How charming the site is", pyxel.COLOR_WHITE)
+        pyxel.text(8, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*7)+2, "  Message Clarity - ", pyxel.COLOR_YELLOW)
+        pyxel.text(78, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*7)+2, "  How well the site is communicating to\n stay away", pyxel.COLOR_WHITE)
         self.continue_button.draw()
 
     def draw_intro_3(self): 
         pyxel.cls(pyxel.COLOR_BLACK)
+        pyxel.blt(0,0,2,0,0,256,256)
+        pyxel.rect(8,8, 240, 240, pyxel.COLOR_BLACK)
         pyxel.mouse(visible=True)
         center_text("You\'ll also find that there are different types of humans", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT-64, pyxel.COLOR_WHITE)
         center_text('who will visit the simulated nuclear site. They have', SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT-60, pyxel.COLOR_WHITE)
@@ -372,6 +379,8 @@ class App: #pylint: disable=too-many-instance-attributes
 
     def draw_directions_2(self): 
         pyxel.cls(pyxel.COLOR_BLACK)
+        pyxel.blt(0,0,2,0,0,256,256)
+        pyxel.rect(8,8, 240, 240, pyxel.COLOR_BLACK)
         pyxel.mouse(visible=True)
         center_text("GOOD LUCK!", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_GREEN)
         center_text('After placing your purchased items, we\'ll begin', SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
@@ -405,11 +414,14 @@ class App: #pylint: disable=too-many-instance-attributes
     def draw_results(self):
         """Draws frames while the player is on the results screen"""
         pyxel.cls(pyxel.COLOR_BLACK)
+        pyxel.blt(0,0,2,0,0,256,256)
+        pyxel.rect(8,8, 240, 240, pyxel.COLOR_BLACK)
         global not_playing_result_music
         pyxel.mouse(visible=True)
         if self.simulations_run < self.phase:
             center_text("Simulating...", SCREEN_WIDTH, SCREEN_HEIGHT//2, pyxel.COLOR_WHITE)
         elif self.latest_simulation_failed:
+            pyxel.blt(SCREEN_WIDTH/2 - 32, 40, 1, 72, 176, 64,80)
             center_text("Waste Repository Breached. Game Over.", SCREEN_WIDTH, SCREEN_HEIGHT//2, pyxel.COLOR_WHITE)
             self.continue_button.draw()
             if not_playing_result_music:
@@ -417,6 +429,7 @@ class App: #pylint: disable=too-many-instance-attributes
                     not_playing_result_music= False
         else:
             if self.phase == YEARS_TO_WIN//YEARS_IN_PHASE:
+                pyxel.blt(SCREEN_WIDTH/2 - 32, 50, 1, 0, 128, 64,48)
                 center_text("YOU WIN!", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
                 center_text("Your facility went 10,000 years undisturbed", SCREEN_WIDTH,
                             SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
@@ -426,6 +439,7 @@ class App: #pylint: disable=too-many-instance-attributes
                     not_playing_result_music= False
                 
             else:
+                pyxel.blt(SCREEN_WIDTH/2 - 32, 50, 1, 0, 128, 64,48)
                 center_text("Your facility went " + str(self.phase*YEARS_IN_PHASE) + " years undisturbed",
                             SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
                 center_text("You are awarded a larger budget to try and last " + \
@@ -438,7 +452,8 @@ class App: #pylint: disable=too-many-instance-attributes
     
     def draw_tip(self):
         pyxel.cls(pyxel.COLOR_BLACK)
-
+        pyxel.blt(0,0,2,0,0,256,256)
+        pyxel.rect(8,8, 240, 240, pyxel.COLOR_BLACK)
         if self.which_tip_index is not None:
             chosen_tip = self.available_tips[self.which_tip_index]
             tips.draw_chosen_tip(chosen_tip)

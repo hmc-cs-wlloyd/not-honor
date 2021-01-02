@@ -277,15 +277,15 @@ class App: #pylint: disable=too-many-instance-attributes
         center_text("Our scientists have found that humans behave differently", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT-16, pyxel.COLOR_WHITE)
         center_text('towards a place based on five observable aspects', SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT-20, pyxel.COLOR_WHITE)
         pyxel.text(8,SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2)-8, "Land Usability - ", pyxel.COLOR_YELLOW)
-        pyxel.text(78, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2)-8, "How usable the land appears to be", pyxel.COLOR_WHITE)
+        pyxel.text(78, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2)-8, "How usable the site appears to be", pyxel.COLOR_WHITE)
         pyxel.text(8, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3)-8, "Visibility - ", pyxel.COLOR_YELLOW)
-        pyxel.text(62, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3)-8, "How visually noticeable the land is", pyxel.COLOR_WHITE)
+        pyxel.text(62, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3)-8, "How visually noticeable the site is", pyxel.COLOR_WHITE)
         pyxel.text(8, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4)-8, "Respectability - ", pyxel.COLOR_YELLOW)
-        pyxel.text(78, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4)-8, "How likely visitors are to preserve the land", pyxel.COLOR_WHITE)
+        pyxel.text(78, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4)-8, "How likely visitors are to preserve the site", pyxel.COLOR_WHITE)
         pyxel.text(8, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*5)-8, "Likability - ", pyxel.COLOR_YELLOW)
-        pyxel.text(62, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*5)-8, "How charming the land is", pyxel.COLOR_WHITE)
+        pyxel.text(62, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*5)-8, "How charming the site is", pyxel.COLOR_WHITE)
         pyxel.text(8, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*6)-8, "Message Clarity - ", pyxel.COLOR_YELLOW)
-        pyxel.text(78, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*6)-8, "How well the land is communicating to\nstay away", pyxel.COLOR_WHITE)
+        pyxel.text(78, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*6)-8, "How well the site is communicating to\nstay away", pyxel.COLOR_WHITE)
         self.continue_button.draw()
 
     def draw_intro_3(self): 
@@ -302,9 +302,9 @@ class App: #pylint: disable=too-many-instance-attributes
         pyxel.blt(SCREEN_WIDTH/2-8, SCREEN_HEIGHT//2-4, 0, 0, 32, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)+(16*3)-8, SCREEN_HEIGHT//2-4, 0, 0, 32, 16, 16)
 
-        pyxel.text(16, SCREEN_HEIGHT//2+22, "Architects ", pyxel.COLOR_YELLOW)
-        pyxel.text(16+44, SCREEN_HEIGHT//2+22, "like to dig up open spaces but will preserve", pyxel.COLOR_WHITE) 
-        center_text("spaces with high respectability", SCREEN_WIDTH, SCREEN_HEIGHT//2+22+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+        pyxel.text(16, SCREEN_HEIGHT//2+22, "Archaeologists", pyxel.COLOR_YELLOW)
+        pyxel.text(16+44, SCREEN_HEIGHT//2+22, "    like to dig up open spaces", pyxel.COLOR_WHITE) 
+        center_text("but will preserve spaces with high respectability", SCREEN_WIDTH, SCREEN_HEIGHT//2+22+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
 
         self.continue_button.draw()
 
@@ -315,7 +315,7 @@ class App: #pylint: disable=too-many-instance-attributes
                 page_width=SCREEN_WIDTH,
                 y_coord=10,
                 text_color=pyxel.COLOR_YELLOW)
-        center_text("To start, we\'ll give you a budget of $100,000", SCREEN_WIDTH, SCREEN_HEIGHT//2-72, pyxel.COLOR_WHITE)
+        center_text("To start, we\'ll give you a budget of $100 million.", SCREEN_WIDTH, SCREEN_HEIGHT//2-72, pyxel.COLOR_WHITE)
         center_text('On the next page, you\'ll be able to buy items', SCREEN_WIDTH, SCREEN_HEIGHT//2-48, pyxel.COLOR_WHITE)
         center_text("to affect your simulation. Some items need to be placed", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT-48, pyxel.COLOR_WHITE)
         center_text("and others will be applied as global social factors.", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2)-48, pyxel.COLOR_WHITE)

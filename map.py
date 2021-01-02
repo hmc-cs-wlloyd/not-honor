@@ -69,6 +69,15 @@ class Map: #pylint: disable=too-many-instance-attributes
             button_color=pyxel.COLOR_DARKBLUE
         )
 
+        self.visitors_button = button.Button(
+            x_coord=SCREEN_WIDTH-45,
+            y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET,
+            width=45,
+            height=9*MAP_BOTTOM_OFFSET/10,
+            text="Visitors",
+            button_color=pyxel.COLOR_ORANGE
+        )
+
         self.back_button = button.Button(
             x_coord=5,
             y_coord=SCREEN_HEIGHT - MAP_BOTTOM_OFFSET,
@@ -318,8 +327,9 @@ class Map: #pylint: disable=too-many-instance-attributes
                         i+=1
 
 
-        else:
-            self.next_button.draw() #showing the simulation
+        else: #showing the simulation
+            self.next_button.draw() 
+            self.visitors_button.draw()
             ###DRAW VISITORS###
             for i in cells:
                 i.draw()

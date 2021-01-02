@@ -894,7 +894,7 @@ the site will be safe.\nCould be used to calculate age",
         understandability_init = (0,0,0),
         understandability_decay = "constant",
         tags=["non-purchasable"]
-    )
+    ),
     "math": Marker(
         name="Mathematical Symbols",
         description="Some say math is a \"universal language\".\

@@ -401,11 +401,13 @@ def get_stats(site_map, global_buffs, current_year,sot, event_list): #pylint: di
     if flood:
         usability += 20
     if smog:
-        visibility -= 20
+        visibility = min(visibility, 20)
     if park:
         usability -= 20
         likability += 15
 
+    visibility = max(0, visibility)
+    
     print("Pre-normalization understandability: ", understandability, " visibility: ", visibility, " respectability: ", respectability, " likability: ", likability, " usability: ", usability)
     return normalize_stat(usability), normalize_stat(visibility), normalize_stat(respectability),\
         normalize_stat(likability), normalize_stat(understandability)

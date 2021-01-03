@@ -170,12 +170,24 @@ class Shop:
     def draw(self, player):
         """Draws the shop to the screen"""
         pyxel.cls(pyxel.COLOR_LIGHTBLUE)
-        pyxel.rect(0, 190, SCREEN_WIDTH, SCREEN_HEIGHT-190, pyxel.COLOR_BLACK)
+        #top left "screen" tile
+        pyxel.blt(0,0,0,128,64,ICON_WIDTH,ICON_HEIGHT)
+        #bottom left "screen" tile
+        pyxel.blt(0, 190-16,0,128,96,ICON_WIDTH,ICON_HEIGHT)
+        #top right "screen" tile
+        pyxel.blt(SCREEN_WIDTH-ICON_WIDTH,0,0,160,64,ICON_WIDTH,ICON_HEIGHT)
+        #bottom right "screen" tile
+        pyxel.blt(SCREEN_WIDTH-ICON_WIDTH, 190-16,0,160,96,ICON_WIDTH,ICON_HEIGHT)
+        pyxel.line(1, 16, 1, 190-8, pyxel.COLOR_WHITE)
+        pyxel.line(2, 16, 2, 190-(16*3)-3, pyxel.COLOR_WHITE) #glare line that goes down to the bottom of the 4th shop item
+        #inventory at the bottom
+        pyxel.rect(0, 190, SCREEN_WIDTH, SCREEN_HEIGHT-190, pyxel.COLOR_BLACK) 
+
         center_text("Remaining Budget: $" + str(player.funding) + " Mil.",
                 page_width=SCREEN_WIDTH,
                 y_coord=10,
                 text_color=pyxel.COLOR_NAVY)
-        pyxel.text(5, SHOP_TOP_OFFSET//10, "WIPP-SIM10000", pyxel.COLOR_GREEN)
+        pyxel.text(5, SHOP_TOP_OFFSET//2, "WIPP-SIM10000", pyxel.COLOR_GREEN)
         self.finish_button.draw()
 
         inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN + 8

@@ -281,7 +281,7 @@ site.\nMore effective upon cultures with industrial\ndigging technology.",
     ),
     "danger-sign": Marker(
         name="Danger Sign",
-        description="A sign reading \"danger\" and bearing a radiation\nsymbol.",
+        description="A sign reading \"Danger. This is not a place of honor\"\nand bearing a radiation symbol.",
         icon_coords=(160,16),
         icon_image = 0,
         base_cost=30,

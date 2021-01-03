@@ -304,7 +304,7 @@ class Map: #pylint: disable=too-many-instance-attributes
                         pyxel.blt(16+text_margin+(i*19), (16*6)+2, 0, marker.markers[elem].icon_coords[0], marker.markers[elem].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
                         i+=1
                 
-                pyxel.text(16+text_margin+112, (16*4)+text_margin, "VISITOR\'S CENTERS enhance\nthe effectiveness of\nEDUCATIONAL defenses", pyxel.COLOR_NAVY)
+                pyxel.text(16+text_margin+112, (16*4)+text_margin, "VISITOR\'S CENTERS enhance\nthe clarity of\nEDUCATIONAL defenses", pyxel.COLOR_NAVY)
                 pyxel.blt(16+text_margin+112, (16*5)+text_margin+4, 0, marker.markers["visitor-center"].icon_coords[0], marker.markers["visitor-center"].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
                 pyxel.text(16+text_margin+18+112, (16*5)+(text_margin*2-2)+4, "+", pyxel.COLOR_NAVY)
                 i=0 #show all educational defenses
@@ -313,7 +313,7 @@ class Map: #pylint: disable=too-many-instance-attributes
                         pyxel.blt((16+text_margin)+16+text_margin+(i*19)+112, (16*5)+text_margin+4, 0, marker.markers[elem].icon_coords[0], marker.markers[elem].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
                         i+=1
 
-                pyxel.text(16+text_margin, (16*7)+text_margin, "DANGER SIGNS and DISGUSTED\nFACES enhance each\nother\'s effectiveness", pyxel.COLOR_NAVY)
+                pyxel.text(16+text_margin, (16*7)+text_margin, "DANGER SIGNS and DISGUSTED\nFACES enhance each\nother\'s clarity", pyxel.COLOR_NAVY)
                 pyxel.blt(16+text_margin, (16*8)+text_margin+4, 0, marker.markers["danger-sign"].icon_coords[0], marker.markers["danger-sign"].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
                 pyxel.blt(16+text_margin+19, (16*8)+text_margin+4, 0, marker.markers["disgust-faces"].icon_coords[0], marker.markers["disgust-faces"].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
 

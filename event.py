@@ -29,7 +29,7 @@ Containment is instantly breached.",
 has taken over the American Southwest. \n\
 They\'re relatively harmless, but they find\n\
 your spooky monuments enjoyable.",
-        icon_coords=(1,49), #not done yet
+        icon_coords=(1,49), 
         icon_size = (62,46),
         icon_image = 0,
         fatal = False
@@ -86,11 +86,12 @@ the cats\' intent, so they are seen as signs from god.",
     ),
     "stonehenge": Event(
         name="Stonehenge 2.0",
-        description="You seem to have inadvertently placed your\n\
-monoliths to line up with a solar eclipse. People flock\n\
-to see the beauty of the site.",
-        icon_coords=(1,49), #not done yet
-        icon_size = (61,45),
+        description="You seem to have inadvertently \n\
+placed your monoliths to line up with a\n\
+solar eclipse. People flock to see the\n\
+beauty of the site.",
+        icon_coords=(64,96), #not done yet
+        icon_size = (62,48),
         icon_image = 0,
         fatal = False
     ),

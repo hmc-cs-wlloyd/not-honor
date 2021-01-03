@@ -173,9 +173,10 @@ def draw_chosen_tip(chosen_tip):
         center_text("Watch out for EARTHQUAKES and FAULTLINES!", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
 
     elif chosen_tip == 17:
-        pyxel.blt((SCREEN_WIDTH/2)-8, 50, 0, 48, 16, 16, 16)
+        pyxel.blt((SCREEN_WIDTH/2)-8, 56, 1, 208, 200, 40, 40)
+        pyxel.blt((SCREEN_WIDTH/2)+8, 64, 0, 48, 16, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_1_x, sci_1_y, 16,16)
-        center_text("As a sociologist, I say we need to plan for cultural shifts.", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+        center_text("As a sociologist, I\m helping model cultural shifts.", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
         center_text("VIKINGS, GOTHS, KLINGONS... who knows what could be ahead!", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
 
     elif chosen_tip == 18:

@@ -445,7 +445,7 @@ class App: #pylint: disable=too-many-instance-attributes
                 pyxel.blt(SCREEN_WIDTH/2 - 32, 50, 1, 0, 128, 64,48)
                 center_text("Your facility went " + str(self.phase*YEARS_IN_PHASE) + " years undisturbed",
                             SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
-                center_text("You are awarded a larger budget to try and last " + \
+                center_text("You are awarded a larger budget to try lasting " + \
                             str((self.phase+1)*YEARS_IN_PHASE) + " years",
                             SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
                 self.continue_button.draw()

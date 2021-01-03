@@ -555,7 +555,7 @@ the site will be safe.\nCould be used to calculate age.",
     "single-stone-monolith": Marker(
         name="Single-Slab\nGranite Monolith",
         description="A 3 meter monolith carved from a single piece of granite.\nResistant to earthquakes.",
-        icon_coords=(208,56),
+        icon_coords=(208,48),
         icon_image = 0,
         base_cost=80,
         usability_init = (0,0,0),

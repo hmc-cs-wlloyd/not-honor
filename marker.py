@@ -570,6 +570,25 @@ the site will be safe.\nCould be used to calculate age",
         understandability_decay = "exp_0",
         tags=["surface", "structure", "language-dependent", "low-tech", "monolith"]
     ),
+    "math": Marker(
+        name="Mathematical\nSymbols",
+        description="Some say math is a \"universal language\".\
+        This could show that something important is here.",
+        icon_coords=(80,32),
+        icon_image = 0,
+        base_cost=7000,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (1,1,1),
+        visibility_decay = "slow_lin_0",
+        respectability_init = (1,1,1),
+        respectability_decay = "constant",
+        likability_init = (0,0,0),
+        likability_decay = "constant",
+        understandability_init = (0,-1,5),
+        understandability_decay = "slow_lin_0",
+        tags=["surface", "structure", "educational"]
+    ),
     #NOTE: THE TERRAINS ARE IN IMAGE 1
     "sand": Marker(
         name="Sand",
@@ -898,25 +917,6 @@ the site will be safe.\nCould be used to calculate age",
     "site": Marker(
         name="Null Marker",
         description="",
-        icon_coords=(0, 0),
-        icon_image = 1,
-        base_cost=0,
-        usability_init = (0,0,0),
-        usability_decay = "constant",
-        visibility_init = (0,0,0),
-        visibility_decay = "constant",
-        respectability_init = (0,0,0),
-        respectability_decay = "constant",
-        likability_init = (0,0,0),
-        likability_decay = "constant",
-        understandability_init = (0,0,0),
-        understandability_decay = "constant",
-        tags=["non-purchasable"]
-    ),
-    "math": Marker(
-        name="Mathematical Symbols",
-        description="Some say math is a \"universal language\".\
-        This could show that something important is here.",
         icon_coords=(0, 0),
         icon_image = 1,
         base_cost=0,

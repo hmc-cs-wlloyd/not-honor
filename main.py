@@ -434,7 +434,7 @@ class App: #pylint: disable=too-many-instance-attributes
                     not_playing_result_music= False
         else:
             if self.phase == YEARS_TO_WIN//YEARS_IN_PHASE:
-                pyxel.blt(SCREEN_WIDTH/2 - 32, 50, 1, 0, 128, 64,48)
+                pyxel.blt(SCREEN_WIDTH/2 - 32, 50, 1, 0, 128, 64,48,4)
                 center_text("YOU WIN!", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
                 center_text("Your facility went 10,000 years undisturbed", SCREEN_WIDTH,
                             SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
@@ -444,7 +444,7 @@ class App: #pylint: disable=too-many-instance-attributes
                     not_playing_result_music= False
                 
             else:
-                pyxel.blt(SCREEN_WIDTH/2 - 32, 50, 1, 0, 128, 64,48)
+                pyxel.blt(SCREEN_WIDTH/2 - 32, 50, 1, 0, 128, 64,48,4)
                 center_text("Your facility went " + str(self.phase*YEARS_IN_PHASE) + " years undisturbed",
                             SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
                 center_text("You are awarded a larger budget to try and last " + \

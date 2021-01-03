@@ -29,7 +29,7 @@ Containment is instantly breached.",
 has taken over the American Southwest. \n\
 They\'re relatively harmless, but they find\n\
 your spooky monuments enjoyable.",
-        icon_coords=(1,49), 
+        icon_coords=(1,49),
         icon_size = (62,46),
         icon_image = 0,
         fatal = False
@@ -47,8 +47,8 @@ prettiest monuments, tearing them all down.",
     "earthquake": Event(
         name="Earthquake!",
         description="The ground under the site shakes violently. All\n\
-        monoliths are reduced to rubble.",
-        icon_coords=(144,48), 
+monoliths are reduced to rubble.",
+        icon_coords=(144,48),
         icon_size = (16,16),
         icon_image = 0,
         fatal = False
@@ -69,7 +69,7 @@ the cansiters.",
         description="A new faultline emerges underneath the site.\n\
 All monoliths are reduced to rubble, and buried markers\n\
 are now visible to the naked eye.",
-        icon_coords=(128,48), 
+        icon_coords=(128,48),
         icon_size = (16,16),
         icon_image = 0,
         fatal = False
@@ -79,7 +79,7 @@ are now visible to the naked eye.",
         description="When Ray Cats move in with the dubious cult,\n\
 everyone wants to see them. People seem to have forgotten\n\
 the cats\' intent, so they are seen as signs from god.",
-        icon_coords=(176,48), 
+        icon_coords=(176,48),
         icon_size = (16,16),
         icon_image = 0,
         fatal = False
@@ -117,8 +117,7 @@ and hovers over the region for centuries, reducing \nvisibility.",
     "klingon": Event(
         name="tlhIngan Hol qajatlh",
         description="A Star Trek fanatic is elected president, and\n\
-she makes it illegal to speak any language other than\n\
-Klingon within the US.",
+she makes Klingon the official language of\nthe US.",
         icon_coords=(160,48), #not done yet
         icon_size = (16,16),
         icon_image = 0,
@@ -164,14 +163,15 @@ national park.",
     "dams": Event(
         name="Dams",
         description="Dam builders breach the site!",
-        icon_coords=(176,32), 
+        icon_coords=(176,32),
         icon_size = (16,16),
         icon_image = 0,
         fatal = True
     ),
     "teens": Event(
         name="Teenagers",
-        description="Teenagers breach the site!",
+        description="A group of teenagers find themselves in\npossession of an advanced bunker buster,\n\
+which penetrates the site when\nthey launch it to see what happens!",
         icon_coords=(16,0),
         icon_size = (16,16),
         icon_image = 0,
@@ -179,7 +179,8 @@ national park.",
     ),
     "tunnel": Event(
         name="Tunnels",
-        description="Transit tunnel builders breach the site!",
+        description="Construction workers breach the site\nwhile constructing a private transit tunnel for an\n\
+eccentric billionaire!",
         icon_coords=(48,0),
         icon_size = (16,16),
         icon_image = 0,

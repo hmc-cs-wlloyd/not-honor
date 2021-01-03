@@ -50,11 +50,6 @@ class SimulationScreen:
         """Draws the simulation-in-progress screen"""
         self.current_map.draw(player, is_simulation=True)
 
-        # center_text(" Simulating...",
-        #             page_width=SCREEN_WIDTH,
-        #             y_coord=SCREEN_HEIGHT-MAP_BOTTOM_MARGIN,
-        #             text_color=pyxel.COLOR_WHITE)
-
         stats_to_present = self.stats_from_simulation[self.current_event_index]
         for i in range(5):
             stat_to_present = stats_to_present[i]
@@ -72,29 +67,29 @@ class SimulationScreen:
 
             if stat_to_present >= 0: #positive stat
                 #positive green
-                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4, math.ceil(stat_to_present*HALF_STAT_BAR_WIDTH), STAT_BAR_HEIGHT, pyxel.COLOR_GREEN)
+                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-6, math.ceil(stat_to_present*HALF_STAT_BAR_WIDTH), STAT_BAR_HEIGHT, pyxel.COLOR_GREEN)
                 #remaining positive gray
-                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH+math.ceil(stat_to_present*HALF_STAT_BAR_WIDTH), SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4, HALF_STAT_BAR_WIDTH-(stat_to_present*HALF_STAT_BAR_WIDTH), STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
+                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH+math.ceil(stat_to_present*HALF_STAT_BAR_WIDTH), SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-6, HALF_STAT_BAR_WIDTH-(stat_to_present*HALF_STAT_BAR_WIDTH), STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
                 #negative gray
-                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4, HALF_STAT_BAR_WIDTH, STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
+                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-6, HALF_STAT_BAR_WIDTH, STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
                 # yellow center line
-                pyxel.line(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4, ((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4+STAT_BAR_HEIGHT-1, pyxel.COLOR_YELLOW)
+                pyxel.line(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-6, ((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-6+STAT_BAR_HEIGHT-1, pyxel.COLOR_YELLOW)
             else:#negative stat
                 #negative red
-                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH+math.ceil(stat_to_present*HALF_STAT_BAR_WIDTH), SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4, -1*math.ceil(stat_to_present*HALF_STAT_BAR_WIDTH), STAT_BAR_HEIGHT, pyxel.COLOR_RED)
+                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH+math.ceil(stat_to_present*HALF_STAT_BAR_WIDTH), SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-6, -1*math.ceil(stat_to_present*HALF_STAT_BAR_WIDTH), STAT_BAR_HEIGHT, pyxel.COLOR_RED)
                 #remaining negative gray
-                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4, HALF_STAT_BAR_WIDTH-(-1*math.ceil(stat_to_present*HALF_STAT_BAR_WIDTH)), STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
+                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-6, HALF_STAT_BAR_WIDTH-(-1*math.ceil(stat_to_present*HALF_STAT_BAR_WIDTH)), STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
                 #positive gray
-                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4, HALF_STAT_BAR_WIDTH, STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
+                pyxel.rect(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-6, HALF_STAT_BAR_WIDTH, STAT_BAR_HEIGHT, pyxel.COLOR_NAVY)
                 # yellow center line
-                pyxel.line(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4, ((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4+STAT_BAR_HEIGHT-1, pyxel.COLOR_YELLOW)
+                pyxel.line(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-6, ((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN+HALF_STAT_BAR_WIDTH, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-6+STAT_BAR_HEIGHT-1, pyxel.COLOR_YELLOW)
 
-            pyxel.text(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-4+8, bar_label, pyxel.COLOR_GRAY)
+            pyxel.text(((SCREEN_WIDTH//5)*i)+STAT_BAR_SIDE_MARGIN, SCREEN_HEIGHT-MAP_BOTTOM_MARGIN-6+8, bar_label, pyxel.COLOR_GRAY)
         if self.events_from_simulation[self.current_event_index][1] != "null":
             event_message = str(self.events_from_simulation[self.current_event_index][0]) + ": " \
                                         + events[self.events_from_simulation[self.current_event_index][1]].description
             pyxel.blt(x=8,
-                      y=SCREEN_HEIGHT-MAP_BOTTOM_MARGIN+ICON_HEIGHT//2+4,
+                      y=SCREEN_HEIGHT-MAP_BOTTOM_MARGIN+ICON_HEIGHT//2+1,
                       img=events[self.events_from_simulation[self.current_event_index][1]].icon_image,
                       u=events[self.events_from_simulation[self.current_event_index][1]].icon_coords[0],
                       v=events[self.events_from_simulation[self.current_event_index][1]].icon_coords[1],
@@ -103,11 +98,11 @@ class SimulationScreen:
             center_text(event_message,
                         page_width=SCREEN_WIDTH-events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
                         x_coord=events[self.events_from_simulation[self.current_event_index][1]].icon_size[0],
-                        y_coord = SCREEN_HEIGHT-MAP_BOTTOM_MARGIN+ICON_HEIGHT//2+4,
+                        y_coord = SCREEN_HEIGHT-MAP_BOTTOM_MARGIN+ICON_HEIGHT//2+1,
                         text_color=pyxel.COLOR_WHITE)
             #show explosion if you die
             if events[self.events_from_simulation[self.current_event_index][1]].fatal:
-                pyxel.blt(SCREEN_WIDTH/2 -32, 80, 1, 72, 208, 64,48, 0)
+                pyxel.blt(SCREEN_WIDTH//2 -32, 80, 1, 72, 208, 64,48, 0)
             #lol cover up the visitors_button
             pyxel.rect(SCREEN_WIDTH-45, SCREEN_HEIGHT - 20, 45, 20, pyxel.COLOR_BLACK)
         else: #DRAW VISITOR KEY

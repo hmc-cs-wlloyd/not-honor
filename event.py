@@ -91,7 +91,7 @@ placed your monoliths to line up with a\n\
 solar eclipse. People flock to see the\n\
 beauty of the site.",
         icon_coords=(64,96), #not done yet
-        icon_size = (62,48),
+        icon_size = (64,48),
         icon_image = 0,
         fatal = False
     ),

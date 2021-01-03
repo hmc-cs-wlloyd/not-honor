@@ -249,6 +249,10 @@ class Map: #pylint: disable=too-many-instance-attributes
                               marker.markers[self.map[row][col]].icon_coords[0],
                               marker.markers[self.map[row][col]].icon_coords[1], ICON_WIDTH, ICON_HEIGHT, 0)
 
+        #DRAW BORDERS TO SHOW ADJACENCY BONUSES
+        for elem in self.coords_for_bonuses: 
+            pyxel.rectb(elem[0], elem[1], ICON_WIDTH, ICON_HEIGHT, elem[2])
+
         if not is_simulation:
             self.simulate_button.draw()
             self.back_button.draw()
@@ -284,7 +288,7 @@ class Map: #pylint: disable=too-many-instance-attributes
                 selected_item_icon_x = marker.markers[self.selected_inventory_item].icon_coords[0]
                 selected_item_icon_y = marker.markers[self.selected_inventory_item].icon_coords[1]
                 pyxel.blt(pyxel.mouse_x-8, pyxel.mouse_y-8, 0, selected_item_icon_x, selected_item_icon_y, ICON_WIDTH, ICON_HEIGHT,0)
-            
+
             #show directions
             if self.show_directions is True:
                 #background
@@ -343,10 +347,6 @@ class Map: #pylint: disable=too-many-instance-attributes
             ###DRAW VISITORS###
             for i in cells:
                 i.draw()
-
-        #DRAW BORDERS TO SHOW ADJACENCY BONUSES
-        for elem in self.coords_for_bonuses: 
-            pyxel.rectb(elem[0], elem[1], ICON_WIDTH, ICON_HEIGHT, elem[2])
 
 class Cell:
     """A class representing a square that random-walks around the map to represent visitors approaching the site in the

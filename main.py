@@ -333,7 +333,7 @@ class App: #pylint: disable=too-many-instance-attributes
     def draw_directions_1(self): 
         pyxel.cls(pyxel.COLOR_BLACK)
         pyxel.mouse(visible=True)
-        center_text("Remaining Budget: $" + str(self.player.funding),
+        center_text("Remaining Budget: $" + str(self.player.funding) + " Mil.",
                 page_width=SCREEN_WIDTH,
                 y_coord=10,
                 text_color=pyxel.COLOR_YELLOW)

@@ -421,7 +421,7 @@ class App: #pylint: disable=too-many-instance-attributes
         if self.simulations_run < self.phase:
             center_text("Simulating...", SCREEN_WIDTH, SCREEN_HEIGHT//2, pyxel.COLOR_WHITE)
         elif self.latest_simulation_failed:
-            pyxel.blt(SCREEN_WIDTH/2 - 32, 40, 1, 72, 176, 64,80)
+            pyxel.blt(SCREEN_WIDTH/2 -32, 50, 1, 72, 208, 64,48,)
             center_text("Waste Repository Breached. Game Over.", SCREEN_WIDTH, SCREEN_HEIGHT//2, pyxel.COLOR_WHITE)
             self.continue_button.draw()
             if not_playing_result_music:

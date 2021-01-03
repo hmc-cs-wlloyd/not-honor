@@ -58,8 +58,8 @@ prettiest monuments, tearing them all down.",
 they are in fact the chosen ones, and that the buried\n\
 waste is a holy weapon. They dig up the site, puncturing\n\
 the cansiters.",
-        icon_coords=(1,49), #not done yet
-        icon_size = (61,45),
+        icon_coords=(64,64),
+        icon_size = (16,32),
         icon_image = 0,
         fatal = True
     ),

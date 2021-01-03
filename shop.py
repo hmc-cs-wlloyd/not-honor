@@ -42,7 +42,7 @@ class Shelf:
                 y_coord=self.y_coord+3,
                 text_color=pyxel.COLOR_WHITE,
                 x_coord=self.x_coord)
-        center_text(text="Price: $" + str(self.sticker_price),
+        center_text(text="Price: $" + str(self.sticker_price) + " Mil.",
                 page_width=self.width,
                 y_coord=self.y_coord+self.height-7,
                 text_color=pyxel.COLOR_WHITE,
@@ -171,7 +171,7 @@ class Shop:
         """Draws the shop to the screen"""
         pyxel.cls(pyxel.COLOR_LIGHTBLUE)
         pyxel.rect(0, 190, SCREEN_WIDTH, SCREEN_HEIGHT-190, pyxel.COLOR_BLACK)
-        center_text("Remaining Budget: $" + str(player.funding),
+        center_text("Remaining Budget: $" + str(player.funding) + " Mil.",
                 page_width=SCREEN_WIDTH,
                 y_coord=10,
                 text_color=pyxel.COLOR_NAVY)

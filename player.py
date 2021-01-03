@@ -8,7 +8,7 @@ import marker
 class Player:
     """A class representing the player character"""
     def __init__(self):
-        self.funding = 100000
+        self.funding = 100
         self.inventory = []
         self.global_buffs = []
 

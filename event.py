@@ -25,11 +25,12 @@ Containment is instantly breached.",
     ),
     "goths": Event(
         name="Rise of the Neo-Goths",
-        description="A band of \'new Visigoths\' has taken over the\n\
-American Southwest. They\'re relatively harmless, but they\n\
-find your spooky monuments enjoyable.",
+        description="A band of \'new Visigoths\' \n\
+has taken over the American Southwest. \n\
+They\'re relatively harmless, but they find\n\
+your spooky monuments enjoyable.",
         icon_coords=(1,49), #not done yet
-        icon_size = (61,45),
+        icon_size = (62,46),
         icon_image = 0,
         fatal = False
     ),

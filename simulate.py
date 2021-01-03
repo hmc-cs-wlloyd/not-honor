@@ -236,24 +236,24 @@ def get_random_event(current_year, sot, site_map,usability, visibility, respecta
     elif current_year > 2600 and sot == 0 and die < .01:
             event = "vikings"
 
-    elif die < .004:
+    elif die < .009:
         event = "earthquake"
 
     elif ("bad-cult" in global_buffs) and current_year > 3000 and die <.5:
         print("cult dig!!!")
         event = "cult-dig"
 
-    elif die < .006:
+    elif die < .013:
         event = "faultline"
 
     elif ("bad-cult" in global_buffs) and ("ray-cats" in global_buffs)and \
          current_year > 3000 and die <.6:
         event = "cat-holics"
 
-    elif num_monoliths > 5 and die <.05:
+    elif num_monoliths > 5 and die <.04:
         event = "stonehenge"
 
-    elif die < .01:
+    elif die < .019:
         event = "flood"
 
 
@@ -263,7 +263,7 @@ def get_random_event(current_year, sot, site_map,usability, visibility, respecta
     elif sot == 2 and die < .03:
         event = "turtle"
 
-    elif sot == 1 and die < .2:
+    elif sot == 1 and die < .18:
         event = "smog"
         
     elif sot > 0 and current_year >2500 and respectability>3 and die <.4:

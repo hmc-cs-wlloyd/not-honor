@@ -162,7 +162,7 @@ national park.",
     ),
     "dams": Event(
         name="Dams",
-        description="Dam builders breach the site!",
+        description="The site is flooded for a new reservoir,\nand water seeps into the waste repository!",
         icon_coords=(176,32),
         icon_size = (16,16),
         icon_image = 0,

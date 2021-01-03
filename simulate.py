@@ -214,9 +214,7 @@ def get_random_event(current_year, sot, site_map,usability, visibility, respecta
     event = ""
     #generate a year for the thing to have happened i
     event_year = current_year - random.randint(0,199)
-    return "stonehenge", event_year
 
-    
     die = random.random()
     print("bad cult? " + str(("bad-cult" in global_buffs)))
     print("current year: " + str(current_year))

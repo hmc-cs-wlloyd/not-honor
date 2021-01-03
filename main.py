@@ -101,8 +101,8 @@ class App: #pylint: disable=too-many-instance-attributes
         """Handles updates while the player is on the title screen"""
         global not_playing_title_music
         if not_playing_title_music:
-                    pyxel.playm(0, loop=True)
-                    not_playing_title_music= False
+            pyxel.playm(0, loop=True)
+            not_playing_title_music= False
         if pyxel.btnp(pyxel.KEY_ENTER):
             self.screen = Screen.INTRO_1
 
@@ -112,7 +112,7 @@ class App: #pylint: disable=too-many-instance-attributes
             self.screen = Screen.INTRO_2
         if self.continue_button.is_moused_over():
             self.continue_button.button_color = pyxel.COLOR_LIGHTBLUE
-        else: 
+        else:
             self.continue_button.button_color = pyxel.COLOR_DARKBLUE
 
     def update_intro_2(self):
@@ -120,7 +120,7 @@ class App: #pylint: disable=too-many-instance-attributes
             self.screen = Screen.INTRO_3
         if self.continue_button.is_moused_over():
             self.continue_button.button_color = pyxel.COLOR_LIGHTBLUE
-        else: 
+        else:
             self.continue_button.button_color = pyxel.COLOR_DARKBLUE
 
     def update_intro_3(self):
@@ -128,7 +128,7 @@ class App: #pylint: disable=too-many-instance-attributes
             self.screen = Screen.DIRECTIONS_1
         if self.continue_button.is_moused_over():
             self.continue_button.button_color = pyxel.COLOR_LIGHTBLUE
-        else: 
+        else:
             self.continue_button.button_color = pyxel.COLOR_DARKBLUE
 
     def update_directions_1(self):
@@ -136,7 +136,7 @@ class App: #pylint: disable=too-many-instance-attributes
             self.screen = Screen.DIRECTIONS_2
         if self.continue_button.is_moused_over():
             self.continue_button.button_color = pyxel.COLOR_LIGHTBLUE
-        else: 
+        else:
             self.continue_button.button_color = pyxel.COLOR_DARKBLUE
 
     def update_directions_2(self):
@@ -145,7 +145,7 @@ class App: #pylint: disable=too-many-instance-attributes
             not_playing_title_music = True
         if self.continue_button.is_moused_over():
             self.continue_button.button_color = pyxel.COLOR_LIGHTBLUE
-        else: 
+        else:
             self.continue_button.button_color = pyxel.COLOR_DARKBLUE
 
     def update_shop(self):
@@ -154,12 +154,12 @@ class App: #pylint: disable=too-many-instance-attributes
             self.shop = Shop(self.marker_options, self.player)
         if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON):
             self.shop.make_purchase(self.player)
-            
+
         if self.shop.finish_button.is_clicked():
             self.screen = Screen.MAP
         if self.shop.finish_button.is_moused_over():
             self.shop.finish_button.button_color = pyxel.COLOR_LIME
-        else: 
+        else:
             self.shop.finish_button.button_color = pyxel.COLOR_GREEN
 
     def update_map(self):
@@ -170,25 +170,25 @@ class App: #pylint: disable=too-many-instance-attributes
             self.shop = None # Reset the shop
             print("Headed to simulation")
             self.screen = Screen.SIMULATION
-            
+
         if self.map.simulate_button.is_moused_over():
             self.map.simulate_button.button_color = pyxel.COLOR_LIME
-        else: 
-            self.map.simulate_button.button_color = pyxel.COLOR_GREEN   
+        else:
+            self.map.simulate_button.button_color = pyxel.COLOR_GREEN
 
         if self.map.back_button.is_clicked():
             self.screen = Screen.SHOP
         if self.map.back_button.is_moused_over():
             self.map.back_button.button_color = pyxel.COLOR_LIGHTBLUE
-        else: 
-            self.map.back_button.button_color = pyxel.COLOR_DARKBLUE 
+        else:
+            self.map.back_button.button_color = pyxel.COLOR_DARKBLUE
 
         if self.map.directions_button.is_moused_over():
             self.map.show_directions = True
             self.map.directions_button.button_color = pyxel.COLOR_PEACH
-        else: 
+        else:
             self.map.show_directions = False
-            self.map.directions_button.button_color = pyxel.COLOR_ORANGE   
+            self.map.directions_button.button_color = pyxel.COLOR_ORANGE
 
 
     def update_simulation(self):
@@ -217,7 +217,7 @@ class App: #pylint: disable=too-many-instance-attributes
             else:
                 not_playing_result_music = True
                 self.phase += 1
-                self.player.add_funding(100000)
+                self.player.add_funding(100)
                 self.screen = Screen.TIP
         if self.continue_button.is_moused_over():
             self.continue_button.button_color = pyxel.COLOR_LIGHTBLUE
@@ -277,6 +277,7 @@ class App: #pylint: disable=too-many-instance-attributes
         pyxel.cls(pyxel.COLOR_BLACK)
         pyxel.blt(0,0,2,0,0,256,256)
         pyxel.rect(8,8, 240, 240, pyxel.COLOR_BLACK)
+        pyxel.blt(SCREEN_WIDTH/2-32,50,0,64,144,64,48)
         pyxel.mouse(visible=True)
         center_text("Doctor!  I\'m glad you\'re here!", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
         center_text('Thanks for coming all this way to meet with the team for', SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
@@ -290,6 +291,7 @@ class App: #pylint: disable=too-many-instance-attributes
         pyxel.cls(pyxel.COLOR_BLACK)
         pyxel.blt(0,0,2,0,0,256,256)
         pyxel.rect(8,8, 240, 240, pyxel.COLOR_BLACK)
+        pyxel.blt(SCREEN_WIDTH/2-32,50,0,64,144,64,48)
         pyxel.mouse(visible=True)
         center_text("Our scientists have found that humans behave differently", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT-16, pyxel.COLOR_WHITE)
         center_text('towards a place based on five observable aspects', SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT-20, pyxel.COLOR_WHITE)
@@ -381,6 +383,7 @@ class App: #pylint: disable=too-many-instance-attributes
         pyxel.cls(pyxel.COLOR_BLACK)
         pyxel.blt(0,0,2,0,0,256,256)
         pyxel.rect(8,8, 240, 240, pyxel.COLOR_BLACK)
+        pyxel.blt(SCREEN_WIDTH/2-32,50,0,64,144,64,48)
         pyxel.mouse(visible=True)
         center_text("GOOD LUCK!", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_GREEN)
         center_text('After placing your purchased items, we\'ll begin', SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)

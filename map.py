@@ -218,11 +218,11 @@ class Map: #pylint: disable=too-many-instance-attributes
                                             or ("educational" in marker.markers[self.selected_inventory_item].tags and "pro-educational" in marker.markers[self.map[self.selected_row+row][self.selected_col+col]].tags):
                                                 self.coords_for_bonuses.append([self.selected_col*ICON_WIDTH, self.selected_row*ICON_HEIGHT, pyxel.COLOR_GREEN])
                                                 self.coords_for_bonuses.append([(self.selected_col+col)*ICON_WIDTH, (self.selected_row+row)*ICON_HEIGHT, pyxel.COLOR_GREEN])
-                                            #ORANGE border for danger signs and disgust faces next to each other
+                                            #BLACK border for danger signs and disgust faces next to each other
                                             if self.selected_inventory_item=="danger-sign" and self.map[self.selected_row+row][self.selected_col+col]=="disgust-faces" \
                                             or self.selected_inventory_item=="disgust-faces" and self.map[self.selected_row+row][self.selected_col+col]=="danger-sign":
-                                                self.coords_for_bonuses.append([self.selected_col*ICON_WIDTH, self.selected_row*ICON_HEIGHT, pyxel.COLOR_ORANGE])
-                                                self.coords_for_bonuses.append([(self.selected_col+col)*ICON_WIDTH, (self.selected_row+row)*ICON_HEIGHT, pyxel.COLOR_ORANGE])
+                                                self.coords_for_bonuses.append([self.selected_col*ICON_WIDTH, self.selected_row*ICON_HEIGHT, pyxel.COLOR_BLACK])
+                                                self.coords_for_bonuses.append([(self.selected_col+col)*ICON_WIDTH, (self.selected_row+row)*ICON_HEIGHT, pyxel.COLOR_BLACK])
                                             #DARKBLUE border for buried magnets and menacing earthworks next to each other
                                             if self.selected_inventory_item=="buried-magnets" and self.map[self.selected_row+row][self.selected_col+col]=="menacing-earthworks" \
                                             or self.selected_inventory_item=="menacing-earthworks" and self.map[self.selected_row+row][self.selected_col+col]=="buried-magnets":

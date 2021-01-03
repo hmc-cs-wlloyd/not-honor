@@ -57,7 +57,7 @@ class App: #pylint: disable=too-many-instance-attributes
             button_color=0
         )
         self.simulation_screen = None
-        pyxel.load("justmessingaround.pyxres")
+        pyxel.load("assets/justmessingaround.pyxres")
         pyxel.run(self.update, self.draw)
 
 

@@ -117,8 +117,8 @@ class SimulationScreen:
                 pyxel.text(32+ICON_WIDTH+8, SCREEN_WIDTH-36, "Miner", pyxel.COLOR_GRAY)
 
                 #architect
-                pyxel.blt(104, SCREEN_WIDTH-44, 0, 0, 16, ICON_WIDTH, ICON_HEIGHT)
-                pyxel.text(104+4+ICON_WIDTH, SCREEN_WIDTH-36, "Architect", pyxel.COLOR_RED)
+                pyxel.blt(104, SCREEN_WIDTH-44, 0, 0, 32, ICON_WIDTH, ICON_HEIGHT)
+                pyxel.text(104+4+ICON_WIDTH, SCREEN_WIDTH-36, "Archeologist", pyxel.COLOR_RED)
 
                 #dam builder
                 pyxel.blt(176, SCREEN_WIDTH-44, 0, 176, 32, ICON_WIDTH, ICON_HEIGHT)

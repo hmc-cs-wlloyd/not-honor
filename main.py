@@ -283,7 +283,7 @@ class App: #pylint: disable=too-many-instance-attributes
         center_text('Thanks for coming all this way to meet with the team for', SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
         center_text("the Waste Isolation Pilot Plant. We\'re simulating how to", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
         center_text("keep future generations of humans (who may not understand", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3), pyxel.COLOR_WHITE)
-        center_text("English) away from nuclear waste sites and", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4), pyxel.COLOR_WHITE)
+        center_text("today\'s languages) away from nuclear waste sites and", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*4), pyxel.COLOR_WHITE)
         center_text("we need your advice!", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*5), pyxel.COLOR_WHITE)
         self.continue_button.draw()
 
@@ -324,8 +324,8 @@ class App: #pylint: disable=too-many-instance-attributes
         pyxel.blt(SCREEN_WIDTH/2-8, SCREEN_HEIGHT//2-4, 0, 0, 32, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)+(16*3)-8, SCREEN_HEIGHT//2-4, 0, 0, 32, 16, 16)
 
-        pyxel.text(16, SCREEN_HEIGHT//2+22, "Archaeologists", pyxel.COLOR_YELLOW)
-        pyxel.text(16+44, SCREEN_HEIGHT//2+22, "    like to dig up open spaces", pyxel.COLOR_WHITE) 
+        pyxel.text(48, SCREEN_HEIGHT//2+22, "Archaeologists", pyxel.COLOR_YELLOW)
+        pyxel.text(48+44, SCREEN_HEIGHT//2+22, "    like to dig up open spaces", pyxel.COLOR_WHITE) 
         center_text("but will preserve spaces with high respectability", SCREEN_WIDTH, SCREEN_HEIGHT//2+22+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
 
         self.continue_button.draw()

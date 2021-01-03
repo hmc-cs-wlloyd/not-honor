@@ -110,7 +110,7 @@ def draw_chosen_tip(chosen_tip):
         pyxel.blt((SCREEN_WIDTH/2)-5, 64, 0, 208, 0, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)+11, 64, 0, 192, 16, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_1_x, sci_1_y, 16,16)
-        center_text("How can we make the site\'s land difficult for invaders to use?", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+        center_text("How can we make the land difficult for invaders to use?", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
         center_text("Maybe we should install a BLACK HOLE or a RUBBLE FIELD.", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
 
     elif chosen_tip == 10:        

@@ -13,6 +13,8 @@ def draw_chosen_tip(chosen_tip):
     sci_3_y = 32
     sci_4_x = 64
     sci_4_y = 32
+    sci_5_x = 64
+    sci_5_y = 48
 
     
         
@@ -70,7 +72,7 @@ def draw_chosen_tip(chosen_tip):
         pyxel.blt((SCREEN_WIDTH/2)-16, 56, 1, 149, 200, 56, 40)
         pyxel.blt((SCREEN_WIDTH/2)-5, 64, 0, 160, 16, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)+11, 64, 0, 144, 16, 16, 16)
-        pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_1_x, sci_1_y, 16,16)
+        pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_5_x, sci_5_y, 16,16)
         center_text("I think we should stick to the basics.", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
         center_text("It\'s easy to understand a DANGER SIGN or a DISGUSTED FACE.", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
         center_text("As long as you speak our language... ", SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
@@ -140,7 +142,7 @@ def draw_chosen_tip(chosen_tip):
     elif chosen_tip == 13:
         pyxel.blt((SCREEN_WIDTH/2)-8, 56, 1, 208, 200, 40, 40)
         pyxel.blt((SCREEN_WIDTH/2)+8, 64, 0, 48, 0, 16, 16)
-        pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_1_x, sci_1_y, 16,16)
+        pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_5_x, sci_5_y, 16,16)
         center_text("We\'re always updating the simulation to model new threats.", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
         center_text("Just recently, we added TRANSIT TUNNELS as a potential ", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
         center_text('intrusion, like the one proposed by famous entrepreneur', SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
@@ -173,6 +175,8 @@ def draw_chosen_tip(chosen_tip):
         center_text("VIKINGS, GOTHS, KLINGONS... who knows what could be ahead!", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
 
     elif chosen_tip == 18:
+        pyxel.blt((SCREEN_WIDTH/2)-8, 56, 1, 208, 200, 40, 40)
+        pyxel.blt((SCREEN_WIDTH/2)+8, 64, 0, 112,48, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_2_x, sci_2_y, 16,16)
         center_text("As a meteorologist, I'm forecasting far-future weather. ", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
         center_text("SMOG or FLOODS anyone?", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)

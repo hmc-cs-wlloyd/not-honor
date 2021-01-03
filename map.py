@@ -242,6 +242,7 @@ class Map: #pylint: disable=too-many-instance-attributes
     def draw(self, player, is_simulation=False):
         """Draws map to the screen"""
         pyxel.bltm(0, 0, 7, 0, 232, 32, 24)
+        pyxel.blt(SCREEN_WIDTH/2 - 32, 80, 1, 0, 128, 64,48,4)
         for row in range(12): #draw the terrain
             for col in range(16):
                 if self.map[row][col] != "null" and self.map[row][col] != "site":

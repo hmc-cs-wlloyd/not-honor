@@ -717,7 +717,7 @@ This could show that something important is here.",
     ),
     "spike-grid": Marker(
         name="Spike Grid",
-        description="Large spikes rising at odd angles through the lines of a grid.",
+        description="Large spikes rising at odd angles\nthrough the lines of a grid.",
         icon_coords=(112,64),
         icon_image = 0,
         base_cost=124,

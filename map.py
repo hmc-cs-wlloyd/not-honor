@@ -223,6 +223,11 @@ class Map: #pylint: disable=too-many-instance-attributes
                                             or self.selected_inventory_item=="disgust-faces" and self.map[self.selected_row+row][self.selected_col+col]=="danger-sign":
                                                 self.coords_for_bonuses.append([self.selected_col*ICON_WIDTH, self.selected_row*ICON_HEIGHT, pyxel.COLOR_ORANGE])
                                                 self.coords_for_bonuses.append([(self.selected_col+col)*ICON_WIDTH, (self.selected_row+row)*ICON_HEIGHT, pyxel.COLOR_ORANGE])
+                                            #DARKBLUE border for buried magnets and menacing earthworks next to each other
+                                            if self.selected_inventory_item=="buried-magnets" and self.map[self.selected_row+row][self.selected_col+col]=="menacing-earthworks" \
+                                            or self.selected_inventory_item=="menacing-earthworks" and self.map[self.selected_row+row][self.selected_col+col]=="buried-magnets":
+                                                self.coords_for_bonuses.append([self.selected_col*ICON_WIDTH, self.selected_row*ICON_HEIGHT, pyxel.COLOR_DARKBLUE])
+                                                self.coords_for_bonuses.append([(self.selected_col+col)*ICON_WIDTH, (self.selected_row+row)*ICON_HEIGHT, pyxel.COLOR_DARKBLUE])
                                             #PURPLE border for the same terraforming objects
                                             if "terraforming" in marker.markers[self.selected_inventory_item].tags and "terraforming" in marker.markers[self.map[self.selected_row+row][self.selected_col+col]].tags \
                                             and self.map[self.selected_row+row][self.selected_col+col] == self.selected_inventory_item:

@@ -299,7 +299,7 @@ site.\nMore effective upon cultures with industrial\ndigging technology",
     ),
     "disgust-faces": Marker(
         name="Disgusted Faces",
-        description="Depictions of faces in sickness in pain, etched into\nstone",
+        description="Depictions of faces in sickness and pain, etched into\nstone",
         icon_coords=(144,16),
         icon_image = 0,
         base_cost=24000,
@@ -572,8 +572,8 @@ the site will be safe.\nCould be used to calculate age",
     ),
     "math": Marker(
         name="Mathematical\nSymbols",
-        description="Some say math is a \"universal language\".\
-        This could show that something important is here.",
+        description="Some say math is a \"universal language\".\n\
+This could show that something important is here.",
         icon_coords=(80,32),
         icon_image = 0,
         base_cost=7000,
@@ -589,6 +589,43 @@ the site will be safe.\nCould be used to calculate age",
         understandability_decay = "slow_lin_0",
         tags=["surface", "structure", "educational"]
     ),
+    "buried-magnets": Marker(
+        name="Buried Magnets",
+        description="Magnets buried in the shape of a radiation symbol",
+        icon_coords=(96,32),
+        icon_image = 0,
+        base_cost=14000,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (1,5,7),
+        visibility_decay = "slow_lin_0",
+        respectability_init = (2,2,2),
+        respectability_decay = "constant",
+        likability_init = (0,0,0),
+        likability_decay = "constant",
+        understandability_init = (5,5,5),
+        understandability_decay = "lin_0",
+        tags=["buried", "pictoral", "synergy_partnership_2"]
+    ),
+    "buried-vault": Marker(
+        name="Buried Vault",
+        description="A cache of detailed information on the site, buried for\n protection",
+        icon_coords=(96,32),
+        icon_image = 0,
+        base_cost=14000,
+        usability_init = (0,0,0),
+        usability_decay = "constant",
+        visibility_init = (1,5,7),
+        visibility_decay = "slow_lin_0",
+        respectability_init = (2,2,2),
+        respectability_decay = "constant",
+        likability_init = (0,0,0),
+        likability_decay = "constant",
+        understandability_init = (5,5,5),
+        understandability_decay = "lin_0",
+        tags=["buried", "pictoral", "synergy_partnership_2"]
+    ),
+
     #NOTE: THE TERRAINS ARE IN IMAGE 1
     "sand": Marker(
         name="Sand",

@@ -133,10 +133,10 @@ class Shop:
     def __init__(self, marker_options, player):
         self.shelves = []
         self.finish_button = button.Button(
-            x_coord=SCREEN_WIDTH - 35,
-            y_coord=SHOP_TOP_OFFSET/10,
+            x_coord=SCREEN_WIDTH - 39,
+            y_coord=SHOP_TOP_OFFSET/10+6,
             width=30,
-            height=9*SHOP_TOP_OFFSET/10,
+            height=7*SHOP_TOP_OFFSET/10,
             text="Finish",
             button_color=None
         )
@@ -156,9 +156,9 @@ class Shop:
         for i in range(SHOP_ROWS):
             for j in range(SHOP_COLUMNS):
                 if 2*i+j < len(available_marker_options):
-                    self.shelves.append(Shelf(x_coord=(SCREEN_WIDTH//SHOP_COLUMNS * j) + (4),
+                    self.shelves.append(Shelf(x_coord=(SCREEN_WIDTH//SHOP_COLUMNS * j) + (8),
                         y_coord=((SHOP_TOP_OFFSET + ((SCREEN_HEIGHT-SHOP_TOP_OFFSET-SHOP_BOTTOM_OFFSET)//(SHOP_ROWS+1))*i)+(8*i)) + 8,
-                        width=(SCREEN_WIDTH//SHOP_COLUMNS)-8,
+                        width=(SCREEN_WIDTH//SHOP_COLUMNS)-12,
                         height=(SCREEN_HEIGHT-SHOP_TOP_OFFSET-SHOP_BOTTOM_OFFSET)//(SHOP_ROWS+1),
                         marker_on_shelf=available_marker_options[marker_index],
                         sticker_price=marker.markers[available_marker_options[marker_index]].base_cost
@@ -171,23 +171,30 @@ class Shop:
         """Draws the shop to the screen"""
         pyxel.cls(pyxel.COLOR_LIGHTBLUE)
         #top left "screen" tile
-        pyxel.blt(0,0,0,128,64,ICON_WIDTH,ICON_HEIGHT)
+        pyxel.blt(4,4,0,128,64,ICON_WIDTH,ICON_HEIGHT)
         #bottom left "screen" tile
-        pyxel.blt(0, 190-16,0,128,96,ICON_WIDTH,ICON_HEIGHT)
+        pyxel.blt(4, 191-16,0,128,96,ICON_WIDTH,ICON_HEIGHT)
         #top right "screen" tile
-        pyxel.blt(SCREEN_WIDTH-ICON_WIDTH,0,0,160,64,ICON_WIDTH,ICON_HEIGHT)
+        pyxel.blt(SCREEN_WIDTH-ICON_WIDTH-4,4,0,160,64,ICON_WIDTH,ICON_HEIGHT)
         #bottom right "screen" tile
-        pyxel.blt(SCREEN_WIDTH-ICON_WIDTH, 190-16,0,160,96,ICON_WIDTH,ICON_HEIGHT)
-        pyxel.line(1, 16, 1, 190-8, pyxel.COLOR_WHITE)
-        pyxel.line(2, 16, 2, 190-(16*3)-3, pyxel.COLOR_WHITE) #glare line that goes down to the bottom of the 4th shop item
+        pyxel.blt(SCREEN_WIDTH-ICON_WIDTH-4, 191-16,0,160,96,ICON_WIDTH,ICON_HEIGHT)
+        pyxel.line(5, 16, 5, 191-8, pyxel.COLOR_WHITE)
+        pyxel.line(6, 16, 6, 191-(16*3)-3, pyxel.COLOR_WHITE) #glare line that goes down to the bottom of the 4th shop item
+        
+        #black left line
+        pyxel.rect(0, 0, 4, 191, pyxel.COLOR_BLACK)
+        #black right line
+        pyxel.rect(SCREEN_WIDTH-4, 0, 4, 191, pyxel.COLOR_BLACK)
+        #black top line
+        pyxel.rect(0, 0, SCREEN_WIDTH, 4, pyxel.COLOR_BLACK)
         #inventory at the bottom
-        pyxel.rect(0, 190, SCREEN_WIDTH, SCREEN_HEIGHT-190, pyxel.COLOR_BLACK) 
+        pyxel.rect(0, 191, SCREEN_WIDTH, SCREEN_HEIGHT-191, pyxel.COLOR_BLACK) 
 
         center_text("Remaining Budget: $" + str(player.funding) + " Mil.",
                 page_width=SCREEN_WIDTH,
-                y_coord=10,
+                y_coord=14,
                 text_color=pyxel.COLOR_NAVY)
-        pyxel.text(5, SHOP_TOP_OFFSET//2, "WIPP-SIM10000", pyxel.COLOR_GREEN)
+        pyxel.text(5+7, SHOP_TOP_OFFSET//2, "WIPP-SIM10000", pyxel.COLOR_GREEN)
         self.finish_button.draw()
 
         inventory_y_coord = SCREEN_HEIGHT-MAP_INVENTORY_BOTTOM_MARGIN + 8

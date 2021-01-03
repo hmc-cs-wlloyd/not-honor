@@ -164,6 +164,9 @@ def draw_chosen_tip(chosen_tip):
         center_text("I don\'t buy it.", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
 
     elif chosen_tip == 16:
+        pyxel.blt((SCREEN_WIDTH/2)-16, 56, 1, 149, 200, 56, 40)
+        pyxel.blt((SCREEN_WIDTH/2)-5, 64, 0, 144, 48, 16, 16)
+        pyxel.blt((SCREEN_WIDTH/2)+11, 64, 0, 128,48, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_4_x, sci_4_y, 16,16)
         center_text("As a geologist, I\'m modeling changes in the site itself.", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
         center_text("Watch out for EARTHQUAKES and FAULTLINES!", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)

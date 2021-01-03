@@ -456,7 +456,7 @@ class App: #pylint: disable=too-many-instance-attributes
         pyxel.rect(8,8, 240, 240, pyxel.COLOR_BLACK)
         if self.which_tip_index is not None:
             chosen_tip = self.available_tips[self.which_tip_index]
-            tips.draw_chosen_tip(9)
+            tips.draw_chosen_tip(chosen_tip)
             self.continue_button.draw()
         else: self.screen = Screen.SHOP
 

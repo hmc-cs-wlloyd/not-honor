@@ -408,7 +408,7 @@ the site will be safe.\nCould be used to calculate age.",
         tags=["terraforming", "spooky"]
     ),
     "attractive-monument": Marker(
-        name="Beautiful Monument",
+        name="Beautiful\nMonument",
         description="A pretty building for your site. Maybe people will\nwant to maintain it?",
         icon_coords=(112,16),
         icon_image = 0,
@@ -626,8 +626,8 @@ This could show that something important is here.",
         tags=["buried", "pictoral", "linguistic"]
     ),
     "aeolian-structures": Marker(
-        name="Aeolian Structures",
-        description="Earthworks shaped so when the wind blows through them\nit makes particularly eerie noises.",
+        name="Aeolian\nStructures",
+        description="Earthworks shaped so when the wind blows through them\nit makes particularly eerie noises",
         icon_coords=(96,80),
         icon_image = 0,
         base_cost=36,

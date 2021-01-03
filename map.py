@@ -328,12 +328,17 @@ class Map: #pylint: disable=too-many-instance-attributes
                         pyxel.blt(16+text_margin+(i*19)+112, (16*8)+(text_margin*2)+2, 0, marker.markers[elem].icon_coords[0], marker.markers[elem].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
                         i+=1
 
-                pyxel.text(16+text_margin, (16*10)+text_margin, "MONOLITHS boost each other\'s\nrespectability bonuses\nand usability penalties", pyxel.COLOR_NAVY)
+                pyxel.text(16+text_margin, (16*10)+text_margin, "MONOLITHS boost their\nrespectability bonuses\nand usability penalties", pyxel.COLOR_NAVY)
                 i=0 #show all monolith defenses 
                 for elem in marker.markers: #for simplicity don't show the ruined ones
                     if "monolith" in marker.markers[elem].tags and not "ruined" in marker.markers[elem].tags:
                         pyxel.blt(16+text_margin+(i*19), (16*11)+text_margin+4, 0, marker.markers[elem].icon_coords[0], marker.markers[elem].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
                         i+=1
+
+                pyxel.text(16+text_margin+112, (16*10)+text_margin, "MENACING EARTHWORKS and\nBURIED MAGNETS enhance\neach other\'s clarity", pyxel.COLOR_NAVY)
+                pyxel.blt(16+text_margin+112, (16*11)+text_margin+4, 0, marker.markers["menacing-earthworks"].icon_coords[0], marker.markers["menacing-earthworks"].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
+                pyxel.blt(16+text_margin+112+ICON_WIDTH+4, (16*11)+text_margin+4, 0, marker.markers["buried-magnets"].icon_coords[0], marker.markers["buried-magnets"].icon_coords[1], ICON_WIDTH, ICON_HEIGHT)
+
 
 
         else: #showing the simulation

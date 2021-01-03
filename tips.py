@@ -151,8 +151,9 @@ def draw_chosen_tip(chosen_tip):
         pyxel.blt((SCREEN_WIDTH/2)+8, 64, 0, 176, 32, 16, 16)
         pyxel.blt((SCREEN_WIDTH/2)-8, 100, 0, sci_2_x, sci_2_y, 16,16)        
         center_text("You might not think DAMS would be a big threat", SCREEN_WIDTH, SCREEN_HEIGHT//2-pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
-        center_text(" in the desert, but we\'re modeling them all the same. As long as the", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
-        center_text('land utility remains low, you should be safe.', SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
+        center_text("in the desert, but we\'re modeling them all the same.", SCREEN_WIDTH, SCREEN_HEIGHT//2+pyxel.FONT_HEIGHT, pyxel.COLOR_WHITE)
+        center_text('As long as the land utility remains low,', SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*2), pyxel.COLOR_WHITE)
+        center_text('you should be safe.', SCREEN_WIDTH, SCREEN_HEIGHT//2+(pyxel.FONT_HEIGHT*3), pyxel.COLOR_WHITE)
 
     elif chosen_tip == 15:
         pyxel.blt((SCREEN_WIDTH/2)-8, 56, 1, 208, 200, 40, 40)
